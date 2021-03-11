@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,76 +23,60 @@ import okhttp3.Response;
 
 public class MainActivity extends AppCompatActivity {
 
-
+    private RelativeLayout news;
+    private RelativeLayout paper;
+    private RelativeLayout message;
+    private RelativeLayout user;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        final TextView textView=findViewById(R.id.text);
-        Button button1=findViewById(R.id.button1);
-        final Button button2=findViewById(R.id.button2);
-        final Button button3=findViewById(R.id.button3);
-
-////////////////////////////////////
-// get接口测试
-button2.setOnClickListener(new View.OnClickListener() {
-    @Override
-    public void onClick(View v) {
-        Utils.get("https://news-at.zhihu.com/api/3/stories/latest", new Utils.OkhttpCallBack() {
-
+        news=findViewById(R.id.news_layout);
+        paper=findViewById(R.id.paper_layout);
+        message=findViewById(R.id.message_layout);
+        user=findViewById(R.id.user_layout);
+        news.setSelected(true);
+        news.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onSuccess(Response response) {
-                Log.i("asd","success!!!!!!!!!");
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(MainActivity.this,"成功get",Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
-
-            @Override
-            public void onFail(String error) {
-                Log.i("asd","error!!!!!!!!!!!!");
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(MainActivity.this,"失败get",Toast.LENGTH_SHORT).show();
-                    }
-                });
+            public void onClick(View v) {
+                news.setSelected(true);
+                paper.setSelected(false);
+                message.setSelected(false);
+                user.setSelected(false);
             }
         });
-    }
-});
-
-
-///////////////////////////////////////
-//底部弹出框测试
-button3.setOnClickListener(new View.OnClickListener() {
-    @Override
-    public void onClick(View v) {
-        final BottomPopupOption bottomPopupOption = new BottomPopupOption(MainActivity.this);
-        bottomPopupOption.setItemText("按钮1", "按钮2","按钮3");
-        bottomPopupOption.showPopupWindow();
-        bottomPopupOption.setItemClickListener(new BottomPopupOption.onPopupWindowItemClickListener() {
+        paper.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemClick(int position) {
-
-                if (position==0){
-                    Toast.makeText(MainActivity.this,"我是按钮1",Toast.LENGTH_SHORT).show();
-                    bottomPopupOption.dismiss();
-                }else if (position==1){
-                    Toast.makeText(MainActivity.this,"我是按钮2",Toast.LENGTH_SHORT).show();
-                    bottomPopupOption.dismiss();
-                }else {
-                    Toast.makeText(MainActivity.this,"我是按钮3",Toast.LENGTH_SHORT).show();
-                    bottomPopupOption.dismiss();
-                }
+            public void onClick(View v) {
+                news.setSelected(false);
+                paper.setSelected(true);
+                message.setSelected(false);
+                user.setSelected(false);
             }
         });
-    }
-});
+        message.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                news.setSelected(false);
+                paper.setSelected(false);
+                message.setSelected(true);
+                user.setSelected(false);
+            }
+        });
+        user.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                news.setSelected(false);
+                paper.setSelected(false);
+                message.setSelected(false);
+                user.setSelected(true);
+            }
+        });
+
+
+
+
 
 
 
