@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activity.LoginActivity"
+    tools:context=".Activity.RegisterActivity"
     android:background="@drawable/gradient">
     <LinearLayout
         android:layout_width="match_parent"
@@ -94,6 +94,7 @@
                 android:background="@drawable/gradient"/>
 
             <TextView
+                android:id="@+id/login_register"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="注册账号"
@@ -110,4 +111,5 @@
 
 
     </LinearLayout>
+
 </LinearLayout>
