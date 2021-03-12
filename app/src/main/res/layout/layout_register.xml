@@ -129,6 +129,7 @@
     android:layout_gravity="center_horizontal">
 
     <CheckBox
+        android:id="@+id/checkbox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center" />
@@ -138,6 +139,7 @@
         android:text="点击同意"
         android:layout_marginStart="6dp"/>
     <TextView
+        android:id="@+id/agreement"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="《ITnews用户服务协议》"
