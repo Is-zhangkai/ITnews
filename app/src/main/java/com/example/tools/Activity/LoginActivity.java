@@ -20,15 +20,19 @@ public class LoginActivity extends AppCompatActivity {
 
 
 
+//找回密码
+        findViewById(R.id.signin_change_password).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(LoginActivity.this,ChangePasswordActivity.class));
+            }
+        });
 
-
-
+//注册按钮
         findViewById(R.id.login_register).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(LoginActivity.this,RegisterActivity.class);
-
-                startActivity(intent);
+                startActivity(new Intent(LoginActivity.this,RegisterActivity.class));
             }
         });
     }
