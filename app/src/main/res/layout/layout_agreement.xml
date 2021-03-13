@@ -11,8 +11,9 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
         <Button
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:id="@+id/agreement_back"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:background="@drawable/shut"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="12dp"/>
@@ -22,13 +23,13 @@
             android:text="用户协议"
             android:textSize="22sp"
             android:textColor="#3C3C3C"
-            android:layout_marginEnd="44dp"
+            android:layout_marginEnd="36dp"
             android:gravity="center"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="#151515"/>
+        android:background="#ACACAC"/>
 
     <ScrollView
         android:layout_width="match_parent"
