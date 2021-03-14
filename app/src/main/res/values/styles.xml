@@ -4,7 +4,7 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">#151515</item>
         <item name="colorPrimaryDark">#151515</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorAccent">@color/gradientstart</item>
     </style>
 
 </resources>
