@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Activity.NewsDetailsActivity">
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_weight="1">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/details_img"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:background="@drawable/person_background"/>
+    <TextView
+        android:id="@+id/tital"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="这是一个标题"
+        android:textSize="20sp"
+        android:textColor="#3A3A3A"
+        android:textStyle="bold"
+        android:letterSpacing="0.1"
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginTop="24dp" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp">
+
+        <ImageView
+            android:id="@+id/details_photo"
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="24dp"
+            android:background="@color/blueviolet"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/details_photo"
+            android:layout_marginTop="13dp"
+            android:layout_marginStart="24dp"
+            android:text="我是作者"
+            android:padding="3dp"
+            android:textSize="18sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/details_photo"
+            android:layout_alignParentBottom="true"
+           android:layout_marginBottom="13dp"
+            android:layout_marginStart="24dp"
+            android:text="这是我是作者的简介信息"
+            android:padding="3dp"
+            android:textSize="15sp"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="24dp"
+            android:text="关注"
+            android:textSize="16sp"
+            android:textColor="#E32A2A"
+            android:letterSpacing="0.3"
+            android:background="@drawable/button_focus"/>
+
+    </RelativeLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="24dp"
+            android:text="@string/news"
+            android:textSize="17sp"
+            android:letterSpacing="0.1" />
+
+
+
+
+
+
+</LinearLayout>
+</ScrollView>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/text_color"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="54dp"
+        android:orientation="horizontal">
+        <Button
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="12sp"
+            android:background="@drawable/shut"/>
+        <EditText
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/button_focus"
+            android:layout_marginVertical="9dp"
+            android:layout_marginStart="6dp"
+            android:hint="说点什么吧…"
+            android:textSize="14sp"
+            android:padding="6dp"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="6sp"
+            android:background="@drawable/buttonbox"
+            android:text="发送"
+            android:textColor="@color/whitesmoke"
+            android:paddingHorizontal="2dp"/>
+        <Button
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="12sp"
+            android:background="@drawable/shut"/>
+        <Button
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginHorizontal="12dp"
+            android:background="@drawable/shut"/>
+
+
+
+    </LinearLayout>
+</LinearLayout>

@@ -6,13 +6,17 @@
     android:layout_height="match_parent"
     tools:context=".Activity.LoginActivity"
     android:background="@drawable/gradient">
+
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="31dp"
+    android:layout_marginBottom="39dp"
+    android:layout_marginHorizontal="22dp" android:background="@drawable/background_box">
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="31dp"
-        android:layout_marginBottom="39dp"
-        android:layout_marginHorizontal="22dp"
-        android:background="@drawable/background_box"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
         <TextView
             android:layout_width="match_parent"
@@ -113,7 +117,8 @@
                 android:layout_marginEnd="9dp"
                 android:text="获取验证码"
                 android:textColor="@color/white"
-                android:textSize="12sp"/>
+                android:textSize="12sp"
+                tools:ignore="RtlHardcoded" />
 
 
 
@@ -124,7 +129,7 @@
 <LinearLayout
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:orientation="horizontal" 
+    android:orientation="horizontal"
     android:layout_marginTop="58dp"
     android:layout_gravity="center_horizontal">
 
@@ -142,13 +147,14 @@
         android:id="@+id/agreement"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="《ITnews用户服务协议》"
-        android:textColor="@color/cornflowerblue"
-        />
-        
+        android:text="@string/itnews"
+        android:background="@null"
+        android:autoLink="all"
+        android:textColor="@color/cornflowerblue" />
+
 </LinearLayout>
 
-    
+
 
 
         <Button
@@ -160,6 +166,7 @@
             android:layout_marginStart="48dp"
             android:layout_marginEnd="48dp"
             android:text="注册"
+            android:layout_marginBottom="80dp"
             android:textColor="@color/white"
             android:textStyle="bold"
             android:textSize="17sp"
@@ -167,9 +174,6 @@
 
 
 
-
-
-
-
     </LinearLayout>
+</ScrollView>
 </LinearLayout>
