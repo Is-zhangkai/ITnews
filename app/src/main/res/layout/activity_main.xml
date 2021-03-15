@@ -28,6 +28,7 @@
 
             <RelativeLayout
                 android:id="@+id/news_layout"
+                android:foreground="@drawable/water"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1">
@@ -56,6 +57,7 @@
 
             <RelativeLayout
                 android:id="@+id/paper_layout"
+                android:foreground="@drawable/water"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1">
@@ -84,6 +86,7 @@
             </RelativeLayout>
 
             <RelativeLayout
+                android:foreground="@drawable/water"
                 android:id="@+id/message_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -112,6 +115,7 @@
 
             <RelativeLayout
                 android:id="@+id/user_layout"
+                android:foreground="@drawable/water"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1">
