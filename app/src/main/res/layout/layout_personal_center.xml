@@ -185,7 +185,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="0"
-        android:textColor="#CC000000"
+        android:textColor="#663399"
         android:textSize="16sp"
         app:layout_constraintEnd_toStartOf="@+id/guideline"
         app:layout_constraintTop_toTopOf="@+id/textView2" />
@@ -264,7 +264,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:text="0"
-        android:textColor="#CC000000"
+        android:textColor="#663399"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="@+id/textView4"
         app:layout_constraintStart_toEndOf="@+id/textView4"
@@ -279,5 +279,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/textView7"
         app:layout_constraintStart_toEndOf="@+id/textView7"
         app:layout_constraintTop_toTopOf="@+id/textView7" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
