@@ -35,4 +35,7 @@ dependencies {
 //okhttp3
     implementation 'com.squareup.okhttp3:okhttp:4.9.0'
 
+//recyclerview
+    compile 'com.android.support:recyclerview-v7:23.4.0'
+
 }

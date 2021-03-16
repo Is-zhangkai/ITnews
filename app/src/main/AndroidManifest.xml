@@ -21,20 +21,21 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activity.ChangePasswordActivity"></activity>
+        <activity android:name=".Activity.NewsDetailsActivity"></activity>
+        <activity android:name=".Activity.ChangePasswordActivity" />
         <activity android:name=".Activity.AgreementActivity" />
-        <activity android:name=".Activity.InterActivity">
+        <activity android:name=".Activity.InterActivity"></activity>
+        <activity android:name=".Activity.RegisterActivity" />
+        <activity android:name=".Activity.LoginActivity" />
+        <activity android:name=".Activity.WelcomeActivity" />
+        <activity android:name=".SQLite.SQLiteActivity" />
+        <activity android:name=".Activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activity.RegisterActivity" />
-        <activity android:name=".Activity.LoginActivity" />
-        <activity android:name=".Activity.WelcomeActivity" />
-        <activity android:name=".SQLite.SQLiteActivity" />
-        <activity android:name=".Activity.MainActivity" />
     </application>
 
 </manifest>
