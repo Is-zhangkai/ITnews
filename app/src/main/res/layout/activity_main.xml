@@ -38,7 +38,7 @@
                     android:layout_width="45sp"
                     android:layout_height="50sp"
                     android:layout_centerHorizontal="true"
-                    android:src="@drawable/news_unselcet">
+                    android:src="@drawable/news_icon">
 
                 </ImageView>
 
@@ -68,7 +68,7 @@
                     android:layout_height="40sp"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="5sp"
-                    android:src="@drawable/paper_unselect">
+                    android:src="@drawable/paper_icon">
 
                 </ImageView>
 
@@ -97,7 +97,7 @@
                     android:layout_width="40sp"
                     android:layout_height="50sp"
                     android:layout_centerHorizontal="true"
-                    android:src="@drawable/message_unselect">
+                    android:src="@drawable/message_icon">
 
                 </ImageView>
 
@@ -125,7 +125,7 @@
                     android:layout_width="40sp"
                     android:layout_height="50sp"
                     android:layout_centerHorizontal="true"
-                    android:src="@drawable/user_unselect">
+                    android:src="@drawable/user_icon">
 
                 </ImageView>
 
