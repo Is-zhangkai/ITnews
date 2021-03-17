@@ -5,7 +5,7 @@
     <color name="gradientend">#6633ff</color>
     <color name="colorAccent">#03DAC5</color>
     <color name="white">#ffffff</color> <!-- 白色 -->
-
+    <color name="black_text">#333333</color> <!-- 字体 -->
 
     <color name="ivory">#fffff0</color> <!-- 象牙色 -->
     <color name="lightyellow">#ffffe0</color> <!-- 亮黄色 -->

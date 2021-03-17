@@ -19,11 +19,6 @@
             android:layout_height="wrap_content"/>
 
 
-
-
-
-
-
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
     <View
         android:layout_width="match_parent"
@@ -34,6 +29,7 @@
         android:layout_height="54dp"
         android:orientation="horizontal">
         <Button
+
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_gravity="center_vertical"
@@ -50,8 +46,10 @@
             android:textSize="14sp"
             android:padding="6dp"/>
         <Button
+            android:id="@+id/comments_send"
             android:layout_width="wrap_content"
             android:layout_height="32dp"
+
             android:layout_gravity="center_vertical"
             android:layout_marginStart="6sp"
             android:background="@drawable/buttonbox"
