@@ -3,8 +3,10 @@ package com.example.tools.Activity;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.webkit.WebView;
+import android.widget.Toast;
 
 import com.example.tools.R;
 
@@ -21,6 +23,7 @@ public class AgreementActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 finish();
+
             }
         });
 

@@ -11,6 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+
         <RelativeLayout
             android:id="@+id/fragment"
             android:layout_width="match_parent"
@@ -50,7 +51,7 @@
                     android:text="新闻"
                     android:textColor="@color/text_color"
                     android:textSize="10sp"
-                    android:textStyle="bold"></TextView>
+                    android:textStyle="bold"/>
 
 
             </RelativeLayout>
@@ -81,7 +82,7 @@
                     android:text="我的文章"
                     android:textColor="@color/text_color"
                     android:textSize="10sp"
-                    android:textStyle="bold"></TextView>
+                    android:textStyle="bold"/>
 
             </RelativeLayout>
 
@@ -137,8 +138,7 @@
                     android:text="我"
                     android:textColor="@color/text_color"
                     android:textSize="10sp"
-                    android:textStyle="bold"></TextView>
-
+                    android:textStyle="bold"/>
             </RelativeLayout>
         </LinearLayout>
     </RelativeLayout>
