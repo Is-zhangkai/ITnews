@@ -35,6 +35,7 @@
         </activity>
         <activity android:name=".Activity.RegisterActivity" />
         <activity android:name=".Activity.LoginActivity" />
+        <activity android:name=".Activity.WriteActivity"/>
         <activity android:name=".Activity.WelcomeActivity" />
         <activity android:name=".SQLite.SQLiteActivity" />
         <activity android:name=".Activity.MainActivity">
