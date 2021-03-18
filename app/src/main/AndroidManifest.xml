@@ -21,7 +21,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activity.NewsDetailsActivity">
+        <activity android:name=".Activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -38,7 +38,7 @@
         <activity android:name=".Activity.WriteActivity"/>
         <activity android:name=".Activity.WelcomeActivity" />
         <activity android:name=".SQLite.SQLiteActivity" />
-        <activity android:name=".Activity.MainActivity">
+        <activity android:name=".Activity.NewsDetailsActivity">
 
         </activity>
     </application>
