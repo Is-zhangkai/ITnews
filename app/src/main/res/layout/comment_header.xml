@@ -58,10 +58,11 @@
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="24dp"
                 android:text="关注"
+                android:textStyle="bold"
                 android:textSize="12sp"
-                android:textColor="#E32A2A"
-                android:letterSpacing="0.3"
-                android:background="@drawable/button_focus"/>
+                android:textColor="@color/white"
+                android:letterSpacing="0.5"
+                android:background="@drawable/btn_focus_fill"/>
 
         </RelativeLayout>
     <TextView

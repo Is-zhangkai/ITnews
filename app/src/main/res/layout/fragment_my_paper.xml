@@ -11,7 +11,7 @@
             android:id="@+id/myPaper_topSpace"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:background="@drawable/Paper_background">
+            android:background="@drawable/paper_background">
             <ImageView
                 android:id="@+id/myPaper_userHead"
                 android:layout_width="70dp"
