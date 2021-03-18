@@ -4,11 +4,45 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Fragment.MyPaperFragment">
-
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="match_parent">
+        <RelativeLayout
+            android:id="@+id/myPaper_topSpace"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:background="@drawable/paper_background">
+            <ImageView
+                android:id="@+id/myPaper_userHead"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/default_head"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="50dp">
+
+            </ImageView>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="用户名"
+                android:layout_toLeftOf="@id/myPaper_userHead"
+                android:textColor="@color/white"
+                android:layout_marginTop="60dp"
+                android:textSize="20dp"
+                android:layout_marginRight="20dp">
+
+            </TextView>
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/myPaper_topSpace">
+
+        </RelativeLayout>
+
+
+
+    </RelativeLayout>
 
 </FrameLayout>
