@@ -32,18 +32,21 @@
             android:layout_marginEnd="21dp"/>
 
         <EditText
+            android:id="@+id/et1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="31dp"
             android:layout_marginTop="18dp"
             android:layout_marginEnd="24dp"
             android:background="@drawable/edittextbox"
-            android:hint="请输入账号"
-            android:padding="12dp"
-            android:textSize="18sp"
+            android:hint="请输入用户名"
+            android:inputType="textPersonName"
             android:maxLength="12"
-            android:inputType="textPersonName"/>
+            android:padding="12dp"
+            android:textSize="18sp" />
+
         <EditText
+            android:id="@+id/et2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="31dp"
@@ -51,23 +54,25 @@
             android:layout_marginEnd="24dp"
             android:background="@drawable/edittextbox"
             android:hint="请输入密码"
-            android:padding="12dp"
-            android:textSize="18sp"
+            android:inputType="textPassword"
             android:maxLength="12"
-            android:inputType="textPassword"/>
+            android:padding="12dp"
+            android:textSize="18sp" />
+
         <Button
+            android:id="@+id/gogo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/buttonbox"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="58dp"
             android:layout_marginStart="48dp"
+            android:layout_marginTop="58dp"
             android:layout_marginEnd="48dp"
+            android:background="@drawable/buttonbox"
+            android:letterSpacing="0.3"
             android:text="登录"
             android:textColor="@color/white"
-            android:textStyle="bold"
             android:textSize="17sp"
-            android:letterSpacing="0.3"/>
+            android:textStyle="bold" />
 
         <LinearLayout
             android:layout_width="match_parent"

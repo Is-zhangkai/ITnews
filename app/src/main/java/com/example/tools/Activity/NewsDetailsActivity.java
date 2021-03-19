@@ -1,18 +1,15 @@
 package com.example.tools.Activity;
 
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
-
 import com.example.tools.Adapter.CommentAdapter;
-import com.example.tools.Data;
 import com.example.tools.R;
 import com.example.tools.tools.InputTextMsgDialog;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
