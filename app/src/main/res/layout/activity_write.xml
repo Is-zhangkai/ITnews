@@ -5,5 +5,112 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Activity.WriteActivity">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:id="@+id/write_image"
+            android:layout_height="200dp">
+            <ImageView
+                android:id="@+id/icon_add"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/add_news"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="60dp">
+            </ImageView>
+            <TextView
+                android:id="@+id/add_word"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/icon_add"
+                android:text="添加主图"
+                android:layout_marginTop="10dp">
+            </TextView>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/add_word"
+                android:layout_marginTop="30dp"
+                android:layout_centerHorizontal="true"
+                android:text="图片尺寸建议大于:1920x1080像素"
+                android:textColor="@color/grey">
+
+            </TextView>
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/write_image"
+            android:background="#F2F2F2">
+            <EditText
+                android:id="@+id/edit_title"
+                android:layout_width="match_parent"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_height="60dp"
+                android:hint="请输入标题"
+                android:textSize="24dp"
+                android:textColor="#000000"
+                android:textStyle="bold">
+            </EditText>
+            <RelativeLayout
+                android:id="@+id/edit_tagBar"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_below="@id/edit_title">
+                <Button
+                    android:id="@+id/edit_tag"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:text="选择新闻类型"
+                    android:layout_marginLeft="20dp"
+                    android:background="@drawable/white_circle">
+                </Button>
+
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/edit_content"
+                android:layout_width="match_parent"
+                android:layout_height="260dp"
+                android:layout_below="@id/edit_tagBar"
+                android:background="@drawable/white_circle"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="20dp">
+
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/edit_content">
+                <Button
+                    android:id="@+id/edit_back"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="返回"
+                    android:layout_marginLeft="70dp"
+                    android:layout_marginTop="10dp"
+                    android:textColor="@color/grey"
+                    android:background="@drawable/grey_circle">
+                </Button>
+                <Button
+                    android:layout_width="130dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/edit_post"
+                    android:layout_toRightOf="@id/edit_back"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="50dp"
+                    android:textColor="@color/white"
+                    android:background="@drawable/blue_circle"
+                    android:text="发布">
+
+                </Button>
+            </RelativeLayout>
+        </RelativeLayout>
+
+    </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

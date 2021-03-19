@@ -37,7 +37,40 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/myPaper_topSpace">
+            android:layout_marginTop="195dp"
+            android:background="@drawable/white_circle">
+
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/go_edit"
+            android:layout_width="180dp"
+            android:layout_height="50dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="20dp"
+            android:textColor="@color/white"
+            android:background="@drawable/black_circle">
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginLeft="40dp"
+                android:src="@drawable/edit_paper"
+                android:layout_centerVertical="true"
+                android:id="@+id/button_image">
+
+            </ImageView>
+            <TextView
+                android:id="@+id/edit_word"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="发布一篇文章"
+                android:textColor="@color/white"
+                android:layout_toRightOf="@id/button_image"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp">
+
+            </TextView>
+
 
         </RelativeLayout>
 
