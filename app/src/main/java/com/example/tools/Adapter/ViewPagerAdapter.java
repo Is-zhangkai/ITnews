@@ -1,6 +1,7 @@
 package com.example.tools.Adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 import java.util.Objects;
+
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
+
+import static com.bumptech.glide.request.RequestOptions.bitmapTransform;
 
 public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.ViewHolder> {
 
@@ -34,7 +39,11 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.View
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int i) {
 
-        Glide.with(context).load(Objects.requireNonNull(img.get(i))).into(holder.imageView);
+        Log.i("asd","qwertyuio");
+        Glide.with(context)
+                .load(Objects.requireNonNull(img.get(i)))
+                .apply(bitmapTransform(new RoundedCornersTransformation(42, 0, RoundedCornersTransformation.CornerType.ALL)))
+                .into(holder.imageView);
     }
 
     @Override

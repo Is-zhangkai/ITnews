@@ -66,8 +66,7 @@ public class RecommendFragment extends Fragment {
 //新闻列表
         List<Data> list=new ArrayList<>();
         GetPager(list);
-        adapter=new NewsAdapter(getContext(),list);
-        recyclerView.setAdapter(adapter);
+
     }
     //获取轮播图
     public void GetPager(final List<Data> list){
@@ -91,6 +90,15 @@ public class RecommendFragment extends Fragment {
                     Data data=new Data();
                     data.setPics(img);
                     list.add(data);
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Log.i("asd",list.size()+"");
+                            adapter=new NewsAdapter(getContext(),list);
+                            recyclerView.setAdapter(adapter);
+                        }
+                    });
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

@@ -1,9 +1,12 @@
 package com.example.tools.Adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -17,98 +20,92 @@ import com.example.tools.tools.Data;
 import java.util.List;
 
 public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-
-    public static final int TYPE_PAGER = 0; //说明是带有pager的
-    public static final int TYPE_NEWS = 1;
     private Context context;
     private List<Data> list;
-    private  ViewHolderPager pagerHolder;
+    private static final int ITEM_PAGER =0 ;
+    private static final int ITEM_NEWS =1 ;
+
+    private  PagerHolder pagerHolder;
     private ViewPagerAdapter viewPagerAdapter;
-
-
-    public NewsAdapter(Context context, List<Data> list) {
+    public NewsAdapter(Context context,List<Data> list){
         this.context=context;
         this.list=list;
     }
 
+
+
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View view=null;
-        RecyclerView.ViewHolder holder=null;
-        if (i==TYPE_NEWS){
-            view= LayoutInflater.from(context).inflate(R.layout.item_news,viewGroup,false);
-            holder= new NewsAdapter.ViewHolderPager(view);}
-        else if (i==TYPE_PAGER){
-            view= LayoutInflater.from(context).inflate(R.layout.item_viewpager2,viewGroup,false);
-            holder= new NewsAdapter.ViewHolderNews(view);}
+        View view_news=null;
+        RecyclerView.ViewHolder holder = null;
+
+        if (i==ITEM_NEWS){
+            view_news= LayoutInflater.from(context).inflate(R.layout.item_news,viewGroup,false);
+            holder= new NewsHolder(view_news);
+        }
+        if (i==ITEM_PAGER){
+            view_news= LayoutInflater.from(context).inflate(R.layout.item_viewpager2,viewGroup,false);
+            holder= new PagerHolder(view_news);
+        }
+
+        assert holder != null;
         return holder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int i) {
 
-        if (holder instanceof ViewHolderNews){
-
-        }
-        if (holder instanceof ViewHolderPager){
-            List<String> data_pager=list.get(i).getPics();
-            pagerHolder=(ViewHolderPager) holder;
+        if (holder instanceof PagerHolder){
+            List<String> img=list.get(i).getPics();
+            pagerHolder=(PagerHolder)holder;
 
 
-            viewPagerAdapter = new ViewPagerAdapter(context, data_pager);
+            viewPagerAdapter = new ViewPagerAdapter(context, img);
 
             pagerHolder.viewPager2.setAdapter(viewPagerAdapter);
             viewPagerAdapter.notifyDataSetChanged();
         }
 
 
-
     }
 
-
-
-    /** 重写这个方法,通过判断item的类型，从而绑定不同的view * */
     @Override
     public int getItemViewType(int i) {
-        if (i>0 ){
-            return TYPE_NEWS;
+
+        if (list.get(i).getPics()!=null){
+            return ITEM_PAGER;
+        } else {  Log.i("asd","cndkdnd");
+            return ITEM_NEWS;
+
         }
-        if (i == 0){
-            return TYPE_PAGER;
-        }
-        return super.getItemViewType(i);
+
     }
-
-
-
 
     @Override
     public int getItemCount() {
         return list.size();
     }
 
+    public class PagerHolder extends RecyclerView.ViewHolder {
 
-
-    public static class ViewHolderNews extends RecyclerView.ViewHolder {
-
-        TextView writer;
-
-        public ViewHolderNews(@NonNull View itemView) {
+        public ViewPager2 viewPager2;
+        public LinearLayout linearLayout;
+        public PagerHolder(@NonNull View itemView) {
             super(itemView);
-
-        }
-    }
-
-
-    public static class ViewHolderPager extends RecyclerView.ViewHolder {
-
-        ViewPager2 viewPager2;
-
-        public ViewHolderPager(@NonNull View itemView) {
-            super(itemView);
-
             viewPager2=itemView.findViewById(R.id.recy_pager);
-        }
-    }
+            linearLayout=itemView.findViewById(R.id.viewpager_lin);
+
+        }}
+
+
+    public class NewsHolder extends RecyclerView.ViewHolder {
+
+
+        public NewsHolder(@NonNull View itemView) {
+            super(itemView);
+
+
+        }}
+
 }
