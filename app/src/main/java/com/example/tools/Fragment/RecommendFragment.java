@@ -2,65 +2,107 @@ package com.example.tools.Fragment;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.tools.Adapter.NewsAdapter;
 import com.example.tools.R;
+import com.example.tools.Utils;
+import com.example.tools.tools.Data;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link RecommendFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import okhttp3.Response;
+
+
 public class RecommendFragment extends Fragment {
+    private RecyclerView recyclerView;
+    private NewsAdapter adapter;
+    private SmartRefreshLayout smartRefreshLayout;
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_recommend, container, false);
+        return view;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public RecommendFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment RecommendFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static RecommendFragment newInstance(String param1, String param2) {
-        RecommendFragment fragment = new RecommendFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        smartRefreshLayout= view.findViewById(R.id.new_srl);
+        recyclerView = view.findViewById(R.id.new_recy);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+//刷新加载
+        smartRefreshLayout.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
+            @Override
+            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+
+                refreshLayout.finishLoadMore();
+            }
+            @Override
+            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+
+                refreshLayout.finishRefresh();
+            }
+        });
+
+//新闻列表
+        List<Data> list=new ArrayList<>();
+        GetPager(list);
+        adapter=new NewsAdapter(getContext(),list);
+        recyclerView.setAdapter(adapter);
+    }
+    //获取轮播图
+    public void GetPager(final List<Data> list){
+
+
+
+        Utils.get("http://122.9.2.27/api/get-img-lunbo", new Utils.OkhttpCallBack() {
+            @Override
+            public void onSuccess(Response response) {
+
+                try {
+                    JSONObject jsonObject1=new JSONObject(response.body().string());
+                    JSONObject jsonObject2=jsonObject1.getJSONObject("data");
+                    JSONArray jsonArray=jsonObject2.getJSONArray("pics");
+                    List<String> img=new ArrayList<>();
+                    for (int i=0;i<jsonArray.length();i++){
+                        String s=jsonArray.getString(i);
+                        img.add(s);
+                        Log.i("asd",s);
+                    }
+                    Data data=new Data();
+                    data.setPics(img);
+                    list.add(data);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            @Override
+            public void onFail(String error) {
+
+            }
+        });
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_recommend, container, false);
-    }
+
 }

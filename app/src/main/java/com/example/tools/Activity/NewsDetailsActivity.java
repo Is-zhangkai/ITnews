@@ -54,8 +54,6 @@ public class NewsDetailsActivity extends AppCompatActivity {
 
 
 
-
-
         //评论
         findViewById(R.id.edittext).setOnClickListener(new View.OnClickListener() {
             @Override
