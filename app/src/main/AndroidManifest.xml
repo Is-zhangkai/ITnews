@@ -33,6 +33,9 @@
         <activity android:name=".Activity.AgreementActivity" >
         </activity>
         <activity android:name=".Activity.NewsDetailsActivity" />
+        <activity android:name=".Activity.InterActivity">
+
+        </activity>
         <activity android:name=".Activity.RegisterActivity" />
         <activity android:name=".Activity.LoginActivity" />
         <activity android:name=".Activity.WriteActivity"/>

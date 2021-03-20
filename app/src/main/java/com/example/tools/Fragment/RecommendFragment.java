@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +27,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import okhttp3.Response;
 
@@ -46,8 +48,8 @@ public class RecommendFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        smartRefreshLayout= view.findViewById(R.id.new_srl);
-        recyclerView = view.findViewById(R.id.new_recy);
+        smartRefreshLayout= view.findViewById(R.id.new_srl1);
+        recyclerView = view.findViewById(R.id.new_recy1);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 //刷新加载
         smartRefreshLayout.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
@@ -58,7 +60,8 @@ public class RecommendFragment extends Fragment {
             }
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-
+                List<Data> list=new ArrayList<>();
+                GetPager(list);
                 refreshLayout.finishRefresh();
             }
         });
@@ -78,7 +81,9 @@ public class RecommendFragment extends Fragment {
             public void onSuccess(Response response) {
 
                 try {
-                    JSONObject jsonObject1=new JSONObject(response.body().string());
+                    String ss=Objects.requireNonNull(response.body()).string();
+                    Log.i("asd",ss);
+                    JSONObject jsonObject1=new JSONObject(ss);
                     JSONObject jsonObject2=jsonObject1.getJSONObject("data");
                     JSONArray jsonArray=jsonObject2.getJSONArray("pics");
                     List<String> img=new ArrayList<>();
@@ -87,12 +92,19 @@ public class RecommendFragment extends Fragment {
                         img.add(s);
                         Log.i("asd",s);
                     }
-                    Data data=new Data();
+                    final Data data=new Data();
                     data.setPics(img);
                     list.add(data);
-                    getActivity().runOnUiThread(new Runnable() {
+                    Objects.requireNonNull(getActivity()).runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+                            for (int i=0;i<10;i++){
+                                Data data1=new Data();
+                                data1.setTitle("标题"+i+"号");
+                                list.add(data1);
+                        }
+
+
                             Log.i("asd",list.size()+"");
                             adapter=new NewsAdapter(getContext(),list);
                             recyclerView.setAdapter(adapter);

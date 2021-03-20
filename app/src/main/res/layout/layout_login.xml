@@ -62,7 +62,7 @@
         <Button
             android:id="@+id/gogo"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="42dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginStart="48dp"
             android:layout_marginTop="58dp"
@@ -70,6 +70,7 @@
             android:background="@drawable/buttonbox"
             android:letterSpacing="0.3"
             android:text="登录"
+            android:gravity="center"
             android:textColor="@color/white"
             android:textSize="17sp"
             android:textStyle="bold" />

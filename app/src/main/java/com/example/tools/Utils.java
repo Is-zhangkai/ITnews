@@ -67,6 +67,7 @@ public class Utils {
                     @Override
                     public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                         okhttpCallBack.onSuccess(response);
+                        Log.i("asd","OKHTTP连接chengg");
                     }
              });
             }
