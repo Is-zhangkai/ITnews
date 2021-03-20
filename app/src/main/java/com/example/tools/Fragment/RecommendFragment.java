@@ -93,7 +93,16 @@ public class RecommendFragment extends Fragment {
                         Log.i("asd",s);
                     }
                     final Data data=new Data();
-                    data.setPics(img);
+                    //data.setPics(img);
+                    List<String> list1=new ArrayList<>();
+                    // 4 1 2 3 4 1
+                    list1.add( "https://pic3.zhimg.com/v2-a1019116672185fdfc7616fc6432f8f7.jpg?source=8673f162");
+                    list1.add("https://pic4.zhimg.com/v2-f684b055b954c7f3e25572c3ddda65b2.jpg?source=8673f162");
+                    list1.add( "https://pic4.zhimg.com/v2-99b0bec360093b88f30d59bde9327f94.jpg?source=8673f162");
+                    list1.add("https://pic1.zhimg.com/v2-f028176a557874d28d5cabe118415497.jpg?source=8673f162");
+                    list1.add( "https://pic3.zhimg.com/v2-a1019116672185fdfc7616fc6432f8f7.jpg?source=8673f162");
+                    list1.add("https://pic4.zhimg.com/v2-f684b055b954c7f3e25572c3ddda65b2.jpg?source=8673f162");
+                    data.setPics(list1);
                     list.add(data);
                     Objects.requireNonNull(getActivity()).runOnUiThread(new Runnable() {
                         @Override
