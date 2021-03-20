@@ -75,6 +75,20 @@ public class RecommendFragment extends Fragment {
     public void GetPager(final List<Data> list){
 
 
+        Utils.get("http://122.9.2.27/api/get-img-lunbo", new Utils.OkhttpCallBack() {
+            @Override
+            public void onSuccess(Response response) {
+
+            }
+
+            @Override
+            public void onFail(String error) {
+
+            }
+        });
+
+
+
 
         Utils.get("http://122.9.2.27/api/get-img-lunbo", new Utils.OkhttpCallBack() {
             @Override
