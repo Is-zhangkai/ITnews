@@ -1,6 +1,7 @@
 package com.example.tools.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +19,7 @@ import androidx.viewpager2.widget.MarginPageTransformer;
 import androidx.viewpager2.widget.ViewPager2;
 
 
+import com.example.tools.Activity.NewsDetailsActivity;
 import com.example.tools.R;
 import com.example.tools.tools.Data;
 
@@ -62,6 +64,14 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         if (holder instanceof NewsHolder){
 
             ((NewsHolder)holder).title.setText(list.get(i).getTitle());
+
+
+            ((NewsHolder)holder).itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    context.startActivity(new Intent(context,NewsDetailsActivity.class));
+                }
+            });
         }
         //轮播图
         if (holder instanceof PagerHolder){
