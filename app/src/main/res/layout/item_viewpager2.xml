@@ -3,13 +3,15 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
+    android:clipChildren="false"
     android:id="@+id/viewpager_lin">
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/recy_pager"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:background="@drawable/buttonbox"
-        android:layout_marginHorizontal="24dp"
-        android:layout_marginVertical="12dp"/>
+        android:layout_height="180dp"
+        android:background="#00FFFFFF"
+        android:clipChildren="false"
+
+        android:layout_marginTop="12dp"/>
 
 </LinearLayout>

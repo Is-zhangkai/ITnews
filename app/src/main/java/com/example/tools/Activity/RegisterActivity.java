@@ -163,7 +163,7 @@ public class RegisterActivity extends AppCompatActivity {
                             int intverify;
                             intverify = Integer.parseInt(string_verify);
                             MediaType mediaType = MediaType.parse("application/json; charset=utf-8");
-                            String requestBody =  "\r\n{\r\n    \"username\": \""+username+"\",\r\n    \"password\": \""+password+"\",\r\n    \"email\": \""+email+"\",\r\n    \"verify\": "+intverify+"\r\n}";
+                            String requestBody =  "\r\n{\r\n    \"username\": \""+username+"\",\r\n    \"password\": \""+password+"\",\r\n    \"email\": \""+email+"\",\r\n    \"verify\": \""+intverify+"\"\r\n}";
                             Request request = new Request.Builder()
                                     .url("http://122.9.2.27/api/reglog/all-reg")
                                     .post(RequestBody.create(mediaType, requestBody))

@@ -46,6 +46,9 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.View
                 .into(holder.imageView);
     }
 
+
+
+
     @Override
     public int getItemCount() {
         return img.size();

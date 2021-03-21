@@ -19,6 +19,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.widget.ViewPager2;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -32,12 +33,13 @@ import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class NewsFragment extends Fragment {
 
 
     private FragmentAdapter fragmentAdapter;
-    private  ViewPager viewPager;
+    private ViewPager viewPager;
     private TabLayout tabLayout;
     private ArrayList<Fragment> fragments = new ArrayList<>();
     private List<String> titleList=new ArrayList<>();
@@ -71,7 +73,7 @@ public class NewsFragment extends Fragment {
         fragments.add(new FocusNewsFragment());
         titleList.add("推荐");
         titleList.add("关注");
-        viewPager=getActivity().findViewById(R.id.vp_fragment);
+        viewPager= Objects.requireNonNull(getActivity()).findViewById(R.id.vp_fragment);
         tabLayout=getActivity().findViewById(R.id.tab1);
         fragmentAdapter =new FragmentAdapter(getChildFragmentManager(),fragments,titleList);
         viewPager.setAdapter(fragmentAdapter);
