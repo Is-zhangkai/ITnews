@@ -1,60 +1,40 @@
 package com.example.tools.Fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
+import com.example.tools.Activity.ChatActivity;
 import com.example.tools.R;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link MessageFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import q.rorbin.badgeview.QBadgeView;
+
+
 public class MessageFragment extends Fragment {
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public MessageFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment MessageFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static MessageFragment newInstance(String param1, String param2) {
-        MessageFragment fragment = new MessageFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
+    private ImageView icon_it;
+    private ImageView icon_like;
+    private ImageView icon_collect;
+    private ImageView icon_comment;
+    private ImageView icon_focus;
+    private RelativeLayout it;
+    private RelativeLayout like;
+    private RelativeLayout collect;
+    private RelativeLayout comment;
+    private RelativeLayout focus;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+
     }
 
     @Override
@@ -62,5 +42,87 @@ public class MessageFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_message, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        focus=view.findViewById(R.id.message_itemFocus);
+        it=view.findViewById(R.id.message_itemIT);
+        like=view.findViewById(R.id.message_itemLike);
+        collect=view.findViewById(R.id.message_itemCollect);
+        comment=view.findViewById(R.id.message_itemComment);
+        icon_focus=view.findViewById(R.id.icon_focus);
+        icon_it=view.findViewById(R.id.icon_it);
+        icon_like=view.findViewById(R.id.icon_like);
+        icon_collect=view.findViewById(R.id.icon_collect);
+        icon_comment=view.findViewById(R.id.icon_comment);
+        setRedNumber(icon_focus,100);
+        setRedNumber(icon_it,100);
+        setRedNumber(icon_collect,100);
+        setRedNumber(icon_like,100);
+        setRedNumber(icon_comment,100);
+        it.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(getActivity(), ChatActivity.class);
+                Bundle bd=new Bundle();
+                bd.putString("name","ITnews助手");
+                bd.putInt("num",1);
+                intent.putExtras(bd);
+                startActivity(intent);
+            }
+        });
+        like.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(getActivity(), ChatActivity.class);
+                Bundle bd=new Bundle();
+                bd.putString("name","点赞");
+                bd.putInt("num",2);
+                intent.putExtras(bd);
+                startActivity(intent);
+            }
+        });
+        collect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(getActivity(), ChatActivity.class);
+                Bundle bd=new Bundle();
+                bd.putString("name","收藏");
+                bd.putInt("num",3);
+                intent.putExtras(bd);
+                startActivity(intent);
+            }
+        });
+        comment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(getActivity(), ChatActivity.class);
+                Bundle bd=new Bundle();
+                bd.putString("name","评论");
+                bd.putInt("num",4);
+                intent.putExtras(bd);
+                startActivity(intent);
+            }
+        });
+        focus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(getActivity(), ChatActivity.class);
+                Bundle bd=new Bundle();
+                bd.putString("name","关注");
+                bd.putInt("num",5);
+                intent.putExtras(bd);
+                startActivity(intent);
+            }
+        });
+
+    }
+    public void setRedNumber(View view,int number)
+    {
+        QBadgeView qBadgeView=new QBadgeView(getActivity());
+        qBadgeView.bindTarget(view);
+        qBadgeView.setBadgeNumber(100);
     }
 }

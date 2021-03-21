@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,6 +25,7 @@ import com.example.tools.Utils;
 import com.example.tools.tools.BottomPopupOption;
 
 import okhttp3.Response;
+import q.rorbin.badgeview.QBadgeView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -31,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     private RelativeLayout paper;
     private RelativeLayout message;
     private RelativeLayout user;
+    private ImageView mes;
     private NewsFragment newsFragment = new  NewsFragment();
     private MessageFragment messageFragment= new MessageFragment();
     private MyPaperFragment myPaperFragment=new MyPaperFragment();
@@ -40,11 +43,16 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mes=findViewById(R.id.message);
         news=findViewById(R.id.news_layout);
         paper=findViewById(R.id.paper_layout);
         message=findViewById(R.id.message_layout);
         user=findViewById(R.id.user_layout);
         news.setSelected(true);
+        QBadgeView qBadgeView =new QBadgeView(this);
+        qBadgeView.bindTarget(message);
+        qBadgeView.setBadgeNumber(100);
+        qBadgeView.setGravityOffset(10,3,true);
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment, newsFragment).commit();
         news.setOnClickListener(new View.OnClickListener() {
             @Override

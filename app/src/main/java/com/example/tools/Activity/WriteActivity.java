@@ -15,7 +15,7 @@ public class WriteActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_write);
-        back.findViewById(R.id.edit_back);
+        back=findViewById(R.id.edit_back);
         post=findViewById(R.id.edit_post);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
