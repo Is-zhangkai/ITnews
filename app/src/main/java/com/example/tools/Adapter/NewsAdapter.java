@@ -93,18 +93,16 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 recyclerView.setPadding(100, 0, 100, 0);
                 ((RecyclerView) recyclerView).setClipToPadding(false);
             }
-            ((PagerHolder)holder).viewPager2.setAdapter(viewPagerAdapter);
 
+
+            ((PagerHolder)holder).viewPager2.setAdapter(viewPagerAdapter);
             ((PagerHolder)holder).viewPager2.setCurrentItem(1);
-            // 重点看下面的代码
+            // 循环滑动
             final List<String> finalImg = img;
             ((PagerHolder)holder).viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
-
                 int currentPosition;
-
                 @Override
                 public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
                 }
 
                 @Override
@@ -128,8 +126,6 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     }
                 }
             });
-
-
 
             viewPagerAdapter.notifyDataSetChanged();
         }
@@ -155,7 +151,7 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         return list.size();
     }
 
-    public class PagerHolder extends RecyclerView.ViewHolder {
+    public static class PagerHolder extends RecyclerView.ViewHolder {
 
         public ViewPager2 viewPager2;
         public LinearLayout linearLayout;
@@ -168,7 +164,7 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }}
 
 
-    public class NewsHolder extends RecyclerView.ViewHolder {
+    public static class NewsHolder extends RecyclerView.ViewHolder {
 
         TextView title,writer,like_num;
         ImageView imageView;
@@ -182,8 +178,8 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }}
 
 
-
-    class TransFormer implements ViewPager2.PageTransformer {
+//轮播图滑动动画
+    static class TransFormer implements ViewPager2.PageTransformer {
 
         @Override
         public void transformPage(@NonNull View page, float position) {
