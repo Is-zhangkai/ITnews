@@ -55,4 +55,6 @@ dependencies {
     implementation 'jp.wasabeef:glide-transformations:3.3.0'
 
     implementation 'androidx.navigation:navigation-ui:2.3.2'
+    //小圆点
+    implementation 'q.rorbin:badgeview:1.1.3'
 }
