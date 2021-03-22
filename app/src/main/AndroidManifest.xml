@@ -28,13 +28,15 @@
         </activity>
         <activity android:name=".Activity.ChangePasswordActivity" />
         <activity android:name=".Activity.AgreementActivity"></activity>
-        <activity android:name=".Activity.NewsDetailsActivity" />
-        <activity android:name=".Activity.InterActivity">
+        <activity android:name=".Activity.NewsDetailsActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".Activity.InterActivity">
+
         </activity>
         <activity android:name=".Activity.RegisterActivity" />
         <activity android:name=".Activity.LoginActivity" />

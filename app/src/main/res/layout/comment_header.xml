@@ -5,13 +5,19 @@
     android:orientation="vertical">
 
 
-        <ImageView
-            android:id="@+id/details_img"
-            android:layout_width="match_parent"
-            android:layout_height="250dp"
-            android:background="@drawable/person_background"/>
 
-
+    <TextView
+        android:id="@+id/tital"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="这是一个标题"
+        android:textSize="20sp"
+        android:textColor="#666666"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:layout_marginTop="12dp"
+        android:letterSpacing="0.1"
+        android:layout_marginHorizontal="24dp" />
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="80dp">
@@ -65,24 +71,29 @@
                 android:background="@drawable/btn_focus_fill"/>
 
         </RelativeLayout>
-    <TextView
-        android:id="@+id/tital"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="这是一个标题"
-        android:textSize="20sp"
-        android:textColor="#666666"
-        android:textStyle="bold"
-        android:letterSpacing="0.1"
-        android:layout_marginHorizontal="24dp" />
+
         <TextView
             android:id="@+id/details_news"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="24dp"
-            android:text="diughgdvwbbsdbjbsjbbsjakbvdksbv"
+            android:text="d\tvbbbb \t\n hhhhhhhhhh\n gggggggggggggggggg\nggggggggggggg"
             android:textSize="17sp"
             android:letterSpacing="0.1" />
+
+
+    <com.example.tools.tools.MyGridView
+        android:id="@+id/gridview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:columnWidth="100dp"
+        android:numColumns="auto_fit"
+        android:layout_marginHorizontal="6dp"
+        android:verticalSpacing="10dp"
+        android:horizontalSpacing="10dp"
+        android:stretchMode="columnWidth"
+        android:gravity="center"
+        />
 
 
 </LinearLayout>
