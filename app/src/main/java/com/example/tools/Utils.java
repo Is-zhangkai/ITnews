@@ -23,6 +23,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class Utils {
+
     private static OkHttpClient okHttpClient;
 
     public Utils(){
@@ -77,6 +78,45 @@ public class Utils {
             Log.i("asd","OKHTTP连接失败");
         }
     }
+
+
+    //get方法
+    public static void get_token(final String url, final String token, final OkhttpCallBack okhttpCallBack){
+        try {
+            final Thread thread=new Thread(new Runnable() {
+                @Override
+                public void run() {
+
+                    getInstance();
+                    Request request = new Request.Builder()
+                            .url(url)
+                            .method("GET", null)
+                            .addHeader("Authorization", token)
+                            .addHeader("User-Agent", "apifox/1.0.26 (https://www.apifox.cn)")
+                            .build();
+
+                    okHttpClient.newCall(request).enqueue(new Callback() {
+                        @Override
+                        public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                            okhttpCallBack.onFail(e.getMessage()+"asdfghjkl");
+                            Log.i("asd",e.getMessage());
+                        }
+
+                        @Override
+                        public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                            okhttpCallBack.onSuccess(response);
+                            Log.i("asd","OKHTTP连接chengg");
+                        }
+                    });
+                }
+            });
+            thread.start();} catch (Exception e) {
+            e.printStackTrace();
+            Log.i("asd","OKHTTP连接失败");
+        }
+    }
+
+
 //////////////////////////////////////////////////////////////////////
     //////post方法
     // post  json 数据

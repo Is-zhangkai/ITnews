@@ -15,16 +15,20 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.tools.Adapter.NewsAdapter;
+import com.example.tools.MyData;
 import com.example.tools.R;
 import com.example.tools.Utils;
 import com.example.tools.tools.Data;
+import com.google.gson.JsonObject;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -36,6 +40,9 @@ public class RecommendFragment extends Fragment {
     private RecyclerView recyclerView;
     private NewsAdapter adapter;
     private SmartRefreshLayout smartRefreshLayout;
+   // private MyData data=new MyData(getActivity());
+    private String token;
+    private int page=1,size=4,o_page;
 
     @Nullable
     @Override
@@ -51,6 +58,10 @@ public class RecommendFragment extends Fragment {
         smartRefreshLayout= view.findViewById(R.id.new_srl1);
         recyclerView = view.findViewById(R.id.new_recy1);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+      //  token=data.load_token();
+token="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MTY1MDM3NzUsImlhdCI6MTYxNjQxNzM3NSwiaXNzIjoicnVhIiwiZGF0YSI6eyJ1c2VyaWQiOjR9fQ.TdSfxDGBzqCBNsEJFaj2n67YPq2zFyAepwxt25lX3pI";
+
 //刷新加载
         smartRefreshLayout.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
             @Override
@@ -61,34 +72,33 @@ public class RecommendFragment extends Fragment {
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
                 List<Data> list=new ArrayList<>();
-                GetPager(list);
+                GetData(list);
                 refreshLayout.finishRefresh();
             }
         });
 
 //新闻列表
         List<Data> list=new ArrayList<>();
-        GetPager(list);
+        GetData(list);
 
     }
-    //获取轮播图
-    public void GetPager(final List<Data> list){
 
+
+    //获取轮播图及新闻
+    public void GetData(final List<Data> list){
+//轮播图
         Utils.get("http://122.9.2.27/api/get-img-lunbo", new Utils.OkhttpCallBack() {
             @Override
             public void onSuccess(Response response) {
 
                 try {
-                    String ss=Objects.requireNonNull(response.body()).string();
-                    Log.i("asd",ss);
-                    JSONObject jsonObject1=new JSONObject(ss);
+                    JSONObject jsonObject1=new JSONObject(Objects.requireNonNull(response.body()).string());
                     JSONObject jsonObject2=jsonObject1.getJSONObject("data");
-                    JSONArray jsonArray=jsonObject2.getJSONArray("pics");
+                    final JSONArray jsonArray=jsonObject2.getJSONArray("pics");
                     List<String> img=new ArrayList<>();
                     for (int i=0;i<jsonArray.length();i++){
-                        String s=jsonArray.getString(i);
-                        img.add(s);
-                        Log.i("asd",s);
+                        img.add(jsonArray.getString(i));
+
                     }
                     final Data data=new Data();
                     //data.setPics(img);
@@ -105,23 +115,59 @@ public class RecommendFragment extends Fragment {
                     Objects.requireNonNull(getActivity()).runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            for (int i=0;i<10;i++){
-                                Data data1=new Data();
-                                data1.setTitle("标题"+i+"号");
-                                list.add(data1);
-                        }
+//                            for (int i=0;i<10;i++){
+//                                Data data1=new Data();
+//                                data1.setTitle("标题"+i+"号");
+//                                list.add(data1);
+//                        }
+
+//新闻数据
+                           Utils.get_token("http://122.9.2.27/api/news/recommend/v4?page=1&size="+size, token, new Utils.OkhttpCallBack() {
+                               @Override
+                               public void onSuccess(Response response) {
+
+                                   try {
+                                       JSONObject jsonObject21=new JSONObject(Objects.requireNonNull(response.body()).string());
+                                       JSONObject jsonObject22=jsonObject21.getJSONObject("data");
+                                       o_page=jsonObject22.getInt( "count");
+                                       JSONArray jsonArray21=jsonObject22.getJSONArray("news");
+                                       Log.i("asd",jsonArray21.length()+"");
+
+                                       for (int i=0;i<jsonArray21.length();i++){
+                                           Data data21=new Data();
+                                           JSONObject jsonObject23=jsonArray21.getJSONObject(i);
+                                           data21.setTitle(jsonObject23.getString("title"));
+                                           data21.setNews_Id(jsonObject23.getInt("id"));
+                                           list.add(data21);
+                                       }
+                                       getActivity().runOnUiThread(new Runnable() {
+                                           @Override
+                                           public void run() {
+                                               adapter=new NewsAdapter(getContext(),list);
+                                               recyclerView.setAdapter(adapter);
+                                           }
+                                       });
 
 
-                            Log.i("asd",list.size()+"");
-                            adapter=new NewsAdapter(getContext(),list);
-                            recyclerView.setAdapter(adapter);
+
+                                   } catch (Exception e) {
+                                       e.printStackTrace();
+                                   }
+
+                               }
+
+                               @Override
+                               public void onFail(String error) {
+
+                               }
+                           });
+
+
                         }
                     });
-
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
             }
 
             @Override

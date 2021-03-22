@@ -58,7 +58,7 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder holder, int i) {
+    public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder holder, final int i) {
 
         //新闻
         if (holder instanceof NewsHolder){
@@ -69,7 +69,10 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             ((NewsHolder)holder).itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    context.startActivity(new Intent(context,NewsDetailsActivity.class));
+
+                    Intent intent=new Intent(context,NewsDetailsActivity.class);
+                    intent.putExtra("id",list.get(i).getNew_Id());
+                    context.startActivity(intent);
                 }
             });
         }

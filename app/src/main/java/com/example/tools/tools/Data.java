@@ -7,7 +7,26 @@ public class Data {
      * pics : ["http://122.9.2.27/media/up_image/image-20210303144726687.png","http://122.9.2.27/media/up_image/image-20210303144658311.png","http://122.9.2.27/media/up_image/image-20210303144658311.png","http://122.9.2.27/media/up_image/0.jpg"]
      */
     //轮播图
+
+    /**
+     * news_pics_set : []
+     *      * like_num : 0
+     *      * create_time : 2021-03-20T11:16:30.679320+08:00
+     *      * star_num : 0
+     *      * id : 4
+     *      * title : asdasdasdasdasdas
+     *      * content : dasdasdasdasdasdas
+     *      * status : 1
+     */
     private List<String> pics;
+    private List<String> news_pics_set;
+    private int like_num;
+    private String create_time;
+    private int star_num;
+    private int news_id;
+    private String title;
+    private String content;
+    private int status;
 
     public void setPics(List<String> pics) {
         this.pics = pics;
@@ -16,22 +35,70 @@ public class Data {
     public List<String> getPics() {
         return pics;
     }
-    //新闻
-    private String title,writer;
 
+    public void setNews_pics_set(List<String> news_pics_set) {
+        this.news_pics_set = news_pics_set;
+    }
+
+    public void setLike_num(int like_num) {
+        this.like_num = like_num;
+    }
+
+    public void setCreate_time(String create_time) {
+        this.create_time = create_time;
+    }
+
+    public void setStar_num(int star_num) {
+        this.star_num = star_num;
+    }
+
+    public void setNews_Id(int news_id) {
+        this.news_id = news_id;
+    }
 
     public void setTitle(String title) {
         this.title = title;
     }
-    public void setWriter(String writer) {
-        this.writer = writer;
+
+    public void setContent(String content) {
+        this.content = content;
     }
 
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public List<?> getNews_pics_set() {
+        return news_pics_set;
+    }
+
+    public int getLike_num() {
+        return like_num;
+    }
+
+    public String getCreate_time() {
+        return create_time;
+    }
+
+    public int getStar_num() {
+        return star_num;
+    }
+
+    public int getNew_Id() {
+        return news_id;
+    }
 
     public String getTitle() {
         return title;
     }
-    public String getWriter() {
-        return writer;
+
+    public String getContent() {
+        return content;
     }
+
+    public int getStatus() {
+        return status;
+    }
+
+
 }
