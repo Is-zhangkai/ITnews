@@ -43,6 +43,7 @@ public class RecommendFragment extends Fragment {
    // private MyData data=new MyData(getActivity());
     private String token;
     private int page=1,size=4,o_page;
+    private Boolean refresh=true;
 
     @Nullable
     @Override
@@ -60,17 +61,20 @@ public class RecommendFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
       //  token=data.load_token();
-token="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MTY1MDM3NzUsImlhdCI6MTYxNjQxNzM3NSwiaXNzIjoicnVhIiwiZGF0YSI6eyJ1c2VyaWQiOjR9fQ.TdSfxDGBzqCBNsEJFaj2n67YPq2zFyAepwxt25lX3pI";
+token="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MTY2MzQxNTEsImlhdCI6MTYxNjU0Nzc1MSwiaXNzIjoicnVhIiwiZGF0YSI6eyJ1c2VyaWQiOjR9fQ.pj755t5OURu1Q95PMUnW1QyOWRvxBcjTzMNl1oP6irM";
 
 //刷新加载
         smartRefreshLayout.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-
+                refresh=false;
+                List<Data> list=new ArrayList<>();
+                GetNews(list,refresh);
                 refreshLayout.finishLoadMore();
             }
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                refresh=true;
                 List<Data> list=new ArrayList<>();
                 GetData(list);
                 refreshLayout.finishRefresh();
@@ -92,14 +96,13 @@ token="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MTY1MDM3NzUsImlhdCI6MTYx
             public void onSuccess(Response response) {
 
                 try {
-                    JSONObject jsonObject1=new JSONObject(Objects.requireNonNull(response.body()).string());
-                    JSONObject jsonObject2=jsonObject1.getJSONObject("data");
-                    final JSONArray jsonArray=jsonObject2.getJSONArray("pics");
-                    List<String> img=new ArrayList<>();
-                    for (int i=0;i<jsonArray.length();i++){
-                        img.add(jsonArray.getString(i));
-
-                    }
+//                    JSONObject jsonObject1=new JSONObject(Objects.requireNonNull(response.body()).string());
+//                    JSONObject jsonObject2=jsonObject1.getJSONObject("data");
+//                    final JSONArray jsonArray=jsonObject2.getJSONArray("pics");
+//                    List<String> img=new ArrayList<>();
+//                    for (int i=0;i<jsonArray.length();i++){
+//                        img.add(jsonArray.getString(i));
+//                    }
                     final Data data=new Data();
                     //data.setPics(img);
                     List<String> list1=new ArrayList<>();
@@ -112,59 +115,13 @@ token="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MTY1MDM3NzUsImlhdCI6MTYx
                     list1.add("https://pic4.zhimg.com/v2-f684b055b954c7f3e25572c3ddda65b2.jpg?source=8673f162");
                     data.setPics(list1);
                     list.add(data);
-                    Objects.requireNonNull(getActivity()).runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-//                            for (int i=0;i<10;i++){
-//                                Data data1=new Data();
-//                                data1.setTitle("标题"+i+"号");
-//                                list.add(data1);
-//                        }
+                    Log.i("asd","轮播图加载完成");
 
 //新闻数据
-                           Utils.get_token("http://122.9.2.27/api/news/recommend/v4?page=1&size="+size, token, new Utils.OkhttpCallBack() {
-                               @Override
-                               public void onSuccess(Response response) {
-
-                                   try {
-                                       JSONObject jsonObject21=new JSONObject(Objects.requireNonNull(response.body()).string());
-                                       JSONObject jsonObject22=jsonObject21.getJSONObject("data");
-                                       o_page=jsonObject22.getInt( "count");
-                                       JSONArray jsonArray21=jsonObject22.getJSONArray("news");
-                                       Log.i("asd",jsonArray21.length()+"");
-
-                                       for (int i=0;i<jsonArray21.length();i++){
-                                           Data data21=new Data();
-                                           JSONObject jsonObject23=jsonArray21.getJSONObject(i);
-                                           data21.setTitle(jsonObject23.getString("title"));
-                                           data21.setNews_Id(jsonObject23.getInt("id"));
-                                           list.add(data21);
-                                       }
-                                       getActivity().runOnUiThread(new Runnable() {
-                                           @Override
-                                           public void run() {
-                                               adapter=new NewsAdapter(getContext(),list);
-                                               recyclerView.setAdapter(adapter);
-                                           }
-                                       });
+                    GetNews(list,refresh);
 
 
 
-                                   } catch (Exception e) {
-                                       e.printStackTrace();
-                                   }
-
-                               }
-
-                               @Override
-                               public void onFail(String error) {
-
-                               }
-                           });
-
-
-                        }
-                    });
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -177,5 +134,58 @@ token="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MTY1MDM3NzUsImlhdCI6MTYx
         });
     }
 
+    public void GetNews(final List<Data> list, final Boolean refresh){
+
+
+        Utils.get_token("http://122.9.2.27/api/news/recommend/v4?page=1&size="+size, token, new Utils.OkhttpCallBack() {
+            @Override
+            public void onSuccess(Response response) {
+
+                try {
+                    JSONObject jsonObject21=new JSONObject(Objects.requireNonNull(response.body()).string());
+                    JSONObject jsonObject22=jsonObject21.getJSONObject("data");
+                    o_page=jsonObject22.getInt( "count");
+                    JSONArray jsonArray21=jsonObject22.getJSONArray("news");
+                    Log.i("asd",jsonArray21.length()+"");
+
+                    for (int i=0;i<jsonArray21.length();i++){
+                        Data data21=new Data();
+                        JSONObject jsonObject23=jsonArray21.getJSONObject(i);
+                        data21.setTitle(jsonObject23.getString("title"));
+                        data21.setNews_Id(jsonObject23.getInt("id"));
+                        JSONArray jsonArray22=jsonObject23.getJSONArray("news_pics_set");
+                       // data21.setNews_pics_set(jsonArray22.getString(1));
+                        data21.setLike_num(jsonObject23.getInt("like_num"));
+                        JSONObject jsonObject24=jsonObject23.getJSONObject( "author");
+                        data21.setWriter(jsonObject24.getString( "username"));
+
+                        list.add(data21);
+                    }
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            if (refresh){
+                            adapter=new NewsAdapter(getContext(),list);
+                            recyclerView.setAdapter(adapter);}
+                            else {
+                               adapter.addData(list);
+                            }
+                        }
+                    });
+
+
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            @Override
+            public void onFail(String error) {
+
+            }
+        });
+
+    }
 
 }

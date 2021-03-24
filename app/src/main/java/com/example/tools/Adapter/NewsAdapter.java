@@ -19,12 +19,18 @@ import androidx.viewpager2.widget.MarginPageTransformer;
 import androidx.viewpager2.widget.ViewPager2;
 
 
+import com.bumptech.glide.Glide;
 import com.example.tools.Activity.NewsDetailsActivity;
 import com.example.tools.R;
 import com.example.tools.tools.Data;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
+
+import static com.bumptech.glide.request.RequestOptions.bitmapTransform;
 
 public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private Context context;
@@ -39,6 +45,12 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
 
+    public void addData(List<Data> addList){
+//        if (addList!=null){
+            list.addAll(addList);
+            notifyItemRangeChanged(list.size()-addList.size(),addList.size());
+//        }
+    }
 
     @NonNull
     @Override
@@ -64,12 +76,19 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         if (holder instanceof NewsHolder){
 
             ((NewsHolder)holder).title.setText(list.get(i).getTitle());
+            ((NewsHolder)holder).writer.setText(list.get(i).getTitle());
+            ((NewsHolder)holder).like_num.setText(list.get(i).getLike_num()+"");
+
+                    Glide.with(context)
+                    .load(list.get(i).getNews_pics_set())
+                    .error(R.drawable.error)
+                    .into( ((NewsHolder)holder).imageView);
+
 
 
             ((NewsHolder)holder).itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
                     Intent intent=new Intent(context,NewsDetailsActivity.class);
                     intent.putExtra("id",list.get(i).getNew_Id());
                     context.startActivity(intent);

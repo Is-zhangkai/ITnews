@@ -26,16 +26,25 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private boolean focus;
     private Context context;
     private GridViewAdapter gridAdpter;
-
     private List<Comments> list;
 
-    private View mHeaderView;
+
     public CommentAdapter(Context context,List<Comments> list) {
         this.context=context;
         this.list=list;
     }
 
 
+
+
+
+
+    public void addData(List<Comments> addList){
+        if (addList!=null){
+            list.addAll(addList);
+            notifyItemRangeChanged(list.size()-addList.size(),addList.size());
+        }
+    }
 
     /** 重写这个方法,通过判断item的类型，从而绑定不同的view * */
     @Override
@@ -76,14 +85,15 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         }else if (holder instanceof ViewHolderNews){
             ( (ViewHolderNews)holder).title.setText(list.get(i).getTitle());
 
-            List<String> list=new ArrayList<>();
-            list.add( "https://pic3.zhimg.com/v2-a1019116672185fdfc7616fc6432f8f7.jpg?source=8673f162");
-            list.add("https://pic4.zhimg.com/v2-f684b055b954c7f3e25572c3ddda65b2.jpg?source=8673f162");
-            list.add( "https://pic4.zhimg.com/v2-99b0bec360093b88f30d59bde9327f94.jpg?source=8673f162");
-            list.add("https://pic1.zhimg.com/v2-f028176a557874d28d5cabe118415497.jpg?source=8673f162");
-            list.add( "https://pic3.zhimg.com/v2-a1019116672185fdfc7616fc6432f8f7.jpg?source=8673f162");
-            list.add("https://pic4.zhimg.com/v2-f684b055b954c7f3e25572c3ddda65b2.jpg?source=8673f162");
-            gridAdpter = new GridViewAdapter(context,list);
+            List<String> imglist=new ArrayList<>();
+
+            imglist.add( "https://pic3.zhimg.com/v2-a1019116672185fdfc7616fc6432f8f7.jpg?source=8673f162");
+            imglist.add("https://pic4.zhimg.com/v2-f684b055b954c7f3e25572c3ddda65b2.jpg?source=8673f162");
+            imglist.add( "https://pic4.zhimg.com/v2-99b0bec360093b88f30d59bde9327f94.jpg?source=8673f162");
+            imglist.add("https://pic1.zhimg.com/v2-f028176a557874d28d5cabe118415497.jpg?source=8673f162");
+            imglist.add( "https://pic3.zhimg.com/v2-a1019116672185fdfc7616fc6432f8f7.jpg?source=8673f162");
+            imglist.add("https://pic4.zhimg.com/v2-f684b055b954c7f3e25572c3ddda65b2.jpg?source=8673f162");
+            gridAdpter = new GridViewAdapter(context,list.get(i).getPics());
             ( (ViewHolderNews)holder).gridView.setAdapter(gridAdpter);
 
 

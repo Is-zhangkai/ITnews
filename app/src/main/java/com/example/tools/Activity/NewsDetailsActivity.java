@@ -22,6 +22,7 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -38,7 +39,7 @@ public class NewsDetailsActivity extends AppCompatActivity {
     private boolean like,collection;
     private Button btn_like,btn_collection;
     private int id;
-    private String token="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MTY1MDM3NzUsImlhdCI6MTYxNjQxNzM3NSwiaXNzIjoicnVhIiwiZGF0YSI6eyJ1c2VyaWQiOjR9fQ.TdSfxDGBzqCBNsEJFaj2n67YPq2zFyAepwxt25lX3pI";
+    private String token="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MTY2MzQxNTEsImlhdCI6MTYxNjU0Nzc1MSwiaXNzIjoicnVhIiwiZGF0YSI6eyJ1c2VyaWQiOjR9fQ.pj755t5OURu1Q95PMUnW1QyOWRvxBcjTzMNl1oP6irM";
 
 
     @Override
@@ -48,26 +49,34 @@ public class NewsDetailsActivity extends AppCompatActivity {
         btn_like=findViewById(R.id.news_like);
         btn_collection=findViewById(R.id.news_collection);
         recyclerView=this.findViewById(R.id.details_recycler);
+        smartRefreshLayout=findViewById(R.id.comment_srl);
         recyclerView.setLayoutManager(new LinearLayoutManager(NewsDetailsActivity.this));
 
-        id = getIntent().getIntExtra("id", 0);
-//        smartRefreshLayout.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
-//            @Override
-//            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-//
-//            }
-//
-//            @Override
-//            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-//
-//            }
-//        });
-
-
-
+        id = getIntent().getIntExtra("id", 1);
 
         List<Comments> list = new ArrayList<>();
         GetData(list);
+
+
+        smartRefreshLayout.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
+            @Override
+            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+                final List<Comments> list=new ArrayList<>();
+                GetData(list);
+                refreshLayout.finishLoadMore();
+            }
+
+            @Override
+            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                List<Comments> list = new ArrayList<>();
+                GetData(list);
+                refreshLayout.finishRefresh();
+            }
+        });
+
+
+
+
 
 
 
@@ -123,6 +132,7 @@ public class NewsDetailsActivity extends AppCompatActivity {
                     try {
                         JSONObject jsonObject1=new JSONObject(Objects.requireNonNull(response.body()).string());
                         JSONObject jsonObject2=jsonObject1.getJSONObject("data");
+                        Log.i("asd",jsonObject1.getString("msg"));
                          Comments comments=new Comments();
                         comments.setTitle(jsonObject2.getString("title"));
                         comments.setContent(jsonObject2.getString( "content"));
@@ -130,9 +140,12 @@ public class NewsDetailsActivity extends AppCompatActivity {
                         comments.setLike_num(jsonObject2.getInt("like_num"));
                         comments.setComment_num(jsonObject2.getInt( "comment_num"));
                         comments.setStar_num(jsonObject2.getInt( "star_num"));
-
-
-                       // comments.setPics((List<String>) jsonObject2.get("pics"));//有问题
+                        JSONArray jsonArray=jsonObject2.getJSONArray("pics");
+                        List<String> imglist=new ArrayList<>();
+                        for (int i=0;i<jsonArray.length();i++){
+                            imglist.add(jsonArray.getString(i));
+                        }
+                        comments.setPics(imglist);
 
 
 

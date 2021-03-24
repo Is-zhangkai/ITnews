@@ -19,7 +19,7 @@ public class Data {
      *      * status : 1
      */
     private List<String> pics;
-    private List<String> news_pics_set;
+    private String news_pics_set;
     private int like_num;
     private String create_time;
     private int star_num;
@@ -27,6 +27,8 @@ public class Data {
     private String title;
     private String content;
     private int status;
+    private String writer;
+
 
     public void setPics(List<String> pics) {
         this.pics = pics;
@@ -36,7 +38,7 @@ public class Data {
         return pics;
     }
 
-    public void setNews_pics_set(List<String> news_pics_set) {
+    public void setNews_pics_set(String news_pics_set) {
         this.news_pics_set = news_pics_set;
     }
 
@@ -68,7 +70,11 @@ public class Data {
         this.status = status;
     }
 
-    public List<?> getNews_pics_set() {
+    public void setWriter(String writer) {
+        this.writer = writer;
+    }
+
+    public String getNews_pics_set() {
         return news_pics_set;
     }
 
@@ -100,5 +106,7 @@ public class Data {
         return status;
     }
 
-
+    public String getWriter() {
+        return writer;
+    }
 }
