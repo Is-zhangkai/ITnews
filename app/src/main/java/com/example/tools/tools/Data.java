@@ -28,7 +28,12 @@ public class Data {
     private String content;
     private int status;
     private String writer;
+    private String error;
 
+
+    public void setError(String error) {
+        this.error = error;
+    }
 
     public void setPics(List<String> pics) {
         this.pics = pics;
@@ -72,6 +77,12 @@ public class Data {
 
     public void setWriter(String writer) {
         this.writer = writer;
+    }
+
+    ////////////////////////////////////////////////////////////////
+
+    public String getError() {
+        return error;
     }
 
     public String getNews_pics_set() {

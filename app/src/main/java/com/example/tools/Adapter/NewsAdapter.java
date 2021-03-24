@@ -36,7 +36,8 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private Context context;
     private List<Data> list;
     private static final int ITEM_PAGER =0 ;
-    private static final int ITEM_NEWS =1 ;
+    private static final int ITEM_NEWS =1;
+    private static final int ITEM_ERROR =2;
 
     private ViewPagerAdapter viewPagerAdapter;
     public NewsAdapter(Context context,List<Data> list){
@@ -64,6 +65,10 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         if (i==ITEM_PAGER){
             view_news= LayoutInflater.from(context).inflate(R.layout.item_viewpager2,viewGroup,false);
             holder= new PagerHolder(view_news);
+        }
+        if (i==ITEM_ERROR){
+            view_news= LayoutInflater.from(context).inflate(R.layout.item_error,viewGroup,false);
+            holder= new ErrorHolder(view_news);
         }
         assert holder != null;
         return holder;
@@ -161,9 +166,11 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         if (list.get(i).getPics()!=null){
             Log.i("asd","这是轮播图");
             return ITEM_PAGER;
+        }else if (list.get(i).getError()!=null){
+            Log.i("asd","assss");
+            return ITEM_ERROR;
         } else {
             return ITEM_NEWS;
-
         }
 
     }
@@ -199,6 +206,15 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             imageView=itemView.findViewById(R.id.imageView2);
         }}
 
+    public static class ErrorHolder extends RecyclerView.ViewHolder {
+
+
+        public ErrorHolder(@NonNull View itemView) {
+            super(itemView);
+
+
+
+        }}
 
 //轮播图滑动动画
     static class TransFormer implements ViewPager2.PageTransformer {

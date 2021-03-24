@@ -124,12 +124,24 @@ token="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MTY2MzQxNTEsImlhdCI6MTYx
 
                 } catch (Exception e) {
                     e.printStackTrace();
+
+
                 }
             }
 
             @Override
             public void onFail(String error) {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
 
+                        Data dataerror=new Data();
+                        dataerror.setError("error");
+                        list.add(dataerror);
+                        adapter=new NewsAdapter(getContext(),list);
+                        recyclerView.setAdapter(adapter);
+                    }
+                });
             }
         });
     }
@@ -183,6 +195,16 @@ token="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MTY2MzQxNTEsImlhdCI6MTYx
             @Override
             public void onFail(String error) {
 
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Data dataerror=new Data();
+                        dataerror.setError("error");
+                        list.add(dataerror);
+                        adapter=new NewsAdapter(getContext(),list);
+                        recyclerView.setAdapter(adapter);
+                    }
+                });
             }
         });
 
