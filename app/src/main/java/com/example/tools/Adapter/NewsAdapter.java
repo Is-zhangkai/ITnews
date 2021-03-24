@@ -19,18 +19,25 @@ import androidx.viewpager2.widget.MarginPageTransformer;
 import androidx.viewpager2.widget.ViewPager2;
 
 
+import com.bumptech.glide.Glide;
 import com.example.tools.Activity.NewsDetailsActivity;
 import com.example.tools.R;
 import com.example.tools.tools.Data;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
+
+import static com.bumptech.glide.request.RequestOptions.bitmapTransform;
 
 public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private Context context;
     private List<Data> list;
     private static final int ITEM_PAGER =0 ;
-    private static final int ITEM_NEWS =1 ;
+    private static final int ITEM_NEWS =1;
+    private static final int ITEM_ERROR =2;
 
     private ViewPagerAdapter viewPagerAdapter;
     public NewsAdapter(Context context,List<Data> list){
@@ -39,6 +46,12 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
 
+    public void addData(List<Data> addList){
+//        if (addList!=null){
+            list.addAll(addList);
+            notifyItemRangeChanged(list.size()-addList.size(),addList.size());
+//        }
+    }
 
     @NonNull
     @Override
@@ -53,23 +66,37 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             view_news= LayoutInflater.from(context).inflate(R.layout.item_viewpager2,viewGroup,false);
             holder= new PagerHolder(view_news);
         }
+        if (i==ITEM_ERROR){
+            view_news= LayoutInflater.from(context).inflate(R.layout.item_error,viewGroup,false);
+            holder= new ErrorHolder(view_news);
+        }
         assert holder != null;
         return holder;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder holder, int i) {
+    public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder holder, final int i) {
 
         //新闻
         if (holder instanceof NewsHolder){
 
             ((NewsHolder)holder).title.setText(list.get(i).getTitle());
+            ((NewsHolder)holder).writer.setText(list.get(i).getTitle());
+            ((NewsHolder)holder).like_num.setText(list.get(i).getLike_num()+"");
+
+                    Glide.with(context)
+                    .load(list.get(i).getNews_pics_set())
+                    .error(R.drawable.error)
+                    .into( ((NewsHolder)holder).imageView);
+
 
 
             ((NewsHolder)holder).itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    context.startActivity(new Intent(context,NewsDetailsActivity.class));
+                    Intent intent=new Intent(context,NewsDetailsActivity.class);
+                    intent.putExtra("id",list.get(i).getNew_Id());
+                    context.startActivity(intent);
                 }
             });
         }
@@ -93,18 +120,16 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 recyclerView.setPadding(100, 0, 100, 0);
                 ((RecyclerView) recyclerView).setClipToPadding(false);
             }
-            ((PagerHolder)holder).viewPager2.setAdapter(viewPagerAdapter);
 
+
+            ((PagerHolder)holder).viewPager2.setAdapter(viewPagerAdapter);
             ((PagerHolder)holder).viewPager2.setCurrentItem(1);
-            // 重点看下面的代码
+            // 循环滑动
             final List<String> finalImg = img;
             ((PagerHolder)holder).viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
-
                 int currentPosition;
-
                 @Override
                 public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
                 }
 
                 @Override
@@ -129,8 +154,6 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 }
             });
 
-
-
             viewPagerAdapter.notifyDataSetChanged();
         }
 
@@ -143,9 +166,11 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         if (list.get(i).getPics()!=null){
             Log.i("asd","这是轮播图");
             return ITEM_PAGER;
+        }else if (list.get(i).getError()!=null){
+            Log.i("asd","assss");
+            return ITEM_ERROR;
         } else {
             return ITEM_NEWS;
-
         }
 
     }
@@ -155,7 +180,7 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         return list.size();
     }
 
-    public class PagerHolder extends RecyclerView.ViewHolder {
+    public static class PagerHolder extends RecyclerView.ViewHolder {
 
         public ViewPager2 viewPager2;
         public LinearLayout linearLayout;
@@ -168,7 +193,7 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }}
 
 
-    public class NewsHolder extends RecyclerView.ViewHolder {
+    public static class NewsHolder extends RecyclerView.ViewHolder {
 
         TextView title,writer,like_num;
         ImageView imageView;
@@ -181,9 +206,18 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             imageView=itemView.findViewById(R.id.imageView2);
         }}
 
+    public static class ErrorHolder extends RecyclerView.ViewHolder {
 
 
-    class TransFormer implements ViewPager2.PageTransformer {
+        public ErrorHolder(@NonNull View itemView) {
+            super(itemView);
+
+
+
+        }}
+
+//轮播图滑动动画
+    static class TransFormer implements ViewPager2.PageTransformer {
 
         @Override
         public void transformPage(@NonNull View page, float position) {

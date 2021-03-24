@@ -20,7 +20,7 @@
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="9dp"
             android:text="作者："
-            android:textColor="#66000000"
+            android:textColor="#C1000000"
             android:textSize="12sp"
             tools:layout_editor_absoluteX="15dp"
             tools:layout_editor_absoluteY="84dp" />
@@ -52,13 +52,13 @@
 
         <ImageView
             android:id="@+id/imageView3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:layout_alignParentBottom="true"
             android:layout_marginStart="30dp"
             android:layout_marginBottom="7dp"
             android:layout_toEndOf="@+id/textView6"
-            app:srcCompat="@drawable/ic_baseline_comment_24" />
+            android:background="@drawable/like_nor"/>
 
         <TextView
             android:id="@+id/textView6"

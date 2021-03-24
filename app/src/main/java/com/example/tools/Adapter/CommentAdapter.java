@@ -6,12 +6,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.GridView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tools.R;
+import com.example.tools.tools.Comments;
+import com.example.tools.tools.Data;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -20,15 +25,26 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     public static final int TYPE_NORMAL = 1;
     private boolean focus;
     private Context context;
-    //private List<Data> comments;
-    private List<String> comments;
-    private View mHeaderView;
-    public CommentAdapter(Context context,List<String> comments /*List<Data> comments*/) {
+    private GridViewAdapter gridAdpter;
+    private List<Comments> list;
+
+
+    public CommentAdapter(Context context,List<Comments> list) {
         this.context=context;
-        this.comments=comments;
+        this.list=list;
     }
 
 
+
+
+
+
+    public void addData(List<Comments> addList){
+        if (addList!=null){
+            list.addAll(addList);
+            notifyItemRangeChanged(list.size()-addList.size(),addList.size());
+        }
+    }
 
     /** 重写这个方法,通过判断item的类型，从而绑定不同的view * */
     @Override
@@ -63,13 +79,24 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder holder, int i) {
 
         if (holder instanceof ViewHolderComments){
-            ( (ViewHolderComments)holder).comment.setText(comments.get(i));
+            //( (ViewHolderComments)holder).comment.setText(comments.get(i));
 
 
         }else if (holder instanceof ViewHolderNews){
+            ( (ViewHolderNews)holder).title.setText(list.get(i).getTitle());
+
+            List<String> imglist=new ArrayList<>();
+
+            imglist.add( "https://pic3.zhimg.com/v2-a1019116672185fdfc7616fc6432f8f7.jpg?source=8673f162");
+            imglist.add("https://pic4.zhimg.com/v2-f684b055b954c7f3e25572c3ddda65b2.jpg?source=8673f162");
+            imglist.add( "https://pic4.zhimg.com/v2-99b0bec360093b88f30d59bde9327f94.jpg?source=8673f162");
+            imglist.add("https://pic1.zhimg.com/v2-f028176a557874d28d5cabe118415497.jpg?source=8673f162");
+            imglist.add( "https://pic3.zhimg.com/v2-a1019116672185fdfc7616fc6432f8f7.jpg?source=8673f162");
+            imglist.add("https://pic4.zhimg.com/v2-f684b055b954c7f3e25572c3ddda65b2.jpg?source=8673f162");
+            gridAdpter = new GridViewAdapter(context,list.get(i).getPics());
+            ( (ViewHolderNews)holder).gridView.setAdapter(gridAdpter);
 
 
-            ( (ViewHolderNews)holder).writer.setText(comments.get(i));
             //关注按钮
             ( (ViewHolderNews)holder).btn_focus.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -92,7 +119,7 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     public int getItemCount() {
 
-        return comments.size();
+        return list.size();
     }
 
 
@@ -108,13 +135,15 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     }
 
     public static class ViewHolderNews extends RecyclerView.ViewHolder {
-
-        TextView writer;
+        GridView gridView;
+        TextView title,content;
         Button btn_focus;
         public ViewHolderNews(@NonNull View itemView) {
             super(itemView);
-            writer=itemView.findViewById(R.id.tital);
+            title=itemView.findViewById(R.id.tital);
             btn_focus=itemView.findViewById(R.id.details_btn);
+            gridView=itemView.findViewById(R.id.gridview);
+
         }
     }
      }
