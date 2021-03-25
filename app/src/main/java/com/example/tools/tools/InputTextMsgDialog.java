@@ -154,6 +154,7 @@ public class InputTextMsgDialog extends AppCompatDialog {
                         if (messageTextView.getText().length() > 0) {
                             imm.hideSoftInputFromWindow(messageTextView.getWindowToken(), 0);
                             dismiss();
+
                         } else {
                             Toast.makeText(mContext, "请输入文字", Toast.LENGTH_LONG).show();
                         }
