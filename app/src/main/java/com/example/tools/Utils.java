@@ -334,6 +334,16 @@ public static void put(final String token, final String url, final String json, 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
     //时间工具
+
+
+//获取当前时间
+    public static String getTime(){
+        long time=System.currentTimeMillis()/1000;//获取系统时间的10位的时间戳
+        String  str=String.valueOf(time);
+        return str;
+    }
+
+
     // 将字符串转为时间戳
     public static String getTime(String user_time) {
         String re_time = null;

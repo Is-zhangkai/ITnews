@@ -42,7 +42,7 @@ public class NewsDetailsActivity extends AppCompatActivity {
     private boolean like,collection;
     private Button btn_like,btn_collection;
     private int id;
-    private String title,writer;
+    private String title,writer,time;
     private String token="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MTY2MzQxNTEsImlhdCI6MTYxNjU0Nzc1MSwiaXNzIjoicnVhIiwiZGF0YSI6eyJ1c2VyaWQiOjR9fQ.pj755t5OURu1Q95PMUnW1QyOWRvxBcjTzMNl1oP6irM";
 
 
@@ -107,8 +107,13 @@ public class NewsDetailsActivity extends AppCompatActivity {
                                         String msg1 = jsonObject21.getString("msg");
                                         Log.i("asd", msg1);
                                         if (msg1.equals("成功")){
+
                                             inputTextMsgDialog.clearText();
                                             inputTextMsgDialog.dismiss();
+                                            time=Utils.getTime();
+                                            Log.i("asd",time);
+
+
                                         }
 
                                     } catch (Exception e) {
