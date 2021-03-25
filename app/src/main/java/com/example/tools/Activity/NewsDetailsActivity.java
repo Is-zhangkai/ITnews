@@ -56,6 +56,9 @@ public class NewsDetailsActivity extends AppCompatActivity {
         smartRefreshLayout=findViewById(R.id.comment_srl);
         recyclerView.setLayoutManager(new LinearLayoutManager(NewsDetailsActivity.this));
         id = getIntent().getIntExtra("id", 1);
+        writer=getIntent().getStringExtra("writer");
+
+
         List<Comments> list = new ArrayList<>();
         GetData(list);
 
@@ -92,35 +95,119 @@ public class NewsDetailsActivity extends AppCompatActivity {
                     @Override
                     public void onTextSend(String msg) {
                         //点击发送按钮后，回调此方法，msg为输入的值
-                         String json="{\"content\": "+msg+"}";
+                         String json="{\"content\": \""+msg+"\"}";
+                         Log.i("asd",json);
+                        try {
 
-                         SendComments(json);
+                            Utils.post_json(token, "http://122.9.2.27/api/news/operator/"+id+"/comment", json, new Utils.OkhttpCallBack() {
+                                @Override
+                                public void onSuccess(Response response) {
+                                    try {
+                                        JSONObject jsonObject21 = new JSONObject(Objects.requireNonNull(response.body()).string());
+                                        String msg1 = jsonObject21.getString("msg");
+                                        Log.i("asd", msg1);
+                                        if (msg1.equals("成功")){
+                                            inputTextMsgDialog.clearText();
+                                            inputTextMsgDialog.dismiss();
+                                        }
 
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                                @Override
+                                public void onFail(String error) {
 
-
-
-
-
+                                    Toast.makeText(NewsDetailsActivity.this,"评论失败",Toast.LENGTH_SHORT).show();
+                                }
+                            });} catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
                 });
+                //设置评论字数
                 inputTextMsgDialog.setMaxNumber(60);
                 inputTextMsgDialog .show();
             }
         });
+
+
+
         //点赞
         btn_like.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (like){like=false;  btn_like.setBackgroundResource(R.drawable.like_nor);
-                }else {like=true;  btn_like.setBackgroundResource(R.drawable.like_fill);}
+
+
+                try {
+                    String s=null;
+                    Utils.post_json(token, "http://122.9.2.27/api/news/operator/" + id + "/like", s, new Utils.OkhttpCallBack() {
+                        @Override
+                        public void onSuccess(Response response) {
+                            try {
+                                JSONObject jsonObject21 = new JSONObject(Objects.requireNonNull(response.body()).string());
+                                String msg2 = jsonObject21.getString("msg");
+                                Log.i("asd", msg2);
+                                if (msg2.equals("成功")){
+
+                                    if (like){like=false;  btn_like.setBackgroundResource(R.drawable.like_nor);
+                                    }else {like=true;  btn_like.setBackgroundResource(R.drawable.like_fill);}
+                                }
+
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                        @Override
+                        public void onFail(String error) {
+
+                        }
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+
             }
         });
         //收藏
         btn_collection.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (collection){collection=false;  btn_collection.setBackgroundResource(R.drawable.collection_nor);
-                }else {collection=true;  btn_collection.setBackgroundResource(R.drawable.collection_fill);}
+
+
+
+                try {
+                    String s=null;
+                    Utils.post_json(token, "http://122.9.2.27/api/news/operator/" + id + "/star", s, new Utils.OkhttpCallBack() {
+                        @Override
+                        public void onSuccess(Response response) {
+                            try {
+                                JSONObject jsonObject21 = new JSONObject(Objects.requireNonNull(response.body()).string());
+                                String msg3 = jsonObject21.getString("msg");
+                                Log.i("asd", msg3);
+                                if (msg3.equals("成功")){
+                                    if (collection){collection=false;  btn_collection.setBackgroundResource(R.drawable.collection_nor);
+                                    }else {collection=true;  btn_collection.setBackgroundResource(R.drawable.collection_fill);}
+                                }
+
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                        @Override
+                        public void onFail(String error) {
+
+                        }
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+
+
             }
         });
         //返回
@@ -146,7 +233,8 @@ public class NewsDetailsActivity extends AppCompatActivity {
                         JSONObject jsonObject2=jsonObject1.getJSONObject("data");
                         Log.i("asd",jsonObject1.getString("msg"));
                          Comments comments=new Comments();
-                        comments.setTitle(jsonObject2.getString("title"));
+                         title=jsonObject2.getString("title");
+                        comments.setTitle(title);
                         comments.setContent(jsonObject2.getString( "content"));
                         comments.setTag(jsonObject2.getInt("tag"));
                         comments.setLike_num(jsonObject2.getInt("like_num"));
@@ -192,7 +280,7 @@ public class NewsDetailsActivity extends AppCompatActivity {
 
         try {
 
-        Utils.post_json(token, "http://122.9.2.27/api/news/operator/11/comment", json, new Utils.OkhttpCallBack() {
+        Utils.post_json(token, "http://122.9.2.27/api/news/operator/"+id+"/comment", json, new Utils.OkhttpCallBack() {
             @Override
             public void onSuccess(Response response) {
 
@@ -200,6 +288,9 @@ public class NewsDetailsActivity extends AppCompatActivity {
                     JSONObject jsonObject21 = new JSONObject(Objects.requireNonNull(response.body()).string());
                     JSONObject jsonObject22 = jsonObject21.getJSONObject("data");
                     Log.i("asd", jsonObject21.getString("msg"));
+
+
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -216,5 +307,6 @@ public class NewsDetailsActivity extends AppCompatActivity {
         }
 
     }
+
 
 }
