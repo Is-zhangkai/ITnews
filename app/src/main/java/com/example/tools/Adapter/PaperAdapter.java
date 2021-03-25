@@ -17,6 +17,7 @@ import com.example.tools.Fragment.MyPaperFragment;
 import java.util.List;
 import java.util.Map;
 import com.example.tools.R;
+import com.example.tools.tools.Data;
 
 public class PaperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private MyPaperFragment context;
@@ -29,6 +30,16 @@ public class PaperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         this.context = context;
         this.list = list;
     }
+
+
+    public void addData(List<Map<String, Object>> addList){
+        if (addList!=null){
+            list.addAll(addList);
+            notifyItemRangeChanged(list.size()-addList.size(),addList.size());
+        }
+    }
+
+
     @Override
     public int getItemViewType(int position) {
         int size=list.get(position).size();

@@ -13,6 +13,7 @@ import android.widget.RelativeLayout;
 
 import com.example.tools.Activity.WriteActivity;
 import com.example.tools.R;
+import com.example.tools.Utils;
 
 
 public class MyPaperFragment extends Fragment {
@@ -35,6 +36,8 @@ public class MyPaperFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+
         go_edit=getActivity().findViewById(R.id.go_edit);
         go_edit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -43,5 +46,18 @@ public class MyPaperFragment extends Fragment {
                 startActivity(intent);
             }
         });
+
+
+        //加载新闻
+
+
+
+    }
+
+    public void GetNews(){
+
+
+
+
     }
 }

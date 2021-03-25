@@ -68,7 +68,9 @@ public class InputTextMsgDialog extends AppCompatDialog {
     public void setHint(String text) {
         messageTextView.setHint(text);
     }
-
+    public void clearText() {
+        messageTextView.setText("");
+    }
     /**
      * 设置按钮的文字  默认为：发送
      */
@@ -130,8 +132,8 @@ public class InputTextMsgDialog extends AppCompatDialog {
                     mOnTextSendListener.onTextSend(msg);
                     imm.showSoftInput(messageTextView, InputMethodManager.SHOW_FORCED);
                     imm.hideSoftInputFromWindow(messageTextView.getWindowToken(), 0);
-                    messageTextView.setText("");
-                    dismiss();
+                    ///messageTextView.setText("");
+                    //dismiss();
                 } else {
                     Toast.makeText(mContext, "请输入文字", Toast.LENGTH_LONG).show();
                 }
@@ -152,6 +154,7 @@ public class InputTextMsgDialog extends AppCompatDialog {
                         if (messageTextView.getText().length() > 0) {
                             imm.hideSoftInputFromWindow(messageTextView.getWindowToken(), 0);
                             dismiss();
+
                         } else {
                             Toast.makeText(mContext, "请输入文字", Toast.LENGTH_LONG).show();
                         }
