@@ -35,20 +35,25 @@
             </TextView>
         </RelativeLayout>
         <RelativeLayout
+            
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="190dp"
             android:background="@drawable/white_circle">
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/myPaper_recycler">
+            </androidx.recyclerview.widget.RecyclerView>
 
         </RelativeLayout>
         <RelativeLayout
             android:id="@+id/go_edit"
             android:layout_width="180dp"
             android:layout_height="50dp"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="20dp"
+            android:layout_alignParentRight="true"
             android:textColor="@color/white"
+            android:layout_marginTop="130dp"
             android:background="@drawable/black_circle">
             <ImageView
                 android:layout_width="20dp"

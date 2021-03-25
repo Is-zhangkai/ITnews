@@ -222,8 +222,6 @@ public class WriteActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_write);
-        back=findViewById(R.id.edit_back);
-        post=findViewById(R.id.edit_post);
         edit_tag=findViewById(R.id.edit_tag);
         edit_tag.setOnClickListener(new View.OnClickListener() {
             @Override

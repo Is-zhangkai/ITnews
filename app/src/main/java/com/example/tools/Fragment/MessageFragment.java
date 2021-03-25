@@ -15,6 +15,11 @@ import android.widget.RelativeLayout;
 
 import com.example.tools.Activity.ChatActivity;
 import com.example.tools.R;
+import com.example.tools.SQLite.myApplication;
+
+import org.xutils.DbManager;
+import org.xutils.ex.DbException;
+import org.xutils.x;
 
 import q.rorbin.badgeview.QBadgeView;
 
@@ -57,6 +62,12 @@ public class MessageFragment extends Fragment {
         icon_like=view.findViewById(R.id.icon_like);
         icon_collect=view.findViewById(R.id.icon_collect);
         icon_comment=view.findViewById(R.id.icon_comment);
+        try {
+            DbManager dbManager= x.getDb(((myApplication)getActivity().getApplicationContext()).getDaoConfig());
+
+        } catch (DbException e) {
+            e.printStackTrace();
+        }
         setRedNumber(icon_focus,100);
         setRedNumber(icon_it,100);
         setRedNumber(icon_collect,100);
