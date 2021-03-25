@@ -43,11 +43,11 @@ public class PaperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     @Override
     public int getItemViewType(int position) {
         int size=list.get(position).size();
-        if(size==1)
+        if(size==0)
         {
             return  no;
         }
-        else if(size==3)
+        else if(size==1)
         {
             return  net;
         }

@@ -168,7 +168,6 @@ public class NewsDetailsActivity extends AppCompatActivity {
                                     @Override
                                     public void run() {
                                         if (msg2.equals("成功")){
-
                                             if (like){like=false;  btn_like.setBackgroundResource(R.drawable.like_nor);
                                             }else {like=true;  btn_like.setBackgroundResource(R.drawable.like_fill);}
                                         }
