@@ -15,6 +15,7 @@ import android.widget.RelativeLayout;
 
 import com.example.tools.Activity.ChatActivity;
 import com.example.tools.R;
+import com.example.tools.SQLite.MessageDate;
 import com.example.tools.SQLite.myApplication;
 
 import org.xutils.DbManager;
@@ -35,7 +36,7 @@ public class MessageFragment extends Fragment {
     private RelativeLayout collect;
     private RelativeLayout comment;
     private RelativeLayout focus;
-
+    public MessageDate messageDate=new MessageDate(getActivity());
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,17 +63,6 @@ public class MessageFragment extends Fragment {
         icon_like=view.findViewById(R.id.icon_like);
         icon_collect=view.findViewById(R.id.icon_collect);
         icon_comment=view.findViewById(R.id.icon_comment);
-        try {
-            DbManager dbManager= x.getDb(((myApplication)getActivity().getApplicationContext()).getDaoConfig());
-
-        } catch (DbException e) {
-            e.printStackTrace();
-        }
-        setRedNumber(icon_focus,100);
-        setRedNumber(icon_it,100);
-        setRedNumber(icon_collect,100);
-        setRedNumber(icon_like,100);
-        setRedNumber(icon_comment,100);
         it.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -134,6 +124,16 @@ public class MessageFragment extends Fragment {
     {
         QBadgeView qBadgeView=new QBadgeView(getActivity());
         qBadgeView.bindTarget(view);
-        qBadgeView.setBadgeNumber(100);
+        qBadgeView.setBadgeNumber(number);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        setRedNumber(icon_focus,messageDate.getFocus_msg());
+        setRedNumber(icon_it,0);
+        setRedNumber(icon_collect,messageDate.getCollect_msg());
+        setRedNumber(icon_like,messageDate.getLike_msg());
+        setRedNumber(icon_comment,messageDate.getComment_msg());
     }
 }

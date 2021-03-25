@@ -60,32 +60,6 @@ public class MainActivity extends AppCompatActivity {
         message=findViewById(R.id.message_layout);
         user=findViewById(R.id.user_layout);
         news.setSelected(true);
-        try {
-            DbManager dbManager= x.getDb(((myApplication)getApplicationContext()).getDaoConfig());
-            List<operation> operations=new ArrayList<>();
-            operations=dbManager.selector(operation.class).orderBy("id",true).limit(1000).where("read","=",1).findAll();
-            messageDate.setAll_msg(operations.size());
-            List<operation> operations1=new ArrayList<>();
-            operations1=dbManager.selector(operation.class).orderBy("id",true).limit(1000).where("type","=",2).where("read","=",1).findAll();
-            messageDate.setLike_msg(operations1.size());
-            List<operation> operations2=new ArrayList<>();
-            operations2=dbManager.selector(operation.class).orderBy("id",true).limit(1000).where("type","=",3).where("read","=",1).findAll();
-            messageDate.setCollect_msg(operations2.size());
-            List<operation> operations3=new ArrayList<>();
-            operations3=dbManager.selector(operation.class).orderBy("id",true).limit(1000).where("type","=",4).where("read","=",1).findAll();
-            messageDate.setComment_msg(operations3.size());
-            List<operation> operations4=new ArrayList<>();
-            operations4=dbManager.selector(operation.class).orderBy("id",true).limit(1000).where("type","=",5).where("read","=",1).findAll();
-            messageDate.setFocus_msg(operations4.size());
-        } catch (DbException e) {
-            e.printStackTrace();
-        }
-        QBadgeView qBadgeView =new QBadgeView(this);
-        qBadgeView.bindTarget(message);
-        qBadgeView.setBadgeNumber(messageDate.getAll_msg());
-        qBadgeView.setGravityOffset(10,3,true);
-
-
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment, newsFragment).commit();
         news.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -138,4 +112,32 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        try {
+            DbManager dbManager= x.getDb(((myApplication)getApplicationContext()).getDaoConfig());
+            List<operation> operations=new ArrayList<>();
+            operations=dbManager.selector(operation.class).orderBy("id",true).limit(1000).where("read","=",1).findAll();
+            messageDate.setAll_msg(operations.size());
+            List<operation> operations1=new ArrayList<>();
+            operations1=dbManager.selector(operation.class).orderBy("id",true).limit(1000).where("type","=",2).where("read","=",1).findAll();
+            messageDate.setLike_msg(operations1.size());
+            List<operation> operations2=new ArrayList<>();
+            operations2=dbManager.selector(operation.class).orderBy("id",true).limit(1000).where("type","=",3).where("read","=",1).findAll();
+            messageDate.setCollect_msg(operations2.size());
+            List<operation> operations3=new ArrayList<>();
+            operations3=dbManager.selector(operation.class).orderBy("id",true).limit(1000).where("type","=",4).where("read","=",1).findAll();
+            messageDate.setComment_msg(operations3.size());
+            List<operation> operations4=new ArrayList<>();
+            operations4=dbManager.selector(operation.class).orderBy("id",true).limit(1000).where("type","=",5).where("read","=",1).findAll();
+            messageDate.setFocus_msg(operations4.size());
+        } catch (DbException e) {
+            e.printStackTrace();
+        }
+        QBadgeView qBadgeView =new QBadgeView(this);
+        qBadgeView.bindTarget(message);
+        qBadgeView.setBadgeNumber(messageDate.getAll_msg());
+        qBadgeView.setGravityOffset(10,3,true);
+    }
 }
