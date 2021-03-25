@@ -12,6 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_baseline_chevron_left_24" />
@@ -23,17 +24,17 @@
         android:layout_marginTop="8dp"
         android:text="修改信息"
         android:textColor="#7E57C2"
-        android:textSize="19sp"
+        android:textSize="21sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <view
+    <View
         android:id="@+id/view"
         android:layout_width="match_parent"
         android:layout_height="0.1dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="12dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView13" />
 
@@ -57,7 +58,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/view">
 
-        <view
+        <View
             android:id="@+id/view2"
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
@@ -68,7 +69,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ConstraintLayout3" />
 
-        <view
+        <View
             android:id="@+id/view3"
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
@@ -120,8 +121,8 @@
                 android:layout_marginStart="16dp"
                 android:text="性别"
                 android:textAllCaps="true"
-                android:textColor="#B37E57C2"
-                android:textSize="15sp"
+                android:textColor="#CC7E57C2"
+                android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -131,7 +132,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="52dp"
-                android:text="保密"
+                android:text="男"
                 android:textColor="#BF000000"
                 android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="@+id/textView15"
@@ -163,8 +164,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:text="个性签名"
-                android:textColor="#B37E57C2"
-                android:textSize="15sp"
+                android:textColor="#CC7E57C2"
+                android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -199,7 +200,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/ConstraintLayout5"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="52dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -211,8 +212,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:text="修改密码"
-                android:textColor="#B37E57C2"
-                android:textSize="15sp"
+                android:textColor="#CC7E57C2"
+                android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
