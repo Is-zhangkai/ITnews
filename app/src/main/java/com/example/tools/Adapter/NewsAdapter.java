@@ -47,10 +47,10 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 
     public void addData(List<Data> addList){
-//        if (addList!=null){
+        if (addList!=null){
             list.addAll(addList);
             notifyItemRangeChanged(list.size()-addList.size(),addList.size());
-//        }
+        }
     }
 
     @NonNull
@@ -67,7 +67,7 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             holder= new PagerHolder(view_news);
         }
         if (i==ITEM_ERROR){
-            view_news= LayoutInflater.from(context).inflate(R.layout.item_error,viewGroup,false);
+            view_news= LayoutInflater.from(context).inflate(R.layout.item_papernonet,viewGroup,false);
             holder= new ErrorHolder(view_news);
         }
         assert holder != null;

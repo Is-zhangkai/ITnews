@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,8 +24,10 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -39,6 +42,7 @@ public class NewsDetailsActivity extends AppCompatActivity {
     private boolean like,collection;
     private Button btn_like,btn_collection;
     private int id;
+    private String title,writer;
     private String token="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MTY2MzQxNTEsImlhdCI6MTYxNjU0Nzc1MSwiaXNzIjoicnVhIiwiZGF0YSI6eyJ1c2VyaWQiOjR9fQ.pj755t5OURu1Q95PMUnW1QyOWRvxBcjTzMNl1oP6irM";
 
 
@@ -51,9 +55,7 @@ public class NewsDetailsActivity extends AppCompatActivity {
         recyclerView=this.findViewById(R.id.details_recycler);
         smartRefreshLayout=findViewById(R.id.comment_srl);
         recyclerView.setLayoutManager(new LinearLayoutManager(NewsDetailsActivity.this));
-
         id = getIntent().getIntExtra("id", 1);
-
         List<Comments> list = new ArrayList<>();
         GetData(list);
 
@@ -90,6 +92,15 @@ public class NewsDetailsActivity extends AppCompatActivity {
                     @Override
                     public void onTextSend(String msg) {
                         //点击发送按钮后，回调此方法，msg为输入的值
+                         String json="{\"content\": "+msg+"}";
+
+                         SendComments(json);
+
+
+
+
+
+
                     }
                 });
                 inputTextMsgDialog.setMaxNumber(60);
@@ -123,6 +134,7 @@ public class NewsDetailsActivity extends AppCompatActivity {
 
     }
 
+    //获取新闻
     public void GetData(final List<Comments> list){
 
 
@@ -171,6 +183,37 @@ public class NewsDetailsActivity extends AppCompatActivity {
                 }
             });
 
+
+    }
+
+
+    //发送评论
+    public void SendComments(String json){
+
+        try {
+
+        Utils.post_json(token, "http://122.9.2.27/api/news/operator/11/comment", json, new Utils.OkhttpCallBack() {
+            @Override
+            public void onSuccess(Response response) {
+
+                try {
+                    JSONObject jsonObject21 = new JSONObject(Objects.requireNonNull(response.body()).string());
+                    JSONObject jsonObject22 = jsonObject21.getJSONObject("data");
+                    Log.i("asd", jsonObject21.getString("msg"));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            @Override
+            public void onFail(String error) {
+
+                Toast.makeText(NewsDetailsActivity.this,"评论失败",Toast.LENGTH_SHORT).show();
+            }
+        });} catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 

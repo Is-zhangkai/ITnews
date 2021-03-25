@@ -161,7 +161,7 @@ public class Utils {
     }
 //////////////////////////////////////////////////////////////////////////
     // post json数据  token数据
-    public static void post_json(final String token,final String url, final JSONObject jsonObject,  final OkhttpCallBack okhttpCallBack) throws JSONException {
+    public static void post_json(final String token,final String url, final String json,  final OkhttpCallBack okhttpCallBack) throws JSONException {
 
         try {
         Thread thread=new Thread(new Runnable() {
@@ -171,7 +171,7 @@ public class Utils {
 
 
                 MediaType mediaType = MediaType.parse("application/json");
-                RequestBody body = RequestBody.create(mediaType, String.valueOf(jsonObject));
+                RequestBody body = RequestBody.create(mediaType, String.valueOf(json));
 
                 Request request = new Request.Builder()
                         .url(url)
