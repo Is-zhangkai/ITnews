@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tools.Adapter.CommentAdapter;
+import com.example.tools.Adapter.NewsAdapter;
 import com.example.tools.R;
 import com.example.tools.Utils;
 import com.example.tools.tools.Comments;
@@ -41,7 +42,8 @@ public class NewsDetailsActivity extends AppCompatActivity {
     private CommentAdapter commentAdapter;
     private boolean like,collection;
     private Button btn_like,btn_collection;
-    private int id;
+    private int id,size=3;
+    private Boolean refresh=true;
     private String title,writer,time;
     private String token="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MTY2MzQxNTEsImlhdCI6MTYxNjU0Nzc1MSwiaXNzIjoicnVhIiwiZGF0YSI6eyJ1c2VyaWQiOjR9fQ.pj755t5OURu1Q95PMUnW1QyOWRvxBcjTzMNl1oP6irM";
 
@@ -66,23 +68,20 @@ public class NewsDetailsActivity extends AppCompatActivity {
         smartRefreshLayout.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+                refresh=false;
                 final List<Comments> list=new ArrayList<>();
-                GetData(list);
+                GetComments(list);
                 refreshLayout.finishLoadMore();
             }
 
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                refresh=true;
                 List<Comments> list = new ArrayList<>();
                 GetData(list);
                 refreshLayout.finishRefresh();
             }
         });
-
-
-
-
-
 
 
 
@@ -97,7 +96,6 @@ public class NewsDetailsActivity extends AppCompatActivity {
                         //点击发送按钮后，回调此方法，msg为输入的值
                          String json="{\"content\": \""+msg+"\"}";
                          Log.i("asd",json);
-
                         try {
                             inputTextMsgDialog.clearText();
                             inputTextMsgDialog.dismiss();
@@ -205,8 +203,6 @@ public class NewsDetailsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-
-
                 try {
                     String s=null;
                     Utils.post_json(token, "http://122.9.2.27/api/news/operator/" + id + "/star", s, new Utils.OkhttpCallBack() {
@@ -247,8 +243,6 @@ public class NewsDetailsActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
-
-
             }
         });
         //返回
@@ -281,26 +275,14 @@ public class NewsDetailsActivity extends AppCompatActivity {
                         comments.setLike_num(jsonObject2.getInt("like_num"));
                         comments.setComment_num(jsonObject2.getInt( "comment_num"));
                         comments.setStar_num(jsonObject2.getInt( "star_num"));
-                        JSONArray jsonArray=jsonObject2.getJSONArray("pics");
+                        final JSONArray jsonArray=jsonObject2.getJSONArray("pics");
                         List<String> imglist=new ArrayList<>();
                         for (int i=0;i<jsonArray.length();i++){
                             imglist.add(jsonArray.getString(i));
                         }
                         comments.setPics(imglist);
-
-
-
                         list.add(comments);
-
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-
-        commentAdapter = new CommentAdapter(NewsDetailsActivity.this, list);
-        recyclerView.setAdapter(commentAdapter);
-                            }
-                        });
-
+                        GetComments(list);
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -308,12 +290,21 @@ public class NewsDetailsActivity extends AppCompatActivity {
             }
                 @Override
                 public void onFail(String error) {
+
+
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+                            Comments error=new Comments();
+                            error.setError("error");
+                            list.add(error);
+                            commentAdapter = new CommentAdapter(NewsDetailsActivity.this, list);
+                            recyclerView.setAdapter(commentAdapter);
                             Toast.makeText(NewsDetailsActivity.this,"连接失败，请刷新重试",Toast.LENGTH_SHORT).show();
+
                         }
                     });
+
                 }
             });
 
@@ -321,6 +312,62 @@ public class NewsDetailsActivity extends AppCompatActivity {
     }
 
 
+    public void GetComments(final List<Comments> list){
+        Utils.get_token("http://122.9.2.27/api/news/info//comment?page=1&size=" + size, token, new Utils.OkhttpCallBack() {
+            @Override
+            public void onSuccess(Response response) {
+                try {
+                    JSONObject jsonObject1=new JSONObject(Objects.requireNonNull(response.body()).string());
+                    JSONObject jsonObject2=jsonObject1.getJSONObject("data");
+                    Log.i("asd",jsonObject1.getString("msg"));
+
+                    JSONArray jsonArray2=jsonObject2.getJSONArray("comments");
+                    for(int i=0;i<jsonArray2.length();i++){
+                        Comments comments=new Comments();
+                        JSONObject jsonObject3=jsonArray2.getJSONObject(i);
+                        comments.setComment_writer(jsonObject3.getString("username"));
+                        comments.setComment_content(jsonObject3.getString("content"));
+                        list.add(comments);
+                    }
+
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            if (refresh){
+                                commentAdapter = new CommentAdapter(NewsDetailsActivity.this, list);
+                                recyclerView.setAdapter(commentAdapter);
+                            }else {
+                                commentAdapter.addData(list);
+                            }
+
+
+                        }
+                    });
+
+
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFail(String error) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Comments error=new Comments();
+                        error.setError("error");
+                        list.add(error);
+                        commentAdapter = new CommentAdapter(NewsDetailsActivity.this, list);
+                        recyclerView.setAdapter(commentAdapter);
+                    }
+                });
+            }
+        });
+
+    }
 
 
 

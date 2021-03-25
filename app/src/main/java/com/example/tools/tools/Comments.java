@@ -24,7 +24,32 @@ public class Comments {
     private int author_id;
     private String title;
     private List<String> pics;
-    private String content;
+    private String content,comment_writer,comment_content,error;
+
+
+    public String getError() {
+        return error;
+    }
+
+    public void setError(String error) {
+        this.error = error;
+    }
+
+    public void setComment_writer(String comment_writer) {
+        this.comment_writer = comment_writer;
+    }
+
+    public void setComment_content(String comment_content) {
+        this.comment_content = comment_content;
+    }
+
+    public String getComment_writer() {
+        return comment_writer;
+    }
+
+    public String getComment_content() {
+        return comment_content;
+    }
 
     public void setComment_num(int comment_num) {
         this.comment_num = comment_num;
