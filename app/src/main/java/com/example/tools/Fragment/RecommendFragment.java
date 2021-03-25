@@ -158,7 +158,7 @@ token="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MTY2MzQxNTEsImlhdCI6MTYx
                     JSONObject jsonObject22=jsonObject21.getJSONObject("data");
                     o_page=jsonObject22.getInt( "count");
                     JSONArray jsonArray21=jsonObject22.getJSONArray("news");
-                    Log.i("asd",jsonArray21.length()+"");
+                    Log.i("asd",jsonObject21.getString("msg"));
 
                     for (int i=0;i<jsonArray21.length();i++){
                         Data data21=new Data();
