@@ -38,7 +38,6 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int ITEM_PAGER =0 ;
     private static final int ITEM_NEWS =1;
     private static final int ITEM_ERROR =2;
-
     private ViewPagerAdapter viewPagerAdapter;
     public NewsAdapter(Context context,List<Data> list){
         this.context=context;

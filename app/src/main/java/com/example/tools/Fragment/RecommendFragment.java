@@ -40,7 +40,7 @@ public class RecommendFragment extends Fragment {
     private RecyclerView recyclerView;
     private NewsAdapter adapter;
     private SmartRefreshLayout smartRefreshLayout;
-   // private MyData data=new MyData(getActivity());
+ //   private MyData data=new MyData(getContext());
     private String token;
     private int page=1,size=4,o_page;
     private Boolean refresh=true;
@@ -61,8 +61,8 @@ public class RecommendFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
       //  token=data.load_token();
-token="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MTY2MzQxNTEsImlhdCI6MTYxNjU0Nzc1MSwiaXNzIjoicnVhIiwiZGF0YSI6eyJ1c2VyaWQiOjR9fQ.pj755t5OURu1Q95PMUnW1QyOWRvxBcjTzMNl1oP6irM";
-
+     //  Log.i("asd",token);
+token="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MTY4MjA2MTksImlhdCI6MTYxNjczNDIxOSwiaXNzIjoicnVhIiwiZGF0YSI6eyJ1c2VyaWQiOjR9fQ.XIsuSPOf_ruKZKosQMBZk28dgjEM3-kKXOqovUMy9ME";
 //刷新加载
         smartRefreshLayout.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
             @Override
@@ -96,24 +96,19 @@ token="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MTY2MzQxNTEsImlhdCI6MTYx
             public void onSuccess(Response response) {
 
                 try {
-//                    JSONObject jsonObject1=new JSONObject(Objects.requireNonNull(response.body()).string());
-//                    JSONObject jsonObject2=jsonObject1.getJSONObject("data");
-//                    final JSONArray jsonArray=jsonObject2.getJSONArray("pics");
-//                    List<String> img=new ArrayList<>();
-//                    for (int i=0;i<jsonArray.length();i++){
-//                        img.add(jsonArray.getString(i));
-//                    }
+                    JSONObject jsonObject1=new JSONObject(Objects.requireNonNull(response.body()).string());
+                    JSONObject jsonObject2=jsonObject1.getJSONObject("data");
+                    final JSONArray jsonArray=jsonObject2.getJSONArray("pics");
+                    List<String> img=new ArrayList<>();
+                    img.add(jsonArray.getString(jsonArray.length()-1));
+                    for (int i=0;i<jsonArray.length();i++){
+                        img.add(jsonArray.getString(i));
+                   }
+                    img.add(jsonArray.getString(0));
                     final Data data=new Data();
-                    //data.setPics(img);
-                    List<String> list1=new ArrayList<>();
-                    // 4 1 2 3 4 1
-                    list1.add( "https://pic3.zhimg.com/v2-a1019116672185fdfc7616fc6432f8f7.jpg?source=8673f162");
-                    list1.add("https://pic4.zhimg.com/v2-f684b055b954c7f3e25572c3ddda65b2.jpg?source=8673f162");
-                    list1.add( "https://pic4.zhimg.com/v2-99b0bec360093b88f30d59bde9327f94.jpg?source=8673f162");
-                    list1.add("https://pic1.zhimg.com/v2-f028176a557874d28d5cabe118415497.jpg?source=8673f162");
-                    list1.add( "https://pic3.zhimg.com/v2-a1019116672185fdfc7616fc6432f8f7.jpg?source=8673f162");
-                    list1.add("https://pic4.zhimg.com/v2-f684b055b954c7f3e25572c3ddda65b2.jpg?source=8673f162");
-                    data.setPics(list1);
+                    data.setPics(img);
+                    Log.i("asd",img.toString());
+
                     list.add(data);
                     Log.i("asd","轮播图加载完成");
 
@@ -166,7 +161,9 @@ token="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MTY2MzQxNTEsImlhdCI6MTYx
                         data21.setTitle(jsonObject23.getString("title"));
                         data21.setNews_Id(jsonObject23.getInt("id"));
                         JSONArray jsonArray22=jsonObject23.getJSONArray("news_pics_set");
-                       // data21.setNews_pics_set(jsonArray22.getString(1));
+                        if (jsonArray22.length()!=0){
+                            data21.setNews_pics_set(jsonArray22.getString(0));
+                        }
                         data21.setLike_num(jsonObject23.getInt("like_num"));
                         JSONObject jsonObject24=jsonObject23.getJSONObject( "author");
                         data21.setWriter(jsonObject24.getString( "username"));
@@ -185,8 +182,6 @@ token="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MTY2MzQxNTEsImlhdCI6MTYx
                             }
                         }
                     });
-
-
 
                 } catch (Exception e) {
                     e.printStackTrace();

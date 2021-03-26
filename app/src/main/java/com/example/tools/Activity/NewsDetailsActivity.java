@@ -45,8 +45,94 @@ public class NewsDetailsActivity extends AppCompatActivity {
     private int id,size=3;
     private Boolean refresh=true;
     private String title,writer,time;
-    private String token="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MTY2MzQxNTEsImlhdCI6MTYxNjU0Nzc1MSwiaXNzIjoicnVhIiwiZGF0YSI6eyJ1c2VyaWQiOjR9fQ.pj755t5OURu1Q95PMUnW1QyOWRvxBcjTzMNl1oP6irM";
+    private String token="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MTY4MjA2MTksImlhdCI6MTYxNjczNDIxOSwiaXNzIjoicnVhIiwiZGF0YSI6eyJ1c2VyaWQiOjR9fQ.XIsuSPOf_ruKZKosQMBZk28dgjEM3-kKXOqovUMy9ME";
 
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        //点赞
+        if (like){
+        try {
+            String s=null;
+            Utils.post_json(token, "http://122.9.2.27/api/news/operator/" + id + "/like", s, new Utils.OkhttpCallBack() {
+                @Override
+                public void onSuccess(Response response) {
+                    try {
+                        JSONObject jsonObject21 = new JSONObject(Objects.requireNonNull(response.body()).string());
+                        final String msg2 = jsonObject21.getString("msg");
+                        Log.i("asd", msg2);
+
+//                        runOnUiThread(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                if (msg2.equals("点赞成功")){
+//                                   btn_like.setBackgroundResource(R.drawable.like_nor);
+//                                    btn_like.setBackgroundResource(R.drawable.like_fill);
+//                                }
+//                            }
+//                        });
+
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onFail(String error) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(NewsDetailsActivity.this,"点赞失败",Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+            });
+        } catch (Exception e) { e.printStackTrace(); }}
+
+        //收藏
+        if (collection){
+        try {
+            String s=null;
+            Utils.post_json(token, "http://122.9.2.27/api/news/operator/" + id + "/star", s, new Utils.OkhttpCallBack() {
+                @Override
+                public void onSuccess(Response response) {
+                    try {
+                        JSONObject jsonObject21 = new JSONObject(Objects.requireNonNull(response.body()).string());
+                        final String msg3 = jsonObject21.getString("msg");
+                        Log.i("asd", msg3);
+
+
+//                        runOnUiThread(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                if (msg3.equals("成功")){
+//                                    if (collection){collection=false;  btn_collection.setBackgroundResource(R.drawable.collection_nor);
+//                                    }else {collection=true;  btn_collection.setBackgroundResource(R.drawable.collection_fill);}
+//                                }
+//                            }
+//                        });
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onFail(String error) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(NewsDetailsActivity.this,"收藏失败",Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+            });
+        } catch (Exception e) { e.printStackTrace(); }}
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -152,48 +238,8 @@ public class NewsDetailsActivity extends AppCompatActivity {
         btn_like.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
-                try {
-                    String s=null;
-                    Utils.post_json(token, "http://122.9.2.27/api/news/operator/" + id + "/like", s, new Utils.OkhttpCallBack() {
-                        @Override
-                        public void onSuccess(Response response) {
-                            try {
-                                JSONObject jsonObject21 = new JSONObject(Objects.requireNonNull(response.body()).string());
-                                final String msg2 = jsonObject21.getString("msg");
-                                Log.i("asd", msg2);
-
-                                runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        if (msg2.equals("成功")){
-                                            if (like){like=false;  btn_like.setBackgroundResource(R.drawable.like_nor);
-                                            }else {like=true;  btn_like.setBackgroundResource(R.drawable.like_fill);}
-                                        }
-                                    }
-                                });
-
-
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }
-
-                        @Override
-                        public void onFail(String error) {
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    Toast.makeText(NewsDetailsActivity.this,"点赞失败",Toast.LENGTH_SHORT).show();
-                                }
-                            });
-                        }
-                    });
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
+                if (like){like=false;  btn_like.setBackgroundResource(R.drawable.like_nor);
+                }else {like=true;  btn_like.setBackgroundResource(R.drawable.like_fill);}
 
             }
         });
@@ -201,47 +247,8 @@ public class NewsDetailsActivity extends AppCompatActivity {
         btn_collection.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                try {
-                    String s=null;
-                    Utils.post_json(token, "http://122.9.2.27/api/news/operator/" + id + "/star", s, new Utils.OkhttpCallBack() {
-                        @Override
-                        public void onSuccess(Response response) {
-                            try {
-                                JSONObject jsonObject21 = new JSONObject(Objects.requireNonNull(response.body()).string());
-                                final String msg3 = jsonObject21.getString("msg");
-                                Log.i("asd", msg3);
-
-
-                                runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        if (msg3.equals("成功")){
-                                            if (collection){collection=false;  btn_collection.setBackgroundResource(R.drawable.collection_nor);
-                                            }else {collection=true;  btn_collection.setBackgroundResource(R.drawable.collection_fill);}
-                                        }
-                                    }
-                                });
-
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }
-
-                        @Override
-                        public void onFail(String error) {
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    Toast.makeText(NewsDetailsActivity.this,"收藏失败",Toast.LENGTH_SHORT).show();
-                                }
-                            });
-                        }
-                    });
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
+                if (collection){collection=false;  btn_collection.setBackgroundResource(R.drawable.collection_nor);
+                }else {collection=true;  btn_collection.setBackgroundResource(R.drawable.collection_fill);}
             }
         });
         //返回
@@ -251,6 +258,11 @@ public class NewsDetailsActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+
+
+
+
 
 
     }
@@ -263,7 +275,10 @@ public class NewsDetailsActivity extends AppCompatActivity {
                 @Override
                 public void onSuccess(Response response) {
                     try {
-                        JSONObject jsonObject1=new JSONObject(Objects.requireNonNull(response.body()).string());
+
+                      String res=  Objects.requireNonNull(response.body()).string();Log.i("asd",res);
+
+                        JSONObject jsonObject1=new JSONObject(res);
                         JSONObject jsonObject2=jsonObject1.getJSONObject("data");
                         Log.i("asd",jsonObject1.getString("msg"));
                          Comments comments=new Comments();
@@ -275,11 +290,12 @@ public class NewsDetailsActivity extends AppCompatActivity {
                         comments.setComment_num(jsonObject2.getInt( "comment_num"));
                         comments.setStar_num(jsonObject2.getInt( "star_num"));
                         final JSONArray jsonArray=jsonObject2.getJSONArray("pics");
+                        if (jsonArray.length()!=0){
                         List<String> imglist=new ArrayList<>();
                         for (int i=0;i<jsonArray.length();i++){
                             imglist.add(jsonArray.getString(i));
                         }
-                        comments.setPics(imglist);
+                        comments.setPics(imglist);}
                         list.add(comments);
                         GetComments(list);
 

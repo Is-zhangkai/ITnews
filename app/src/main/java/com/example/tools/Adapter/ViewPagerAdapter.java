@@ -42,6 +42,7 @@ public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.View
         Log.i("asd","qwertyuio");
         Glide.with(context)
                 .load(Objects.requireNonNull(img.get(i)))
+                .error(R.drawable.error)
                 .apply(bitmapTransform(new RoundedCornersTransformation(42, 0, RoundedCornersTransformation.CornerType.ALL)))
                 .into(holder.imageView);
     }

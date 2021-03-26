@@ -3,8 +3,12 @@ package com.example.tools.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.PagerAdapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +18,7 @@ import android.widget.RelativeLayout;
 import com.example.tools.Activity.NewsDetailsActivity;
 import com.example.tools.Activity.WriteActivity;
 import com.example.tools.Adapter.CommentAdapter;
+import com.example.tools.Adapter.PaperAdapter;
 import com.example.tools.R;
 import com.example.tools.Utils;
 import com.example.tools.tools.Comments;
@@ -33,7 +38,9 @@ import okhttp3.Response;
 
 public class MyPaperFragment extends Fragment {
     private RelativeLayout go_edit;
+    private PaperAdapter adapter;
     private String token;
+    private RecyclerView recyclerView;
 
 
     @Override
@@ -62,6 +69,13 @@ public class MyPaperFragment extends Fragment {
                 startActivity(intent);
             }
         });
+        recyclerView=getActivity().findViewById(R.id.myPaper_recycler);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+
+        token= "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MTY4MjA2MTksImlhdCI6MTYxNjczNDIxOSwiaXNzIjoicnVhIiwiZGF0YSI6eyJ1c2VyaWQiOjR9fQ.XIsuSPOf_ruKZKosQMBZk28dgjEM3-kKXOqovUMy9ME";
+
+
 
 
         //加载新闻
@@ -72,7 +86,7 @@ public class MyPaperFragment extends Fragment {
 
     }
 
-    public void GetNews(List<Map<String, Object>> list){
+    public void GetNews(final List<Map<String, Object>> list){
 
         try {
             Utils.get_token("http://122.9.2.27/api/self/news-ids", token, new Utils.OkhttpCallBack() {
@@ -90,8 +104,15 @@ public class MyPaperFragment extends Fragment {
                             String title=jsonObject2.getString("title");
                             map.put("id", id);
                             map.put("title",title);
+                           list.add(map);
                         }
-
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                adapter= new PaperAdapter(getActivity(), list);
+                                recyclerView.setAdapter(adapter);
+                            }
+                        });
 
                     } catch (Exception e) {
                         e.printStackTrace();

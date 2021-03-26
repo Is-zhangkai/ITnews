@@ -1,5 +1,6 @@
 package com.example.tools;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 
@@ -10,6 +11,7 @@ public class MyData {
     private static MyData mSharedPreferencesUtil;
 
 
+    @SuppressLint("CommitPrefEdits")
     public MyData(Context context) {
         this.context = context;
         mPreferences = this.context.getSharedPreferences("MY_DATA", Context.MODE_PRIVATE);
