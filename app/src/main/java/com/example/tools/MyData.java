@@ -31,8 +31,8 @@ public class MyData {
         mEditor.putBoolean("CHECK", check);
         mEditor.commit();
     }
-    public void save_sex(Boolean sex) {
-        mEditor.putBoolean("SEX",sex);
+    public void save_sex(int sex) {
+        mEditor.putInt("SEX",sex);
         mEditor.commit();
     }
 
@@ -43,6 +43,10 @@ public class MyData {
 
     public void save_name(String name){
         mEditor.putString("NAME",name);
+        mEditor.commit();
+    }
+    public void save_info(String info){
+        mEditor.putString("INFO",info);
         mEditor.commit();
     }
     public void save_fans(int num){
@@ -59,19 +63,22 @@ public class MyData {
     }
 
     public String load_token() {
-        return mPreferences.getString("TOKEN", "");
+        return mPreferences.getString("TOKEN", "NO");
     }
     public Boolean load_check() {
         return mPreferences.getBoolean("CHECK", false);
     }
-    public Boolean load_sex() {
-        return mPreferences.getBoolean("SEX", false);
+    public int load_sex() {
+        return mPreferences.getInt("SEX", 0);
     }
     public Boolean load_net() {
         return mPreferences.getBoolean("NET", true);
     }
     public String load_name(){
-        return mPreferences.getString("NAME","");
+        return mPreferences.getString("NAME","暂无昵称");
+    }
+    public String load_info(){
+        return mPreferences.getString("INFO","写点什么吧");
     }
     public int load_fans(){return mPreferences.getInt("FANS",0);}
     public int load_attentions(){return mPreferences.getInt("ATTENTIONS",0);}
