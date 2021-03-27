@@ -321,12 +321,7 @@ public class WriteActivity extends AppCompatActivity {
                 finish();
             }
         });
-        post.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-            }
-        });
     }
 
     @Override
