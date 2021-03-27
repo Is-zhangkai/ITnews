@@ -1,33 +1,24 @@
 package com.example.tools.Activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.ContentValues;
-import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
 import com.example.tools.Fragment.MessageFragment;
 import com.example.tools.Fragment.MyPaperFragment;
 import com.example.tools.Fragment.NewsFragment;
 import com.example.tools.Fragment.UserFragment;
-import com.example.tools.SQLite.MessageDate;
-import com.example.tools.SQLite.MyDatabaseHelper;
 import com.example.tools.R;
+import com.example.tools.SQLite.MessageDate;
 import com.example.tools.SQLite.myApplication;
 import com.example.tools.SQLite.operation;
-import com.example.tools.Utils;
-import com.example.tools.tools.BottomPopupOption;
 
-import org.xutils.BuildConfig;
 import org.xutils.DbManager;
 import org.xutils.ex.DbException;
 import org.xutils.x;
@@ -35,7 +26,6 @@ import org.xutils.x;
 import java.util.ArrayList;
 import java.util.List;
 
-import okhttp3.Response;
 import q.rorbin.badgeview.QBadgeView;
 
 public class MainActivity extends AppCompatActivity {
@@ -49,18 +39,30 @@ public class MainActivity extends AppCompatActivity {
     private MessageFragment messageFragment= new MessageFragment();
     private MyPaperFragment myPaperFragment=new MyPaperFragment();
     private UserFragment userFragment =new UserFragment();
-    
+    private static final int REQUEST_EXTERNAL_STORAGE = 1;
+    private static String[] PERMISSIONS_STORAGE = {"android.permission.READ_EXTERNAL_STORAGE","android.permission.WRITE_EXTERNAL_STORAGE" };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mes=findViewById(R.id.message);
-        news=findViewById(R.id.news_layout);
-        paper=findViewById(R.id.paper_layout);
-        message=findViewById(R.id.message_layout);
-        user=findViewById(R.id.user_layout);
+        mes = findViewById(R.id.message);
+        news = findViewById(R.id.news_layout);
+        paper = findViewById(R.id.paper_layout);
+        message = findViewById(R.id.message_layout);
+        user = findViewById(R.id.user_layout);
         news.setSelected(true);
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment, newsFragment).commit();
+
+        int permission = ActivityCompat.checkSelfPermission(MainActivity.this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+        if (permission != PackageManager.PERMISSION_GRANTED) {
+            // We don't have permission so prompt the user
+            ActivityCompat.requestPermissions(MainActivity.this, PERMISSIONS_STORAGE,
+                    REQUEST_EXTERNAL_STORAGE);
+        }
+
+
         news.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -101,14 +103,6 @@ public class MainActivity extends AppCompatActivity {
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment, userFragment).commit();
             }
         });
-
-
-
-
-
-
-
-
 
     }
 
