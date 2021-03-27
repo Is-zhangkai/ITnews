@@ -62,7 +62,7 @@ public class RecommendFragment extends Fragment {
 
       //  token=data.load_token();
      //  Log.i("asd",token);
-token="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MTY4MjA2MTksImlhdCI6MTYxNjczNDIxOSwiaXNzIjoicnVhIiwiZGF0YSI6eyJ1c2VyaWQiOjR9fQ.XIsuSPOf_ruKZKosQMBZk28dgjEM3-kKXOqovUMy9ME";
+token= "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MTY4NjAyMDAsImlhdCI6MTYxNjc3MzgwMCwiaXNzIjoicnVhIiwiZGF0YSI6eyJ1c2VyaWQiOjR9fQ.yLIYMDhekjIpi9_L6D1XJrxTWi2tHZ3blxxv3qXnRJg";
 //刷新加载
         smartRefreshLayout.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
             @Override
@@ -166,7 +166,9 @@ token="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MTY4MjA2MTksImlhdCI6MTYx
                         }
                         data21.setLike_num(jsonObject23.getInt("like_num"));
                         JSONObject jsonObject24=jsonObject23.getJSONObject( "author");
+                        data21.setWriter_id(jsonObject24.getInt("id"));
                         data21.setWriter(jsonObject24.getString( "username"));
+                        data21.setPhoto(jsonObject24.getString("avatar"));
 
                         list.add(data21);
                     }

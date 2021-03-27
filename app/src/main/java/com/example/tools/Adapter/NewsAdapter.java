@@ -80,9 +80,8 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         if (holder instanceof NewsHolder){
 
             ((NewsHolder)holder).title.setText(list.get(i).getTitle());
-            ((NewsHolder)holder).writer.setText(list.get(i).getTitle());
+            ((NewsHolder)holder).writer.setText(list.get(i).getWriter());
             ((NewsHolder)holder).like_num.setText(list.get(i).getLike_num()+"");
-
                     Glide.with(context)
                     .load(list.get(i).getNews_pics_set())
                     .error(R.drawable.error)
@@ -95,6 +94,9 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 public void onClick(View v) {
                     Intent intent=new Intent(context,NewsDetailsActivity.class);
                     intent.putExtra("id",list.get(i).getNew_Id());
+                    intent.putExtra("user_id",list.get(i).getWriter_id());
+                    intent.putExtra("writer",list.get(i).getWriter());
+                    intent.putExtra("photo",list.get(i).getPhoto());
                     context.startActivity(intent);
                 }
             });

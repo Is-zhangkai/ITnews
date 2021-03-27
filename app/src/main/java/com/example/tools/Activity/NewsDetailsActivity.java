@@ -53,8 +53,7 @@ public class NewsDetailsActivity extends AppCompatActivity {
     int day,month;
     private Boolean refresh=true;
     private String title,writer,time;
-    private String token="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MTY4MjA2MTksImlhdCI6MTYxNjczNDIxOSwiaXNzIjoicnVhIiwiZGF0YSI6eyJ1c2VyaWQiOjR9fQ.XIsuSPOf_ruKZKosQMBZk28dgjEM3-kKXOqovUMy9ME";
-
+    private String token= "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MTY4NjAyMDAsImlhdCI6MTYxNjc3MzgwMCwiaXNzIjoicnVhIiwiZGF0YSI6eyJ1c2VyaWQiOjR9fQ.yLIYMDhekjIpi9_L6D1XJrxTWi2tHZ3blxxv3qXnRJg";
 
     @Override
     protected void onDestroy() {
@@ -363,37 +362,44 @@ public class NewsDetailsActivity extends AppCompatActivity {
 
 
     public void GetComments(final List<Comments> list){
-        Utils.get_token("http://122.9.2.27/api/news/info//comment?page=1&size=" + size, token, new Utils.OkhttpCallBack() {
+        Utils.get_token("http://122.9.2.27/api/news/info/"+id+"/comment?page=1&size=" + size, token, new Utils.OkhttpCallBack() {
             @Override
             public void onSuccess(Response response) {
                 try {
-                    JSONObject jsonObject1=new JSONObject(Objects.requireNonNull(response.body()).string());
+                    String data=Objects.requireNonNull(response.body()).string();
+                    Log.i("asd",data);
+                    JSONObject jsonObject1=new JSONObject(data);
                     JSONObject jsonObject2=jsonObject1.getJSONObject("data");
                     Log.i("asd",jsonObject1.getString("msg"));
 
-                    JSONArray jsonArray2=jsonObject2.getJSONArray("comments");
-                    for(int i=0;i<jsonArray2.length();i++){
-                        Comments comments=new Comments();
-                        JSONObject jsonObject3=jsonArray2.getJSONObject(i);
-                        comments.setComment_writer(jsonObject3.getString("username"));
-                        comments.setComment_content(jsonObject3.getString("content"));
+                    if (jsonObject1.getString("msg").equals("暂无评论")){
+                        Comments comments = new Comments();
+                        comments.setNoComments("暂无评论！");
                         list.add(comments);
-                    }
-
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-
-                            if (refresh){
-                                commentAdapter = new CommentAdapter(NewsDetailsActivity.this, list);
-                                recyclerView.setAdapter(commentAdapter);
-                            }else {
-                                commentAdapter.addData(list);
-                            }
-
-
+                    } else {
+                        JSONArray jsonArray2 = jsonObject2.getJSONArray("comments");
+                        for (int i = 0; i < jsonArray2.length(); i++) {
+                            Comments comments = new Comments();
+                            JSONObject jsonObject3 = jsonArray2.getJSONObject(i);
+                            comments.setComment_writer(jsonObject3.getString("username"));
+                            comments.setComment_content(jsonObject3.getString("content"));
+                            list.add(comments);
                         }
-                    });
+                    }
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+
+                                if (refresh) {
+                                    commentAdapter = new CommentAdapter(NewsDetailsActivity.this, list);
+                                    recyclerView.setAdapter(commentAdapter);
+                                } else {
+                                    commentAdapter.addData(list);
+                                }
+
+
+                            }
+                        });
 
 
 

@@ -10,10 +10,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.PagerAdapter;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.example.tools.Activity.NewsDetailsActivity;
 import com.example.tools.Activity.WriteActivity;
@@ -22,7 +24,10 @@ import com.example.tools.Adapter.PaperAdapter;
 import com.example.tools.R;
 import com.example.tools.Utils;
 import com.example.tools.tools.Comments;
+import com.example.tools.tools.Data;
+import com.example.tools.tools.MyNews;
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -61,7 +66,7 @@ public class MyPaperFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
 
-        go_edit=getActivity().findViewById(R.id.go_edit);
+        go_edit= Objects.requireNonNull(getActivity()).findViewById(R.id.go_edit);
         go_edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -73,20 +78,22 @@ public class MyPaperFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
 
-        token= "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MTY4MjA2MTksImlhdCI6MTYxNjczNDIxOSwiaXNzIjoicnVhIiwiZGF0YSI6eyJ1c2VyaWQiOjR9fQ.XIsuSPOf_ruKZKosQMBZk28dgjEM3-kKXOqovUMy9ME";
+        token= "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MTY4NjAyMDAsImlhdCI6MTYxNjc3MzgwMCwiaXNzIjoicnVhIiwiZGF0YSI6eyJ1c2VyaWQiOjR9fQ.yLIYMDhekjIpi9_L6D1XJrxTWi2tHZ3blxxv3qXnRJg";
+
+
 
 
 
 
         //加载新闻
 
-        List<Map<String, Object>> list=new ArrayList<>();
+        List<MyNews> list=new ArrayList<>();
         GetNews(list);
 
 
     }
 
-    public void GetNews(final List<Map<String, Object>> list){
+    public void GetNews(final  List<MyNews> list){
 
         try {
             Utils.get_token("http://122.9.2.27/api/self/news-ids", token, new Utils.OkhttpCallBack() {
@@ -95,20 +102,27 @@ public class MyPaperFragment extends Fragment {
                     try {
                         JSONObject jsonObject=new JSONObject(response.body().string());
                         String msg=jsonObject.getString("msg");
+                        Log.i("asd",msg);
                         JSONObject jsonObject1=jsonObject.getJSONObject("data");
                         JSONArray jsonArray=jsonObject1.getJSONArray("news");
+                        Log.i("asd",jsonArray.length()+"");
+                        if (jsonArray.length()!=0){
                         for (int i=0;i<jsonArray.length();i++){
                             JSONObject jsonObject2=jsonArray.getJSONObject(i);
-                            Map<String,Object> map=new HashMap<String, Object>();
-                            int id=jsonObject2.getInt("id");
-                            String title=jsonObject2.getString("title");
-                            map.put("id", id);
-                            map.put("title",title);
-                           list.add(map);
-                        }
-                        getActivity().runOnUiThread(new Runnable() {
+                            MyNews news=new MyNews();
+
+                            news.setTitle(jsonObject2.getString("title"));
+                            news.setId(jsonObject2.getInt("id"));
+                            JSONArray jsonArray1=jsonObject2.getJSONArray("news_pic_set");
+                            news.setImg(jsonArray1.getString(0));
+                            news.setTag(jsonObject2.getInt("tag_type"));
+
+                            list.add(news);
+                        }}else {  MyNews news=new MyNews();news.setNo("no");list.add(news);}
+                        Objects.requireNonNull(getActivity()).runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+                                Log.i("asd",list.size()+"");
                                 adapter= new PaperAdapter(getActivity(), list);
                                 recyclerView.setAdapter(adapter);
                             }
@@ -126,6 +140,12 @@ public class MyPaperFragment extends Fragment {
                         @Override
                         public void run() {
 
+                            MyNews myNews=new MyNews();
+                            myNews.setError("error");
+                            list.add(myNews);
+                            adapter= new PaperAdapter(getActivity(), list);
+                            recyclerView.setAdapter(adapter);
+                            Toast.makeText(getContext(),"连接失败，请刷新重试",Toast.LENGTH_SHORT).show();
 
                         }
                     });

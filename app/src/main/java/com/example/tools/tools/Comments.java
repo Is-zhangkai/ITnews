@@ -24,8 +24,16 @@ public class Comments {
     private int author_id;
     private String title;
     private List<String> pics;
-    private String content,comment_writer,comment_content,error;
+    private String content,comment_writer,comment_content,error,noComments;
 
+
+    public String getNoComments() {
+        return noComments;
+    }
+
+    public void setNoComments(String noComments) {
+        this.noComments = noComments;
+    }
 
     public String getError() {
         return error;

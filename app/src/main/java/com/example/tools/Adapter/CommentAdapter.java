@@ -23,6 +23,7 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     public static final int TYPE_HEADER = 0; //说明是带有Header的
     public static final int TYPE_NORMAL = 1;
+    public static final int TYPE_no =3;
     private boolean focus;
     private Context context;
     private GridViewAdapter gridAdpter;
@@ -49,12 +50,18 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     /** 重写这个方法,通过判断item的类型，从而绑定不同的view * */
     @Override
     public int getItemViewType(int i) {
+        if (list.get(i).getNoComments()!=null)
+        {
+            return TYPE_no;
+        }  else {
+
         if (i>0 ){
             return TYPE_NORMAL;
         }
         if (i == 0){
             return TYPE_HEADER;
-        }
+        }}
+
         return super.getItemViewType(i);
     }
 
@@ -64,6 +71,10 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view=null;
         RecyclerView.ViewHolder holder=null;
+        if (i==TYPE_no){
+            view= LayoutInflater.from(context).inflate(R.layout.item_no,viewGroup,false);
+            holder= new ViewHolderNo(view);
+        }
         if (i==TYPE_NORMAL){
             view= LayoutInflater.from(context).inflate(R.layout.item_comments,viewGroup,false);
             holder= new ViewHolderComments(view);}
@@ -85,27 +96,32 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         }else if (holder instanceof ViewHolderNews){
             ( (ViewHolderNews)holder).title.setText(list.get(i).getTitle());
 
-            List<String> imglist=new ArrayList<>();
+//            List<String> imglist=new ArrayList<>();
+//
+//            imglist.add( "https://pic3.zhimg.com/v2-a1019116672185fdfc7616fc6432f8f7.jpg?source=8673f162");
+//            imglist.add("https://pic4.zhimg.com/v2-f684b055b954c7f3e25572c3ddda65b2.jpg?source=8673f162");
+//            imglist.add( "https://pic4.zhimg.com/v2-99b0bec360093b88f30d59bde9327f94.jpg?source=8673f162");
+//            imglist.add("https://pic1.zhimg.com/v2-f028176a557874d28d5cabe118415497.jpg?source=8673f162");
+//            imglist.add( "https://pic3.zhimg.com/v2-a1019116672185fdfc7616fc6432f8f7.jpg?source=8673f162");
+//            imglist.add("https://pic4.zhimg.com/v2-f684b055b954c7f3e25572c3ddda65b2.jpg?source=8673f162");
 
-            imglist.add( "https://pic3.zhimg.com/v2-a1019116672185fdfc7616fc6432f8f7.jpg?source=8673f162");
-            imglist.add("https://pic4.zhimg.com/v2-f684b055b954c7f3e25572c3ddda65b2.jpg?source=8673f162");
-            imglist.add( "https://pic4.zhimg.com/v2-99b0bec360093b88f30d59bde9327f94.jpg?source=8673f162");
-            imglist.add("https://pic1.zhimg.com/v2-f028176a557874d28d5cabe118415497.jpg?source=8673f162");
-            imglist.add( "https://pic3.zhimg.com/v2-a1019116672185fdfc7616fc6432f8f7.jpg?source=8673f162");
-            imglist.add("https://pic4.zhimg.com/v2-f684b055b954c7f3e25572c3ddda65b2.jpg?source=8673f162");
+            if (list.get(i).getPics()!=null){
             gridAdpter = new GridViewAdapter(context,list.get(i).getPics());
-            ( (ViewHolderNews)holder).gridView.setAdapter(gridAdpter);
+            ( (ViewHolderNews)holder).gridView.setAdapter(gridAdpter);}
 
 
             //关注按钮
             ( (ViewHolderNews)holder).btn_focus.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+
+
                     if (focus){focus=false;
                     ( (ViewHolderNews)holder).btn_focus.setBackgroundResource(R.drawable.btn_focus_fill);
                     ( (ViewHolderNews)holder).btn_focus.setText("关注");
                     ( (ViewHolderNews)holder).btn_focus.setTextColor(context.getResources().getColor(R.color.white));
                     }else {focus=true;
+
                     ( (ViewHolderNews)holder).btn_focus.setBackgroundResource(R.drawable.button_focus);
                     ( (ViewHolderNews)holder).btn_focus.setText("已关注");
                     ( (ViewHolderNews)holder).btn_focus.setTextColor(context.getResources().getColor(R.color.gradientstart));}
@@ -131,6 +147,15 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         public ViewHolderComments(@NonNull View itemView) {
             super(itemView);
             comment=itemView.findViewById(R.id.comments);
+        }
+    }
+
+
+    public static class ViewHolderNo extends RecyclerView.ViewHolder {
+
+        public ViewHolderNo(@NonNull View itemView) {
+            super(itemView);
+
         }
     }
 

@@ -23,13 +23,30 @@ public class Data {
     private int like_num;
     private String create_time;
     private int star_num;
-    private int news_id;
+    private int news_id,writer_id;
     private String title;
     private String content;
     private int status;
     private String writer;
     private String error;
+    private String photo;
 
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
+    }
+
+    public String getPhoto() {
+        return photo;
+    }
+
+    public int getWriter_id() {
+        return writer_id;
+    }
+
+    public void setWriter_id(int writer_id) {
+        this.writer_id = writer_id;
+    }
 
     public void setError(String error) {
         this.error = error;
