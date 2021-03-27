@@ -3,12 +3,6 @@ package com.example.tools.SQLite;
 import android.app.Application;
 import android.content.Context;
 
-import org.xutils.DbManager;
-import org.xutils.x;
-
-import java.util.ArrayList;
-import java.util.List;
-
 public class MessageDate extends Application {
     private Context context;
     private int all_msg;

@@ -69,6 +69,7 @@
             android:layout_marginBottom="9dp"
             android:layout_toRightOf="@+id/textView5"
             android:text="用户名"
+            android:maxLength="9"
             android:textColor="#66000000"
             android:textSize="12sp" />
 

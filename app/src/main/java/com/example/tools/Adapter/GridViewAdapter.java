@@ -59,6 +59,7 @@ public class GridViewAdapter extends BaseAdapter {
 
 
 
+
         //placeholder()是图片的占位符，网络还没下载下来的时候占着位置
         //centerCrop()缓存
         Glide.with(context).load(list.get(position)).placeholder(R.mipmap.ic_launcher).centerCrop().into(holder.imageView);
@@ -74,6 +75,8 @@ public class GridViewAdapter extends BaseAdapter {
 
         return convertView;
     }
+
+
 
     public class ViewHolder
     {
