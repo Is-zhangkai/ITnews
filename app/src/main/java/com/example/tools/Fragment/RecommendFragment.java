@@ -40,7 +40,7 @@ public class RecommendFragment extends Fragment {
     private RecyclerView recyclerView;
     private NewsAdapter adapter;
     private SmartRefreshLayout smartRefreshLayout;
- //   private MyData data=new MyData(getContext());
+
     private String token;
     private int page=1,size=4,o_page;
     private Boolean refresh=true;
@@ -59,10 +59,9 @@ public class RecommendFragment extends Fragment {
         smartRefreshLayout= view.findViewById(R.id.new_srl1);
         recyclerView = view.findViewById(R.id.new_recy1);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        MyData data=new MyData(getContext());
+        token=data.load_token();
 
-      //  token=data.load_token();
-     //  Log.i("asd",token);
-token= "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MTY4NjAyMDAsImlhdCI6MTYxNjc3MzgwMCwiaXNzIjoicnVhIiwiZGF0YSI6eyJ1c2VyaWQiOjR9fQ.yLIYMDhekjIpi9_L6D1XJrxTWi2tHZ3blxxv3qXnRJg";
 //刷新加载
         smartRefreshLayout.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
             @Override
