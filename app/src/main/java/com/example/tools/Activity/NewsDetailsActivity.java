@@ -49,7 +49,7 @@ public class NewsDetailsActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private SmartRefreshLayout smartRefreshLayout;
     private CommentAdapter commentAdapter;
-    private boolean like,collection;
+    private boolean like=false,oldLike=false,old_collection=false,collection=false;
     private Button btn_like,btn_collection;
     private int id,user_id,size=3,like_nummber,refresh_num=0;
     int day,month;
@@ -62,8 +62,9 @@ public class NewsDetailsActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
 
+        refresh_num=0;
         //点赞
-        if (like){
+        if (like!=oldLike){
         try {
             DbManager dbManager= x.getDb(((myApplication)getApplicationContext()).getDaoConfig());
             operation operation=new operation();
@@ -101,7 +102,7 @@ public class NewsDetailsActivity extends AppCompatActivity {
         } catch (Exception e) { e.printStackTrace(); }}
 
         //收藏
-        if (collection){
+        if (collection!=old_collection){
         try {
             DbManager dbManager= x.getDb(((myApplication)getApplicationContext()).getDaoConfig());
             operation operation=new operation();
@@ -160,9 +161,9 @@ public class NewsDetailsActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(NewsDetailsActivity.this));
 
 
-        id = getIntent().getIntExtra("id", 1);
+        id = getIntent().getIntExtra("id", 0);
         writer=getIntent().getStringExtra("writer");
-        user_id=getIntent().getIntExtra("user_id",1);
+        user_id=getIntent().getIntExtra("user_id",0);
         photo=getIntent().getStringExtra("photo");
 
 
@@ -323,8 +324,14 @@ public class NewsDetailsActivity extends AppCompatActivity {
 
 
                         comments.setTag(jsonObject2.getInt("tag"));
+                        Log.i("asdq",jsonObject2.getInt("isLike")+""+jsonObject2.getInt("like_num")+jsonObject2.getInt("isStar"));
                         if (refresh_num==0){
-                        like_nummber=jsonObject2.getInt("like_num");}
+                        like_nummber=jsonObject2.getInt("like_num");
+                        if (jsonObject2.getInt("isLike")==1){
+                            like=true; oldLike=true;}
+                        if (jsonObject2.getInt("isStar")==1){
+                            collection=true;old_collection=true;
+                        }}
 
 
                         comments.setComment_num(jsonObject2.getInt( "comment_num"));
@@ -399,8 +406,14 @@ public class NewsDetailsActivity extends AppCompatActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                if (refresh_num==0){Like_num.setText(like_nummber+"");}
-                                if (refresh) {
+
+                                if (refresh) {if (refresh_num==0){Like_num.setText(like_nummber+"");
+                                    if (like){  btn_like.setBackgroundResource(R.drawable.like_fill);
+                                    }else {  btn_like.setBackgroundResource(R.drawable.like_nor);}
+                                    if (collection){  btn_collection.setBackgroundResource(R.drawable.collection_fill);
+                                    }else {  btn_collection.setBackgroundResource(R.drawable.collection_nor);}
+
+                                }
                                     commentAdapter = new CommentAdapter(NewsDetailsActivity.this, list);
                                     recyclerView.setAdapter(commentAdapter);
                                 } else {
