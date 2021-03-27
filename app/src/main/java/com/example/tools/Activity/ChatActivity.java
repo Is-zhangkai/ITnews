@@ -1,6 +1,7 @@
 package com.example.tools.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tools.Adapter.ChatAdapter;
@@ -42,6 +43,7 @@ public class ChatActivity extends AppCompatActivity {
         int n=bd.getInt("num");
         chat_back=findViewById(R.id.chat_back);
         chat_name=findViewById(R.id.chat_name);
+        recyclerView=findViewById(R.id.chat_rv);
         chat_name.setText(name);
         DbManager dbManager= null;
         try {
@@ -49,18 +51,20 @@ public class ChatActivity extends AppCompatActivity {
             List<operation> operations=new ArrayList<>();
             operations=dbManager.selector(operation.class).orderBy("id",true).limit(1000).where("type","=",n).findAll();
             dbManager.update(operation.class, WhereBuilder.b("type","=",n),new KeyValue("read",0));
-            for(int i=0;i<=operations.size();i++)
+            for(int i=0;i<operations.size();i++)
             {
                 Map<String,Object> map=new HashMap<>();
                 map.put("date",operations.get(i).getDate());
                 map.put("title",operations.get(i).getTitle());
+                map.put("type",n);
                 list.add(map);
-                chatAdapter=new ChatAdapter(ChatActivity.this,list);
-                recyclerView.setAdapter(chatAdapter);
             }
         } catch (DbException e) {
             e.printStackTrace();
         }
+        chatAdapter=new ChatAdapter(ChatActivity.this,list);
+        recyclerView.setAdapter(chatAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(ChatActivity.this));
         chat_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

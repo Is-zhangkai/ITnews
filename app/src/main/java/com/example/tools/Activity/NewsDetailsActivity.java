@@ -163,8 +163,9 @@ public class NewsDetailsActivity extends AppCompatActivity {
         btn_collection=findViewById(R.id.news_collection);
         recyclerView=this.findViewById(R.id.details_recycler);
         smartRefreshLayout=findViewById(R.id.comment_srl);
-        day= Calendar.DAY_OF_MONTH;
-        month=Calendar.MONTH;
+        Calendar c=Calendar.getInstance();
+        day=c.get(Calendar.DAY_OF_MONTH);
+        month=c.get(Calendar.MONTH)+1;
         recyclerView.setLayoutManager(new LinearLayoutManager(NewsDetailsActivity.this));
         id = getIntent().getIntExtra("id", 1);
         writer=getIntent().getStringExtra("writer");
