@@ -12,13 +12,48 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.tools.Activity.ChatActivity;
+import com.example.tools.Activity.MainActivity;
 import com.example.tools.Activity.WriteActivity;
 import com.example.tools.R;
 
 import java.util.List;
 import java.util.Map;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.os.Environment;
+import android.os.Looper;
+import android.provider.DocumentsContract;
+import android.provider.MediaStore;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.loader.content.CursorLoader;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
+import com.google.gson.Gson;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
+
 public class NineGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    OnAddPicturesListener listener;
     private WriteActivity context;
     private List<Map<String,Object>> list;
     private View inflater;
@@ -48,12 +83,12 @@ public class NineGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if(viewType==no)
         {
-        inflater= LayoutInflater.from(context).inflate(R.layout.item_add,parent,false);
-        RecyclerView.ViewHolder ViewHolder = new NineGridAdapter.ViewHolder(inflater);
-        return ViewHolder;}
+            inflater= LayoutInflater.from(context).inflate(R.layout.item_add,parent,false);
+            RecyclerView.ViewHolder ViewHolder = new NineGridAdapter.ViewHolder(inflater);
+            return ViewHolder;}
         else
         {
-            inflater= LayoutInflater.from(context).inflate(R.layout.item_addimage,parent,false);
+            inflater= LayoutInflater.from(context).inflate(R.layout.item_show,parent,false);
             RecyclerView.ViewHolder showHolder=new NineGridAdapter.showHolder(inflater);
             return showHolder;
         }
@@ -69,14 +104,14 @@ public class NineGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             viewHolder.add_Image.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    listener.onAdd();
                 }
             });
         }
         else if(viewType==yes)
         {
             showHolder showHolder=(NineGridAdapter.showHolder)holder;
-            Glide.with(context).load(list.get(position).get("image")).into(showHolder.show_image);
+            Glide.with(context).load(list.get(position).get("uri")).into(showHolder.show_image);
         }
         else
         {
@@ -89,6 +124,9 @@ public class NineGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public int getItemCount() {
         return list.size();
     }
+
+
+
     class ViewHolder extends RecyclerView.ViewHolder {
         RelativeLayout add_Image;
 
@@ -106,4 +144,25 @@ public class NineGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             show_image=itemView.findViewById(R.id.show_newsImage);
         }
     }
-}
+    public void setOnAddPicturesListener(OnAddPicturesListener listener) {
+        this.listener = listener;
+    }
+    private class PicturesClickListener implements View.OnClickListener {
+
+        int position;
+
+        public PicturesClickListener(int position) {
+            this.position = position;
+        }
+
+        @Override
+        public void onClick(View view) {
+            switch (view.getId()) {
+                case R.id.add_newsImage:
+                    //点击添加按钮
+                    if (listener != null)
+                        listener.onAdd();
+                    break;
+            }
+        }
+    }}

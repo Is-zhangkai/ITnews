@@ -37,6 +37,13 @@
             android:background="#F2F2F2">
 
         </RelativeLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/chat_top"
+            android:id="@+id/chat_rv">
+
+        </androidx.recyclerview.widget.RecyclerView>
     </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
