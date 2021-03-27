@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.tools.Adapter.CommentAdapter;
 import com.example.tools.Adapter.NewsAdapter;
 import com.example.tools.R;
+import com.example.tools.SQLite.myApplication;
 import com.example.tools.Utils;
 import com.example.tools.tools.Comments;
 import com.example.tools.tools.Data;
@@ -27,9 +28,15 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.xutils.DbManager;
+import com.example.tools.SQLite.operation;
+
+import org.xutils.ex.DbException;
+import org.xutils.x;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Objects;
 
@@ -43,6 +50,7 @@ public class NewsDetailsActivity extends AppCompatActivity {
     private boolean like,collection;
     private Button btn_like,btn_collection;
     private int id,size=3;
+    int day,month;
     private Boolean refresh=true;
     private String title,writer,time;
     private String token="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MTY4MjA2MTksImlhdCI6MTYxNjczNDIxOSwiaXNzIjoicnVhIiwiZGF0YSI6eyJ1c2VyaWQiOjR9fQ.XIsuSPOf_ruKZKosQMBZk28dgjEM3-kKXOqovUMy9ME";
@@ -55,6 +63,13 @@ public class NewsDetailsActivity extends AppCompatActivity {
         //点赞
         if (like){
         try {
+            DbManager dbManager= x.getDb(((myApplication)getApplicationContext()).getDaoConfig());
+            operation operation=new operation();
+            operation.setTitle(title);
+            operation.setType(2);
+            operation.setDate(month+"月"+day+"日");
+            operation.setRead(1);
+            dbManager.save(operation);
             String s=null;
             Utils.post_json(token, "http://122.9.2.27/api/news/operator/" + id + "/like", s, new Utils.OkhttpCallBack() {
                 @Override
@@ -95,6 +110,13 @@ public class NewsDetailsActivity extends AppCompatActivity {
         //收藏
         if (collection){
         try {
+            DbManager dbManager= x.getDb(((myApplication)getApplicationContext()).getDaoConfig());
+            operation operation=new operation();
+            operation.setTitle(title);
+            operation.setType(3);
+            operation.setDate(month+"月"+day+"日");
+            operation.setRead(1);
+            dbManager.save(operation);
             String s=null;
             Utils.post_json(token, "http://122.9.2.27/api/news/operator/" + id + "/star", s, new Utils.OkhttpCallBack() {
                 @Override
@@ -142,6 +164,8 @@ public class NewsDetailsActivity extends AppCompatActivity {
         btn_collection=findViewById(R.id.news_collection);
         recyclerView=this.findViewById(R.id.details_recycler);
         smartRefreshLayout=findViewById(R.id.comment_srl);
+        day= Calendar.DAY_OF_MONTH;
+        month=Calendar.MONTH;
         recyclerView.setLayoutManager(new LinearLayoutManager(NewsDetailsActivity.this));
         id = getIntent().getIntExtra("id", 1);
         writer=getIntent().getStringExtra("writer");
@@ -197,10 +221,21 @@ public class NewsDetailsActivity extends AppCompatActivity {
                                             @Override
                                             public void run() {
                                                 if (msg1.equals("成功")){
-
                                                     inputTextMsgDialog.clearText();
                                                     inputTextMsgDialog.dismiss();
                                                     time=Utils.getTime();
+                                                    DbManager dbManager= null;
+                                                    try {
+                                                        dbManager = x.getDb(((myApplication)getApplicationContext()).getDaoConfig());
+                                                        operation operation=new operation();
+                                                        operation.setTitle(title);
+                                                        operation.setType(3);
+                                                        operation.setDate(month+"月"+day+"日");
+                                                        operation.setRead(1);
+                                                        dbManager.save(operation);
+                                                    } catch (DbException e) {
+                                                        e.printStackTrace();
+                                                    }
                                                     Log.i("asd",time);
 
                                                 }

@@ -30,6 +30,7 @@ import android.widget.Toast;
 import com.example.tools.Adapter.NineGridAdapter;
 import com.example.tools.Adapter.OnAddPicturesListener;
 import com.example.tools.R;
+import com.example.tools.Utils;
 import com.google.gson.Gson;
 
 import java.io.File;
@@ -59,6 +60,7 @@ public class WriteActivity extends AppCompatActivity {
     private static final int RESULT_REQUEST_CODE = 2;
     private static final int TAKE_PHOTO = 3;
     final List<Map<String,Object>> list = new ArrayList<>();
+    private List<Map<String,Object>> IdList=new ArrayList<>();
 
     private void selectCamera() {
 
@@ -96,18 +98,41 @@ public class WriteActivity extends AppCompatActivity {
         switch (requestCode) {
 
             case RESULT_REQUEST_CODE:   //相册返回
-                final String selectPhoto = getRealPathFromUri(this,photoUri);
-                int size=list.size();
-                list.remove(size-1);
-                Map<String,Object> map=new HashMap<>();
-                map.put("type",1);
-                map.put("uri",photoUri);
-                list.add(map);
-                if(list.size()!=9) {
-                    Map<String, Object> map1 = new HashMap<>();
-                    map1.put("type", 1);
-                    list.add(map1);
+                final String selectPhoto = getRealPathFromUri(this,cropImgUri);
+
+                try {
+                    OkHttpClient client = new OkHttpClient().newBuilder()
+                            .build();
+                    MediaType mediaType = MediaType.parse("text/plain");
+                    RequestBody body = new MultipartBody.Builder().setType(MultipartBody.FORM)
+                            .addFormDataPart("img",selectPhoto,
+                                    RequestBody.create(MediaType.parse("application/octet-stream"),
+                                            new File(selectPhoto)))
+                            .addFormDataPart("type", "2")
+                            .build();
+                    Request request = new Request.Builder()
+                            .url("http://122.9.2.27/api/img-upload")
+                            .method("POST", body)
+                            .addHeader("Authorization", "")
+                            .addHeader("User-Agent", "apifox/1.0.0 (https://www.apifox.cn)")
+                            .build();
+
+                    Response response = client.newCall(request).execute();
+                    int size=list.size();
+                    list.remove(size-1);
+                    Map<String,Object> map=new HashMap<>();
+                    map.put("type",1);
+                    map.put("uri",photoUri);
+                    list.add(map);
+                    if(list.size()!=9) {
+                        Map<String, Object> map1 = new HashMap<>();
+                        map1.put("type", 1);
+                        list.add(map1);}
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
+
+
                 nineGridAdapter.notifyDataSetChanged();
 
                 break;
@@ -305,8 +330,25 @@ public class WriteActivity extends AppCompatActivity {
         nineGridAdapter.setOnAddPicturesListener(new OnAddPicturesListener() {
             @Override
             public void onAdd() {
-
+                final String way[] = new String[]{"        相机", "        相册"};
+                AlertDialog.Builder builder1 = new AlertDialog.Builder(WriteActivity.this);
+                builder1.setIcon(R.drawable.ic_launcher_foreground);
+                builder1.setTitle("选择上传方式:");
+                builder1.setItems(way, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (which == 0)
+                        {
+                            selectCamera();
+                        }
+                        else if(which==1)
+                        {
+                            selectPhoto();
+                        }
+                    }
+                });
             }
+
         });
     }
 }
