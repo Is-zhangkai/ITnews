@@ -18,7 +18,6 @@
             android:id="@+id/chat_head"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:src="@drawable/message_it"
             android:layout_centerVertical="true"
             android:layout_marginLeft="20dp">
         </ImageView>
