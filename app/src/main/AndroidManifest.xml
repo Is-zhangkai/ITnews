@@ -27,6 +27,7 @@
         <activity android:name=".Activity.NewsDetailsActivity">
         </activity>
         <activity android:name=".Activity.ChangePasswordActivity" />
+        <activity android:name=".Activity.ChangeActivity" />
         <activity android:name=".Activity.MyCollections" />
         <activity android:name=".Activity.AgreementActivity"></activity>
         <activity android:name=".Activity.MainActivity">

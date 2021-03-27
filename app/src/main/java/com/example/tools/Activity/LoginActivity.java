@@ -49,7 +49,8 @@ public class LoginActivity extends AppCompatActivity {
                 final String username=get_username.getText().toString();
                 final String password=get_password.getText().toString();
                 if(!checkUsername(username)){
-                    Toast.makeText(LoginActivity.this, "用户名应为6~12位字母或数字！", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "用户名应为" +
+                            "6~12位字母或数字！", Toast.LENGTH_SHORT).show();
                 }else if(!checkPassword(password)){
                     Toast.makeText(LoginActivity.this, "密码应为6~12位字母或数字！", Toast.LENGTH_SHORT).show();
                 }else {

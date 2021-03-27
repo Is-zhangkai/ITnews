@@ -9,18 +9,26 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CircleCrop;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.tools.Activity.ChangeActivity;
 import com.example.tools.Activity.LoginActivity;
 import com.example.tools.Activity.MyCollections;
 import com.example.tools.MyData;
 import com.example.tools.R;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 
@@ -34,13 +42,21 @@ public class UserFragment extends Fragment {
 
     private ConstraintLayout attentions;
     private ConstraintLayout fans;
-    private TextView attentions_num;
-    private TextView fans_num;
+    private TextView tv_attentions_num;
+    private TextView tv_fans_num;
     private TextView logout;
+    private TextView tv_name;
     private Button change;
     private ConstraintLayout history;
     private ConstraintLayout collection;
     private ConstraintLayout update;
+    private ImageView iv_head;
+    private String name;
+    private String info;
+    private String gender;
+    private int fans_num;
+    private int follow_num;
+    private String avatar;
 
     public UserFragment() {
         // Required empty public constructor
@@ -58,12 +74,17 @@ public class UserFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         attentions = view.findViewById(R.id.attention);
         fans = view.findViewById(R.id.fans);
+        iv_head = view.findViewById(R.id.imageView);
+        tv_attentions_num = view.findViewById(R.id.textView4);
+        tv_fans_num = view.findViewById(R.id.fn);
         logout = view.findViewById(R.id.textView16);
         change = view.findViewById(R.id.button);
         history = view.findViewById(R.id.constraintLayout2);
         collection = view.findViewById(R.id.constraintLayout3);
         update = view.findViewById(R.id.constraintLayout4);
         change = view.findViewById(R.id.button);
+        tv_name = view.findViewById(R.id.textView2);
+
     }
 
     @Override
@@ -183,11 +204,63 @@ public class UserFragment extends Fragment {
 
                         @Override
                         public void onResponse(Call call, Response response) throws IOException {
-                            Log.d("1233g", "onResponse: " + response.body().string());
+                            String responseData = response.body().string();
+                            Log.d("1233g", "onResponse: " + responseData);
+                            try {
+                                JSONObject jsonObject1 = new JSONObject(responseData);
+                                int code = jsonObject1.getInt("code");
+                                final String msg = jsonObject1.getString("msg");
+                                if (code != 1000) {
+                                    getActivity().runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Toast.makeText(getActivity(),msg, Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                                }else {
+                                    MyData data2 = new MyData(getActivity());
+                                    JSONObject jsonObject2 =jsonObject1.getJSONObject("data");
+
+                                    name = jsonObject2.getString("nickname");
+                                    if(name.length()>6){
+                                        name = name.substring(0,6);
+                                    }
+                                    info =jsonObject2.getString("info");
+                                    gender =jsonObject2.getString("gender");
+                                    fans_num =jsonObject2.getInt("fans_num");
+                                    follow_num =jsonObject2.getInt("follow_num");
+                                    avatar =jsonObject2.getString("avatar");
+                                    data2.save_attentions(follow_num);
+                                    data2.save_info(info);
+                                    data2.save_name(name);
+                                    data2.save_fans(fans_num);
+                                    data2.save_sex(gender);
+                                    data2.save_pic_url(avatar);
+                                    getActivity().runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            tv_fans_num.setText(""+fans_num);
+                                            tv_attentions_num.setText(""+follow_num);
+                                            tv_name.setText(name);
+                                            Glide.with(getContext()).load(avatar)
+                                                    .apply(RequestOptions.bitmapTransform(new CircleCrop()))
+                                                    .into(iv_head);
+                                        }
+                                    });
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+
+
                         }
                     });
                 }
             }).start();
         }
     }
+
+
+
 }

@@ -97,7 +97,9 @@ public class MainActivity extends AppCompatActivity {
 //            DbManager dbManager= x.getDb(((myApplication)getApplicationContext()).getDaoConfig());
 //            List<operation> operations=new ArrayList<>();
 //            operations=dbManager.selector(operation.class).orderBy("id",true).limit(1000).where("read","=",1).findAll();
+//            Log.d("12333",""+operations.size());
 //            messageDate.setAll_msg(operations.size());
+//
 //            List<operation> operations1=new ArrayList<>();
 //            operations1=dbManager.selector(operation.class).orderBy("id",true).limit(1000).where("type","=",2).where("read","=",1).findAll();
 //            messageDate.setLike_msg(operations1.size());

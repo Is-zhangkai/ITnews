@@ -33,8 +33,8 @@ public class MyData {
         mEditor.putBoolean("CHECK", check);
         mEditor.commit();
     }
-    public void save_sex(int sex) {
-        mEditor.putInt("SEX",sex);
+    public void save_sex(String sex) {
+        mEditor.putString("SEX",sex);
         mEditor.commit();
     }
 
@@ -63,15 +63,20 @@ public class MyData {
         mEditor.putInt("MY",my);
         mEditor.commit();
     }
+    public void save_pic_url(String url){
+        mEditor.putString("URL",url);
+        mEditor.commit();
+    }
 
+    public String load_pic_url(){return  mPreferences.getString("URL","NO");}
     public String load_token() {
         return mPreferences.getString("TOKEN", "NO");
     }
     public Boolean load_check() {
         return mPreferences.getBoolean("CHECK", false);
     }
-    public int load_sex() {
-        return mPreferences.getInt("SEX", 0);
+    public String load_sex() {
+        return mPreferences.getString("SEX", "未知");
     }
     public Boolean load_net() {
         return mPreferences.getBoolean("NET", true);
