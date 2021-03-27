@@ -12,9 +12,16 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <uses-permission android:name="android.permission.CAMERA" />
+<!--    <uses-permission android:name="android.permission.CAMERA" />-->
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+    <uses-permission android:name="android.permission.REPLACE_EXISTING_PACKAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
 
     <application
+
+        android:requestLegacyExternalStorage="true"
         android:allowBackup="true"
         android:name=".SQLite.myApplication"
         android:icon="@drawable/itnews"
@@ -27,6 +34,7 @@
         <activity android:name=".Activity.NewsDetailsActivity">
         </activity>
         <activity android:name=".Activity.ChangePasswordActivity" />
+        <activity android:name=".Activity.ChangeActivity" />
         <activity android:name=".Activity.MyCollections" />
         <activity android:name=".Activity.AgreementActivity"></activity>
         <activity android:name=".Activity.MainActivity">

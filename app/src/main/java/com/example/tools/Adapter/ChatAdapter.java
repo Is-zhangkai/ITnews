@@ -37,7 +37,7 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         ViewHolder viewholder = (ViewHolder) holder;
         viewholder.date.setText(list.get(position).get("date").toString());
-        String k=list.get(position).get("type").toString();
+            String k=list.get(position).get("type").toString();
             if(k.equals("2"))
             {
                 viewholder.head.setImageResource(R.drawable.message_like);
