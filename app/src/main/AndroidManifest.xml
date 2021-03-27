@@ -24,11 +24,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".Activity.ChatActivity"></activity>
-        <activity android:name=".Activity.MainActivity">
+        <activity android:name=".Activity.NewsDetailsActivity">
         </activity>
         <activity android:name=".Activity.ChangePasswordActivity" />
         <activity android:name=".Activity.AgreementActivity"></activity>
-        <activity android:name=".Activity.NewsDetailsActivity">
+        <activity android:name=".Activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

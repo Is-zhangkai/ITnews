@@ -119,19 +119,54 @@ public class MainActivity extends AppCompatActivity {
             DbManager dbManager= x.getDb(((myApplication)getApplicationContext()).getDaoConfig());
             List<operation> operations=new ArrayList<>();
             operations=dbManager.selector(operation.class).orderBy("id",true).limit(1000).where("read","=",1).findAll();
-            messageDate.setAll_msg(operations.size());
+            if (operations==null)
+            {
+                messageDate.setAll_msg(0);
+            }
+            else
+            {
+                messageDate.setAll_msg(operations.size());
+            }
             List<operation> operations1=new ArrayList<>();
             operations1=dbManager.selector(operation.class).orderBy("id",true).limit(1000).where("type","=",2).where("read","=",1).findAll();
-            messageDate.setLike_msg(operations1.size());
+            if (operations1==null)
+            {
+                messageDate.setLike_msg(0);
+            }
+            else
+            {
+                messageDate.setLike_msg(operations1.size());;
+            }
             List<operation> operations2=new ArrayList<>();
             operations2=dbManager.selector(operation.class).orderBy("id",true).limit(1000).where("type","=",3).where("read","=",1).findAll();
-            messageDate.setCollect_msg(operations2.size());
+            if (operations2==null)
+            {
+                messageDate.setCollect_msg(0);
+            }
+            else
+            {
+                messageDate.setCollect_msg(operations2.size());;
+            }
             List<operation> operations3=new ArrayList<>();
             operations3=dbManager.selector(operation.class).orderBy("id",true).limit(1000).where("type","=",4).where("read","=",1).findAll();
-            messageDate.setComment_msg(operations3.size());
+            if (operations3==null)
+            {
+                messageDate.setComment_msg(0);
+            }
+            else
+            {
+                messageDate.setComment_msg(operations3.size());;
+            }
             List<operation> operations4=new ArrayList<>();
             operations4=dbManager.selector(operation.class).orderBy("id",true).limit(1000).where("type","=",5).where("read","=",1).findAll();
-            messageDate.setFocus_msg(operations4.size());
+            if (operations4==null)
+            {
+                messageDate.setFocus_msg(0);
+            }
+            else
+            {
+                messageDate.setFocus_msg(operations4.size());;
+            }
         } catch (DbException e) {
             e.printStackTrace();
         }
