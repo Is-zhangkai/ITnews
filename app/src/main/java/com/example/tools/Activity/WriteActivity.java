@@ -31,6 +31,7 @@ import com.example.tools.Adapter.NineGridAdapter;
 import com.example.tools.Adapter.OnAddPicturesListener;
 import com.example.tools.R;
 import com.example.tools.Utils;
+import com.example.tools.tools.ImgResponse;
 import com.google.gson.Gson;
 
 import java.io.File;
@@ -114,20 +115,27 @@ public class WriteActivity extends AppCompatActivity {
                             .url("http://122.9.2.27/api/img-upload")
                             .method("POST", body)
                             .addHeader("Authorization", "")
-                            .addHeader("User-Agent", "apifox/1.0.0 (https://www.apifox.cn)")
                             .build();
 
                     Response response = client.newCall(request).execute();
+                    String responseData = response.body().string();
+                    Gson gson=new Gson();
+                    ImgResponse imgResponse=gson.fromJson(responseData,ImgResponse.class);
+                    String url=imgResponse.getData().getImg_url();
+                    int id=imgResponse.getData().getImg_id();
                     int size=list.size();
                     list.remove(size-1);
                     Map<String,Object> map=new HashMap<>();
                     map.put("type",1);
-                    map.put("uri",photoUri);
+                    map.put("uri",url);
                     list.add(map);
+                    Map<String,Object> map1=new HashMap<>();
+                    map1.put("id",id);
+                    IdList.add(map1);
                     if(list.size()!=9) {
-                        Map<String, Object> map1 = new HashMap<>();
+                        Map<String, Object> map2 = new HashMap<>();
                         map1.put("type", 1);
-                        list.add(map1);}
+                        list.add(map2);}
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -171,8 +179,8 @@ public class WriteActivity extends AppCompatActivity {
 //设置源地址uri
         intent.setDataAndType(photoUri, "image/*");
         intent.putExtra("crop", "true");
-        intent.putExtra("aspectX", 1);
-        intent.putExtra("aspectY", 1);
+        intent.putExtra("aspectX", 200);
+        intent.putExtra("aspectY", 200);
         intent.putExtra("outputX", 200);
         intent.putExtra("outputY", 200);
         intent.putExtra("scale", true);
@@ -313,12 +321,7 @@ public class WriteActivity extends AppCompatActivity {
                 finish();
             }
         });
-        post.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-            }
-        });
     }
 
     @Override
