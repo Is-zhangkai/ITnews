@@ -22,10 +22,26 @@ public class Comments {
     private int star_num;
     private int tag;
     private int author_id;
-    private String title;
+    private String title,writer,photo;
     private List<String> pics;
     private String content,comment_writer,comment_content,error,noComments;
 
+
+    public void setWriter(String writer) {
+        this.writer = writer;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
+    }
+
+    public String getPhoto() {
+        return photo;
+    }
+
+    public String getWriter() {
+        return writer;
+    }
 
     public String getNoComments() {
         return noComments;

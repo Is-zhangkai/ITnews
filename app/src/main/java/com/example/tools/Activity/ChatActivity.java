@@ -54,6 +54,7 @@ public class ChatActivity extends AppCompatActivity {
                 Map<String,Object> map=new HashMap<>();
                 map.put("date",operations.get(i).getDate());
                 map.put("title",operations.get(i).getTitle());
+                map.put("type",n);
                 list.add(map);
                 chatAdapter=new ChatAdapter(ChatActivity.this,list);
                 recyclerView.setAdapter(chatAdapter);

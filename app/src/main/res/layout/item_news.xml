@@ -50,15 +50,16 @@
             android:layout_alignParentEnd="true"
             app:srcCompat="@drawable/itnews" />
 
-        <ImageView
+        <TextView
             android:id="@+id/imageView3"
-            android:layout_width="20dp"
+            android:layout_width="wrap_content"
             android:layout_height="20dp"
+            android:text="标签："
             android:layout_alignParentBottom="true"
             android:layout_marginStart="30dp"
             android:layout_marginBottom="7dp"
             android:layout_toEndOf="@+id/textView6"
-            android:background="@drawable/like_nor"/>
+          />
 
         <TextView
             android:id="@+id/textView6"

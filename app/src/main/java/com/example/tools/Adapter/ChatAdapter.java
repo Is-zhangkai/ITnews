@@ -37,22 +37,23 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         ViewHolder viewholder = (ViewHolder) holder;
         viewholder.date.setText(list.get(position).get("date").toString());
-            if(list.get(position).get("type")==2)
+        String k=list.get(position).get("type").toString();
+            if(k.equals("2"))
             {
                 viewholder.head.setImageResource(R.drawable.message_like);
                 viewholder.msg.setText("您点赞了《"+list.get(position).get("title")+"》这篇文章 ");
             }
-            else if(list.get(position).get("type")==3)
+            else if(k.equals("3"))
             {
                 viewholder.head.setImageResource(R.drawable.message_collect);
                 viewholder.msg.setText("您收藏了《"+list.get(position).get("title")+"》这篇文章 ");
             }
-            else if(list.get(position).get("type")==4)
+            else if(k.equals("4"))
             {
                 viewholder.head.setImageResource(R.drawable.message_comment);
                 viewholder.msg.setText("您评论了《"+list.get(position).get("title")+"》这篇文章 ");
             }
-            else if(list.get(position).get("type")==3)
+            else if(k.equals("5"))
             {
                 viewholder.head.setImageResource(R.drawable.message_focus);
                 viewholder.msg.setText("您关注了"+list.get(position).get("title")+" 这位作者 ");

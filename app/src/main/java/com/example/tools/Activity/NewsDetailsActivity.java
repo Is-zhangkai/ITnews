@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -49,10 +51,11 @@ public class NewsDetailsActivity extends AppCompatActivity {
     private CommentAdapter commentAdapter;
     private boolean like,collection;
     private Button btn_like,btn_collection;
-    private int id,size=3;
+    private int id,user_id,size=3,like_nummber,refresh_num=0;
     int day,month;
+    private TextView Like_num;
     private Boolean refresh=true;
-    private String title,writer,time;
+    private String title,writer,photo;
     private String token= "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MTY4NjAyMDAsImlhdCI6MTYxNjc3MzgwMCwiaXNzIjoicnVhIiwiZGF0YSI6eyJ1c2VyaWQiOjR9fQ.yLIYMDhekjIpi9_L6D1XJrxTWi2tHZ3blxxv3qXnRJg";
 
     @Override
@@ -78,15 +81,6 @@ public class NewsDetailsActivity extends AppCompatActivity {
                         final String msg2 = jsonObject21.getString("msg");
                         Log.i("asd", msg2);
 
-//                        runOnUiThread(new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                if (msg2.equals("点赞成功")){
-//                                   btn_like.setBackgroundResource(R.drawable.like_nor);
-//                                    btn_like.setBackgroundResource(R.drawable.like_fill);
-//                                }
-//                            }
-//                        });
 
 
                     } catch (Exception e) {
@@ -126,15 +120,12 @@ public class NewsDetailsActivity extends AppCompatActivity {
                         Log.i("asd", msg3);
 
 
-//                        runOnUiThread(new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                if (msg3.equals("成功")){
-//                                    if (collection){collection=false;  btn_collection.setBackgroundResource(R.drawable.collection_nor);
-//                                    }else {collection=true;  btn_collection.setBackgroundResource(R.drawable.collection_fill);}
-//                                }
-//                            }
-//                        });
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+
+                            }
+                        });
 
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -165,9 +156,15 @@ public class NewsDetailsActivity extends AppCompatActivity {
         smartRefreshLayout=findViewById(R.id.comment_srl);
         day= Calendar.DAY_OF_MONTH;
         month=Calendar.MONTH;
+        Like_num=findViewById(R.id.like_num);
         recyclerView.setLayoutManager(new LinearLayoutManager(NewsDetailsActivity.this));
+
+
         id = getIntent().getIntExtra("id", 1);
         writer=getIntent().getStringExtra("writer");
+        user_id=getIntent().getIntExtra("user_id",1);
+        photo=getIntent().getStringExtra("photo");
+
 
 
         List<Comments> list = new ArrayList<>();
@@ -185,6 +182,7 @@ public class NewsDetailsActivity extends AppCompatActivity {
 
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                refresh_num++;
                 refresh=true;
                 List<Comments> list = new ArrayList<>();
                 GetData(list);
@@ -219,10 +217,9 @@ public class NewsDetailsActivity extends AppCompatActivity {
                                         runOnUiThread(new Runnable() {
                                             @Override
                                             public void run() {
-                                                if (msg1.equals("成功")){
+                                                if (msg1.equals("评论成功")){
                                                     inputTextMsgDialog.clearText();
                                                     inputTextMsgDialog.dismiss();
-                                                    time=Utils.getTime();
                                                     DbManager dbManager= null;
                                                     try {
                                                         dbManager = x.getDb(((myApplication)getApplicationContext()).getDaoConfig());
@@ -235,7 +232,11 @@ public class NewsDetailsActivity extends AppCompatActivity {
                                                     } catch (DbException e) {
                                                         e.printStackTrace();
                                                     }
-                                                    Log.i("asd",time);
+
+                                                    refresh_num++;
+                                                    refresh=true;
+                                                    List<Comments> list = new ArrayList<>();
+                                                    GetData(list);
 
                                                 }
                                             }
@@ -272,8 +273,8 @@ public class NewsDetailsActivity extends AppCompatActivity {
         btn_like.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (like){like=false;  btn_like.setBackgroundResource(R.drawable.like_nor);
-                }else {like=true;  btn_like.setBackgroundResource(R.drawable.like_fill);}
+                if (like){like=false;  btn_like.setBackgroundResource(R.drawable.like_nor);like_nummber=like_nummber-1;Like_num.setText(like_nummber+"");
+                }else {like=true;  btn_like.setBackgroundResource(R.drawable.like_fill);like_nummber=like_nummber+1;Like_num.setText(like_nummber+"");}
 
             }
         });
@@ -319,10 +320,17 @@ public class NewsDetailsActivity extends AppCompatActivity {
                          title=jsonObject2.getString("title");
                         comments.setTitle(title);
                         comments.setContent(jsonObject2.getString( "content"));
+
+
                         comments.setTag(jsonObject2.getInt("tag"));
-                        comments.setLike_num(jsonObject2.getInt("like_num"));
+                        if (refresh_num==0){
+                        like_nummber=jsonObject2.getInt("like_num");}
+
+
                         comments.setComment_num(jsonObject2.getInt( "comment_num"));
                         comments.setStar_num(jsonObject2.getInt( "star_num"));
+                        comments.setPhoto(photo);
+                        comments.setWriter(writer);
                         final JSONArray jsonArray=jsonObject2.getJSONArray("pics");
                         if (jsonArray.length()!=0){
                         List<String> imglist=new ArrayList<>();
@@ -376,6 +384,7 @@ public class NewsDetailsActivity extends AppCompatActivity {
                         Comments comments = new Comments();
                         comments.setNoComments("暂无评论！");
                         list.add(comments);
+
                     } else {
                         JSONArray jsonArray2 = jsonObject2.getJSONArray("comments");
                         for (int i = 0; i < jsonArray2.length(); i++) {
@@ -383,13 +392,14 @@ public class NewsDetailsActivity extends AppCompatActivity {
                             JSONObject jsonObject3 = jsonArray2.getJSONObject(i);
                             comments.setComment_writer(jsonObject3.getString("username"));
                             comments.setComment_content(jsonObject3.getString("content"));
+                            comments.setPhoto(jsonObject3.getString("avatar"));
                             list.add(comments);
                         }
                     }
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-
+                                if (refresh_num==0){Like_num.setText(like_nummber+"");}
                                 if (refresh) {
                                     commentAdapter = new CommentAdapter(NewsDetailsActivity.this, list);
                                     recyclerView.setAdapter(commentAdapter);
@@ -413,6 +423,7 @@ public class NewsDetailsActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+
                         Comments error=new Comments();
                         error.setError("error");
                         list.add(error);
