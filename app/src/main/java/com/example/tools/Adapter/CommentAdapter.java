@@ -104,8 +104,10 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 //            imglist.add("https://pic1.zhimg.com/v2-f028176a557874d28d5cabe118415497.jpg?source=8673f162");
 //            imglist.add( "https://pic3.zhimg.com/v2-a1019116672185fdfc7616fc6432f8f7.jpg?source=8673f162");
 //            imglist.add("https://pic4.zhimg.com/v2-f684b055b954c7f3e25572c3ddda65b2.jpg?source=8673f162");
+
+            if (list.get(i).getPics()!=null){
             gridAdpter = new GridViewAdapter(context,list.get(i).getPics());
-            ( (ViewHolderNews)holder).gridView.setAdapter(gridAdpter);
+            ( (ViewHolderNews)holder).gridView.setAdapter(gridAdpter);}
 
 
             //关注按钮
