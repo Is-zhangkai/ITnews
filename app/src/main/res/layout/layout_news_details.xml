@@ -21,9 +21,30 @@
 
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
     <View
+
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="#D8D8D8"/>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="54dp">
+
+
+        <TextView
+            android:id="@+id/like_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="12333"
+            android:textSize="12dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="6dp"
+            android:maxLength="4"
+            android:layout_alignParentBottom="true">
+
+        </TextView>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="54dp"
@@ -70,4 +91,8 @@
 
 
     </LinearLayout>
+
+
+
+    </RelativeLayout>
 </LinearLayout>

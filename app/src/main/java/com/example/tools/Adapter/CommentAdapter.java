@@ -7,11 +7,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.tools.R;
 import com.example.tools.tools.Comments;
 import com.example.tools.tools.Data;
@@ -90,20 +92,18 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder holder, int i) {
 
         if (holder instanceof ViewHolderComments){
-            //( (ViewHolderComments)holder).comment.setText(comments.get(i));
+            ( (ViewHolderComments)holder).comment.setText(list.get(i).getComment_content());
+            ( (ViewHolderComments)holder).writer.setText(list.get(i).getComment_writer());
+            Glide.with(context).load(list.get(i).getPhoto()).error(R.drawable.errorhead).into(( (ViewHolderComments)holder).img);
 
 
         }else if (holder instanceof ViewHolderNews){
             ( (ViewHolderNews)holder).title.setText(list.get(i).getTitle());
+            ( (ViewHolderNews)holder).writer.setText(list.get(i).getWriter());
+            ( (ViewHolderNews)holder).content.setText(list.get(i).getContent());
+            Glide.with(context).load(list.get(i).getPhoto()).error(R.drawable.error).circleCrop().into(  ( (ViewHolderNews)holder).photo);
 
-//            List<String> imglist=new ArrayList<>();
-//
-//            imglist.add( "https://pic3.zhimg.com/v2-a1019116672185fdfc7616fc6432f8f7.jpg?source=8673f162");
-//            imglist.add("https://pic4.zhimg.com/v2-f684b055b954c7f3e25572c3ddda65b2.jpg?source=8673f162");
-//            imglist.add( "https://pic4.zhimg.com/v2-99b0bec360093b88f30d59bde9327f94.jpg?source=8673f162");
-//            imglist.add("https://pic1.zhimg.com/v2-f028176a557874d28d5cabe118415497.jpg?source=8673f162");
-//            imglist.add( "https://pic3.zhimg.com/v2-a1019116672185fdfc7616fc6432f8f7.jpg?source=8673f162");
-//            imglist.add("https://pic4.zhimg.com/v2-f684b055b954c7f3e25572c3ddda65b2.jpg?source=8673f162");
+
 
             if (list.get(i).getPics()!=null){
             gridAdpter = new GridViewAdapter(context,list.get(i).getPics());
@@ -144,9 +144,13 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     public static class ViewHolderComments extends RecyclerView.ViewHolder {
         TextView writer,comment;
+        ImageView img;
         public ViewHolderComments(@NonNull View itemView) {
             super(itemView);
             comment=itemView.findViewById(R.id.comments);
+            writer=itemView.findViewById(R.id.comment_writer);
+            img=itemView.findViewById(R.id.comment_head);
+
         }
     }
 
@@ -161,13 +165,17 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     public static class ViewHolderNews extends RecyclerView.ViewHolder {
         GridView gridView;
-        TextView title,content;
+        TextView title,content,writer;
         Button btn_focus;
+        ImageView photo;
         public ViewHolderNews(@NonNull View itemView) {
             super(itemView);
             title=itemView.findViewById(R.id.tital);
             btn_focus=itemView.findViewById(R.id.details_btn);
             gridView=itemView.findViewById(R.id.gridview);
+            content=itemView.findViewById(R.id.details_news);
+            photo=itemView.findViewById(R.id.details_photo);
+            writer=itemView.findViewById(R.id.details_writer);
 
         }
     }
