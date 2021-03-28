@@ -112,9 +112,9 @@ public class MyPaperFragment extends Fragment {
                             JSONObject jsonObject2=jsonArray.getJSONObject(i);
                             MyNews news=new MyNews();
 
-                            news.setTitle(jsonObject2.getString("title"));
+                            news.setMy_title(jsonObject2.getString("title"));
                             news.setId(jsonObject2.getInt("id"));
-                            JSONArray jsonArray1=jsonObject2.getJSONArray("news_pic_set");
+                            JSONArray jsonArray1=jsonObject2.getJSONArray("news_pics_set");
                             news.setImg(jsonArray1.getString(0));
                             news.setTag(jsonObject2.getInt("tag_type"));
 

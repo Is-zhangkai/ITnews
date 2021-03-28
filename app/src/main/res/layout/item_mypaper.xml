@@ -46,13 +46,15 @@
 
             <Button
                 android:id="@+id/delete"
-                android:layout_width="wrap_content"
+                android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:gravity="center"
                 android:layout_centerVertical="true"
-                android:text="删除"
-                android:letterSpacing="0.3"/>
+                android:text="..."
+                android:layout_alignParentBottom="true"
+                android:letterSpacing="0.2"
+                android:layout_marginEnd="6dp"/>
         </RelativeLayout>
     </RelativeLayout>
 

@@ -1,5 +1,6 @@
 package com.example.tools.Adapter;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
@@ -85,7 +86,7 @@ public class PaperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             inflater = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_mypaper, parent, false);
             RecyclerView.ViewHolder ViewHolder = new PaperAdapter.ViewHolder(inflater);
             return ViewHolder;}
-        else if(viewType==net)
+         if(viewType==net)
         {
             inflater = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_papernonet,parent,false);
             PaperAdapter.netHolder netHolder = new PaperAdapter.netHolder(inflater);
@@ -99,19 +100,20 @@ public class PaperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, final int i) {
-        int viewType=getItemViewType(i);
-        if(viewType==yes)
+      //  int viewType=getItemViewType(i);
+        if(holder instanceof ViewHolder)
         {
-            PaperAdapter.ViewHolder viewHolder= (PaperAdapter.ViewHolder)holder;
-            viewHolder.paperTitle.setText(list.get(i).getTitle());
-            Glide.with(context).load(list.get(i).getImg()).error(R.drawable.error).into(viewHolder.paperImage);
+
+            ( (ViewHolder)holder).paperTitle.setText(list.get(i).getMy_title());
+            Glide.with(context).load(list.get(i).getImg()).error(R.drawable.error).into(( (ViewHolder)holder).paperImage);
 
 
 
 
-            viewHolder.delete.setOnClickListener(new View.OnClickListener() {
+            ( (ViewHolder)holder).delete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
@@ -159,7 +161,7 @@ public class PaperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     public int getItemCount() {
          return list.size();
     }
-    class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
             ImageView paperImage;
             TextView paperTitle;
             TextView paperTag;
@@ -169,7 +171,7 @@ public class PaperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             paperImage=itemView.findViewById(R.id.item_paper_image);
-            paperTitle=itemView.findViewById(R.id.item_news_title);
+            paperTitle=itemView.findViewById(R.id.item_paper_title);
             paperTag=itemView.findViewById(R.id.item_paper_tag);
             myPaper=itemView.findViewById(R.id.mypaper_item);
             delete=itemView.findViewById(R.id.delete);

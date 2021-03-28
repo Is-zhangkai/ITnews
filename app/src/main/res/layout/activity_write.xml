@@ -32,23 +32,25 @@
                     android:layout_centerVertical="true"
                     android:layout_marginRight="20dp"
                     android:textColor="@color/white"
-                    android:background="@drawable/blue_circle"></Button>
+                    android:background="@drawable/blue_circle"/>
 
 
             </RelativeLayout>
+
             <EditText
                 android:id="@+id/edit_title"
                 android:layout_width="match_parent"
-                android:layout_marginRight="20dp"
-                android:layout_marginLeft="20dp"
                 android:layout_height="60dp"
                 android:layout_below="@id/write_topBar"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="-2dp"
+                android:layout_marginRight="20dp"
                 android:hint="请输入标题"
-                android:textSize="24dp"
-                android:textColor="#000000"
                 android:maxLength="12"
-                android:textStyle="bold">
-            </EditText>
+                android:textColor="#000000"
+                android:textSize="24dp"
+                android:textStyle="bold"/>
+
             <RelativeLayout
                 android:id="@+id/edit_tagBar"
                 android:layout_width="match_parent"

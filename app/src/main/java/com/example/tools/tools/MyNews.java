@@ -3,8 +3,16 @@ package com.example.tools.tools;
 public class MyNews {
 
     private int id,tag;
-    private String title,img,error,no;
+    private String my_title,img,error,no;
 
+
+    public String getMy_title() {
+        return my_title;
+    }
+
+    public void setMy_title(String my_title) {
+        this.my_title = my_title;
+    }
 
     public void setTag(int tag) {
         this.tag = tag;
@@ -34,9 +42,7 @@ public class MyNews {
         this.id = id;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
+
 
     public void setImg(String img) {
         this.img = img;
@@ -50,7 +56,5 @@ public class MyNews {
         return img;
     }
 
-    public String getTitle() {
-        return title;
-    }
+
 }
