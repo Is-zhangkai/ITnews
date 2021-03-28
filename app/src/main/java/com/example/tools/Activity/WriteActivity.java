@@ -53,7 +53,6 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class WriteActivity extends AppCompatActivity {
-    private MyData data=new MyData(WriteActivity.this);
     private String token;
     private EditText edit_title;
     private EditText edit_content;
@@ -150,8 +149,12 @@ public class WriteActivity extends AppCompatActivity {
                             e.printStackTrace();
                         }
 
-
-                        nineGridAdapter.notifyDataSetChanged();
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                nineGridAdapter.notifyDataSetChanged();
+                            }
+                        });
 
                     }
                 });
@@ -298,6 +301,7 @@ public class WriteActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_write);
         post=findViewById(R.id.edit_post);
+        MyData data=new MyData(WriteActivity.this);
         edit_title=findViewById(R.id.edit_title);
         edit_content=findViewById(R.id.edit_content);
         edit_tag=findViewById(R.id.edit_tag);
@@ -409,13 +413,15 @@ public class WriteActivity extends AppCompatActivity {
                 }
                 else
                 {
-                    final String img_ids=IdList.toString();
+                     String ids=IdList.toString();
+                    String s=ids.substring(1,ids.length()-1);
+                    final String img_ids=s;
                     Thread thread=new Thread(new Runnable() {
                         @Override
                         public void run() {
                             OkHttpClient client = new OkHttpClient().newBuilder()
                                     .build();
-                            MediaType mediaType = MediaType.parse("text/plain");
+                            MediaType mediaType = MediaType.parse("application/x-www-form-urlencoded");
                             RequestBody body = RequestBody.create(mediaType, "title="+paper_title+"&content="+paper_content+"&tag="+paper_tag+"&img_ids="+img_ids);
                             Request request = new Request.Builder()
                                     .url("http://122.9.2.27/api/news/release")
@@ -442,6 +448,7 @@ public class WriteActivity extends AppCompatActivity {
                                                 else
                                                 {
                                                     Toast.makeText(WriteActivity.this,tip,Toast.LENGTH_SHORT).show();
+                                                    finish();
                                                 }
                                             }
                                         });
