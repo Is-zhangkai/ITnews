@@ -24,6 +24,7 @@
                     android:layout_marginLeft="20dp">
                 </ImageView>
                 <Button
+                    android:id="@+id/edit_post"
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
                     android:text="发 布"
@@ -86,7 +87,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/edit_image"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_below="@id/edit_content">
 
             </androidx.recyclerview.widget.RecyclerView>
