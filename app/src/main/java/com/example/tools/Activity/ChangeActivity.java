@@ -43,6 +43,8 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -201,13 +203,8 @@ public class ChangeActivity extends AppCompatActivity {
                                     @Override
                                     public void onClick(DialogInterface dialog,
                                                         int which) {
-                                        //事件
-                                        if (edit.getText().toString().length() == 0) {
-                                            Toast.makeText(ChangeActivity.this, "昵称不能为空！", Toast.LENGTH_SHORT).show();
-                                            return;
-                                        } else if (edit.getText().toString().length() > 8) {
-                                            Toast.makeText(ChangeActivity.this, "昵称最多输入8个字符！", Toast.LENGTH_SHORT).show();
-                                            return;
+                                        if (!checkName(edit.getText().toString())) {
+                                            Toast.makeText(ChangeActivity.this, "修改失败，昵称不合法！", Toast.LENGTH_SHORT).show();
                                         } else {
                                             my_name = edit.getText().toString();
                                             change_my_info();
@@ -522,5 +519,12 @@ public class ChangeActivity extends AppCompatActivity {
         Glide.with(ChangeActivity.this).load(pic_url)
                 .apply(RequestOptions.bitmapTransform(new CircleCrop()))
                 .into(change_pic);
+    }
+
+    public boolean checkName(String str) {
+        String regexp = "^[\\u4e00-\\u9fa50-9a-zA-Z]{1,6}$";
+        Pattern pattern = Pattern.compile(regexp);
+        Matcher matcher = pattern.matcher(str);
+        return matcher.matches();
     }
 }
