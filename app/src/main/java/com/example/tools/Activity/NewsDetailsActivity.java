@@ -53,8 +53,8 @@ public class NewsDetailsActivity extends AppCompatActivity {
     private CommentAdapter commentAdapter;
     private boolean like=false,oldLike=false,old_collection=false,collection=false,follow=false;
     private Button btn_like,btn_collection;
-    private int id,user_id,size=3,like_nummber,refresh_num=0;
-    int day,month;
+    private int id,user_id,page=1,all_page=1,size=9,like_nummber,refresh_num=0;
+     int day,month;
     private TextView Like_num;
     private Boolean refresh=true;
     private String title,writer,photo;
@@ -179,6 +179,7 @@ public class NewsDetailsActivity extends AppCompatActivity {
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
                 refresh=false;
+                page++;
                 final List<Comments> list=new ArrayList<>();
                 GetComments(list);
                 refreshLayout.finishLoadMore();
@@ -188,6 +189,7 @@ public class NewsDetailsActivity extends AppCompatActivity {
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
                 refresh_num++;
                 refresh=true;
+                page=1;
                 List<Comments> list = new ArrayList<>();
                 GetData(list);
                 refreshLayout.finishRefresh();
@@ -216,7 +218,7 @@ public class NewsDetailsActivity extends AppCompatActivity {
                                     try {
                                         JSONObject jsonObject21 = new JSONObject(Objects.requireNonNull(response.body()).string());
                                         final String msg1 = jsonObject21.getString("msg");
-                                        Log.i("asd", msg1);
+                                        Log.i("asd1", msg1);
 
                                         runOnUiThread(new Runnable() {
                                             @Override
@@ -226,6 +228,11 @@ public class NewsDetailsActivity extends AppCompatActivity {
                                                     inputTextMsgDialog.clearText();
                                                     inputTextMsgDialog.dismiss();
                                                     DbManager dbManager= null;
+                                                    refresh_num++;
+                                                    page=1;
+                                                    refresh=true;
+                                                    List<Comments> list = new ArrayList<>();
+                                                    GetData(list);
                                                     try {
                                                         dbManager = x.getDb(((myApplication)getApplicationContext()).getDaoConfig());
                                                         operation operation=new operation();
@@ -238,10 +245,6 @@ public class NewsDetailsActivity extends AppCompatActivity {
                                                         e.printStackTrace();
                                                     }
 
-                                                    refresh_num++;
-                                                    refresh=true;
-                                                    List<Comments> list = new ArrayList<>();
-                                                    GetData(list);
 
                                                 }
                                             }
@@ -310,7 +313,7 @@ public class NewsDetailsActivity extends AppCompatActivity {
     //获取新闻
     public void GetData(final List<Comments> list){
 
-
+try {
             Utils.get_token("http://122.9.2.27/api/news/info/" + id + "/info-full", token, new Utils.OkhttpCallBack() {
                 @Override
                 public void onSuccess(Response response) {
@@ -386,13 +389,15 @@ public class NewsDetailsActivity extends AppCompatActivity {
 
                 }
             });
-
+    } catch (Exception e) { e.printStackTrace(); }
 
     }
 
 
     public void GetComments(final List<Comments> list){
-        Utils.get_token("http://122.9.2.27/api/news/info/"+id+"/comment?page=1&size=" + size, token, new Utils.OkhttpCallBack() {
+        if (page<=all_page){
+        try {
+        Utils.get_token("http://122.9.2.27/api/news/info/"+id+"/comment?page="+page+"&size=" + size, token, new Utils.OkhttpCallBack() {
             @Override
             public void onSuccess(Response response) {
                 try {
@@ -400,14 +405,26 @@ public class NewsDetailsActivity extends AppCompatActivity {
                     Log.i("asd",data);
                     JSONObject jsonObject1=new JSONObject(data);
                     JSONObject jsonObject2=jsonObject1.getJSONObject("data");
+
                     Log.i("asd",jsonObject1.getString("msg"));
 
+
                     if (jsonObject1.getString("msg").equals("暂无评论")){
-                        Comments comments = new Comments();
-                        comments.setNoComments("暂无评论！");
-                        list.add(comments);
+                        if (page==1) {
+                            Comments comments = new Comments();
+                            comments.setNoComments("暂无评论！");
+                            list.add(comments);
+                        }else {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(NewsDetailsActivity.this,"没有更多了",Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
 
                     } else {
+                        all_page=jsonObject2.getInt("count");
                         JSONArray jsonArray2 = jsonObject2.getJSONArray("comments");
                         for (int i = 0; i < jsonArray2.length(); i++) {
                             Comments comments = new Comments();
@@ -427,15 +444,12 @@ public class NewsDetailsActivity extends AppCompatActivity {
                                     }else {  btn_like.setBackgroundResource(R.drawable.like_nor);}
                                     if (collection){  btn_collection.setBackgroundResource(R.drawable.collection_fill);
                                     }else {  btn_collection.setBackgroundResource(R.drawable.collection_nor);}
-
                                 }
                                     commentAdapter = new CommentAdapter(NewsDetailsActivity.this, list);
                                     recyclerView.setAdapter(commentAdapter);
                                 } else {
                                     commentAdapter.addData(list);
                                 }
-
-
                             }
                         });
 
@@ -461,7 +475,10 @@ public class NewsDetailsActivity extends AppCompatActivity {
                 });
             }
         });
-
+    } catch (Exception e) { e.printStackTrace(); }
+        }else {
+            Toast.makeText(NewsDetailsActivity.this,"没有更多了",Toast.LENGTH_SHORT).show();
+        }
     }
 
 

@@ -35,7 +35,7 @@ public class InputTextMsgDialog extends AppCompatDialog {
     private RelativeLayout rlDlg;
     private int mLastDiff = 0;
     private TextView tvNumber;
-    private int maxNumber = 200;
+    private int maxNumber = 60;
 
     public interface OnTextSendListener {
 
@@ -54,7 +54,7 @@ public class InputTextMsgDialog extends AppCompatDialog {
     }
 
     /**
-     * 最大输入字数  默认200
+     * 最大输入字数
      */
     @SuppressLint("SetTextI18n")
     public void setMaxNumber(int maxNumber) {
@@ -99,7 +99,7 @@ public class InputTextMsgDialog extends AppCompatDialog {
             public void afterTextChanged(Editable editable) {
                 tvNumber.setText(editable.length() + "/" + maxNumber);
                 if (editable.length() > maxNumber) {
-                    /*dot_hong颜色值：#E73111,text_bottom_comment颜色值：#9B9B9B*/
+
                     tvNumber.setTextColor(mContext.getResources().getColor(R.color.dot_hong));
                 } else {
                     tvNumber.setTextColor(mContext.getResources().getColor(R.color.text_bottom_comment));
@@ -125,7 +125,7 @@ public class InputTextMsgDialog extends AppCompatDialog {
             public void onClick(View view) {
                 String msg = messageTextView.getText().toString().trim();
                 if (msg.length() > maxNumber) {
-                    Toast.makeText(mContext, "超过最大字数限制", Toast.LENGTH_LONG).show();
+                    Toast.makeText(mContext, "超过最大字数限制", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 if (!TextUtils.isEmpty(msg)) {
@@ -135,7 +135,7 @@ public class InputTextMsgDialog extends AppCompatDialog {
                     ///messageTextView.setText("");
                     //dismiss();
                 } else {
-                    Toast.makeText(mContext, "请输入文字", Toast.LENGTH_LONG).show();
+                    Toast.makeText(mContext, "请输入文字", Toast.LENGTH_SHORT).show();
                 }
                 messageTextView.setText(null);
             }
@@ -148,7 +148,7 @@ public class InputTextMsgDialog extends AppCompatDialog {
                     case KeyEvent.KEYCODE_ENDCALL:
                     case KeyEvent.KEYCODE_ENTER:
                         if (messageTextView.getText().length() > maxNumber) {
-                            Toast.makeText(mContext, "超过最大字数限制", Toast.LENGTH_LONG).show();
+                            Toast.makeText(mContext, "超过最大字数限制", Toast.LENGTH_SHORT).show();
                             return true;
                         }
                         if (messageTextView.getText().length() > 0) {
@@ -156,7 +156,7 @@ public class InputTextMsgDialog extends AppCompatDialog {
                             dismiss();
 
                         } else {
-                            Toast.makeText(mContext, "请输入文字", Toast.LENGTH_LONG).show();
+                            Toast.makeText(mContext, "请输入文字", Toast.LENGTH_SHORT).show();
                         }
                         return true;
                     case KeyEvent.KEYCODE_BACK:
