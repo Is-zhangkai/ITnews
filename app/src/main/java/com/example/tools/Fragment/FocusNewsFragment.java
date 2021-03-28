@@ -14,20 +14,31 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.tools.Adapter.NewsAdapter;
+import com.example.tools.MyData;
 import com.example.tools.R;
+import com.example.tools.Utils;
 import com.example.tools.tools.Data;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+
+import okhttp3.Response;
 
 
 public class FocusNewsFragment extends Fragment {
     private RecyclerView recyclerView;
     private NewsAdapter adapter;
     private SmartRefreshLayout smartRefreshLayout;
+    private String token;
+    private int page=1,size=6,o_page;
+
 
 
 
@@ -50,30 +61,108 @@ public class FocusNewsFragment extends Fragment {
         smartRefreshLayout= view.findViewById(R.id.new_srl2);
         recyclerView = view.findViewById(R.id.new_recy2);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        MyData data=new MyData(getContext());
+        token=data.load_token();
+
 //刷新加载
         smartRefreshLayout.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
 
+                List<Data> list=new ArrayList<>();
+                GetNews(list, false);
                 refreshLayout.finishLoadMore();
             }
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
                 List<Data> list=new ArrayList<>();
-               // GetNews(list);
+
+                GetNews(list, true);
                 refreshLayout.finishRefresh();
             }
         });
         List<Data> list=new ArrayList<>();
-        for (int i=0;i<10;i++){
-            Data data1=new Data();
-            data1.setTitle("标题"+i+"号");
-            list.add(data1);
-        }
+
+
+        GetNews(list,true);
+//        for (int i=0;i<10;i++){
+//            Data data1=new Data();
+//            data1.setTitle("标题"+i+"号");
+//            list.add(data1);
+//        }
 
 
         Log.i("asd",list.size()+"");
-        adapter=new NewsAdapter(getContext(),list);
+    adapter=new NewsAdapter(getContext(),list);
         recyclerView.setAdapter(adapter);
+}
+
+    public void GetNews(final List<Data> list, final Boolean refresh){
+
+
+        Utils.get_token("http://122.9.2.27/api/news/recommend/v4?page=1&size="+size, token, new Utils.OkhttpCallBack() {
+            @Override
+            public void onSuccess(Response response) {
+
+                try {
+                    JSONObject jsonObject21=new JSONObject(Objects.requireNonNull(response.body()).string());
+                    JSONObject jsonObject22=jsonObject21.getJSONObject("data");
+                    o_page=jsonObject22.getInt( "count");
+                    JSONArray jsonArray21=jsonObject22.getJSONArray("news");
+                    Log.i("asd",jsonObject21.getString("msg"));
+
+                    for (int i=0;i<jsonArray21.length();i++){
+                        Data data21=new Data();
+                        JSONObject jsonObject23=jsonArray21.getJSONObject(i);
+                        data21.setTitle(jsonObject23.getString("title"));
+                        data21.setNews_Id(jsonObject23.getInt("id"));
+                        JSONArray jsonArray22=jsonObject23.getJSONArray("news_pics_set");
+                        if (jsonArray22.length()!=0){
+                            data21.setNews_pics_set(jsonArray22.getString(0));
+                        }
+                        data21.setLike_num(jsonObject23.getInt("like_num"));
+                        JSONObject jsonObject24=jsonObject23.getJSONObject( "author");
+                        data21.setWriter_id(jsonObject24.getInt("id"));
+                        data21.setWriter(jsonObject24.getString( "username"));
+                        data21.setPhoto(jsonObject24.getString("avatar"));
+
+                        list.add(data21);
+                    }
+                    Objects.requireNonNull(getActivity()).runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            if (refresh){
+                                adapter=new NewsAdapter(getContext(),list);
+                                recyclerView.setAdapter(adapter);}
+                            else {
+                                adapter.addData(list);
+                            }
+                        }
+                    });
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            @Override
+            public void onFail(String error) {
+
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Data dataerror=new Data();
+                        dataerror.setError("error");
+                        list.add(dataerror);
+                        adapter=new NewsAdapter(getContext(),list);
+                        recyclerView.setAdapter(adapter);
+                    }
+                });
+            }
+        });
+
     }
+
+
+
 }

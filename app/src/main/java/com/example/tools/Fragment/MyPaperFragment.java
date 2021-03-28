@@ -21,6 +21,7 @@ import com.example.tools.Activity.NewsDetailsActivity;
 import com.example.tools.Activity.WriteActivity;
 import com.example.tools.Adapter.CommentAdapter;
 import com.example.tools.Adapter.PaperAdapter;
+import com.example.tools.MyData;
 import com.example.tools.R;
 import com.example.tools.Utils;
 import com.example.tools.tools.Comments;
@@ -78,8 +79,8 @@ public class MyPaperFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
 
-        token= "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MTY4NjAyMDAsImlhdCI6MTYxNjc3MzgwMCwiaXNzIjoicnVhIiwiZGF0YSI6eyJ1c2VyaWQiOjR9fQ.yLIYMDhekjIpi9_L6D1XJrxTWi2tHZ3blxxv3qXnRJg";
-
+        MyData myData=new MyData(getContext());
+        token=myData.load_token();
 
 
 

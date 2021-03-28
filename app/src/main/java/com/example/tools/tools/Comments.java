@@ -25,7 +25,16 @@ public class Comments {
     private String title,writer,photo;
     private List<String> pics;
     private String content,comment_writer,comment_content,error,noComments;
+    private Boolean follow;
 
+
+    public void setFollow(Boolean follow) {
+        this.follow = follow;
+    }
+
+    public Boolean getFollow() {
+        return follow;
+    }
 
     public void setWriter(String writer) {
         this.writer = writer;

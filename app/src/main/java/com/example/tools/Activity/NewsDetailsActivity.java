@@ -50,7 +50,7 @@ public class NewsDetailsActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private SmartRefreshLayout smartRefreshLayout;
     private CommentAdapter commentAdapter;
-    private boolean like=false,oldLike=false,old_collection=false,collection=false;
+    private boolean like=false,oldLike=false,old_collection=false,collection=false,follow=false;
     private Button btn_like,btn_collection;
     private int id,user_id,size=3,like_nummber,refresh_num=0;
     int day,month;
@@ -219,6 +219,7 @@ public class NewsDetailsActivity extends AppCompatActivity {
                                         runOnUiThread(new Runnable() {
                                             @Override
                                             public void run() {
+                                                Toast.makeText(NewsDetailsActivity.this,msg1,Toast.LENGTH_SHORT).show();
                                                 if (msg1.equals("评论成功")){
                                                     inputTextMsgDialog.clearText();
                                                     inputTextMsgDialog.dismiss();
@@ -322,10 +323,19 @@ public class NewsDetailsActivity extends AppCompatActivity {
                          title=jsonObject2.getString("title");
                         comments.setTitle(title);
                         comments.setContent(jsonObject2.getString( "content"));
+                         if (jsonObject2.getInt("isFollow")==1){
+                            follow=true;
+                        }
+                        if (jsonObject2.getInt("isFollow")==0){
+                            follow=false;
+                        }
 
+                        Log.i("asd1",jsonObject2.getInt("isFollow")+"");
 
                         comments.setTag(jsonObject2.getInt("tag"));
-                        Log.i("asdq",jsonObject2.getInt("isLike")+""+jsonObject2.getInt("like_num")+jsonObject2.getInt("isStar"));
+
+
+                        Log.i("asdq",jsonObject2.getInt("isLike")+""+jsonObject2.getInt("like_num")+jsonObject2.getInt("isStar")+jsonObject2.getInt("isFollow"));
                         if (refresh_num==0){
                         like_nummber=jsonObject2.getInt("like_num");
                         if (jsonObject2.getInt("isLike")==1){
@@ -338,7 +348,9 @@ public class NewsDetailsActivity extends AppCompatActivity {
                         comments.setComment_num(jsonObject2.getInt( "comment_num"));
                         comments.setStar_num(jsonObject2.getInt( "star_num"));
                         comments.setPhoto(photo);
+                        comments.setAuthor_id(user_id);
                         comments.setWriter(writer);
+                        comments.setFollow(follow);
                         final JSONArray jsonArray=jsonObject2.getJSONArray("pics");
                         if (jsonArray.length()!=0){
                         List<String> imglist=new ArrayList<>();
