@@ -100,7 +100,9 @@ public class LoginActivity extends AppCompatActivity {
                                             });
 
                                             Log.d("1233t",data.load_token());
+                                            data.save_check(true);
                                             startActivity(new Intent(LoginActivity.this,MainActivity.class));
+                                            finish();
                                         }
                                     } catch (JSONException e) {
                                         e.printStackTrace();

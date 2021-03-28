@@ -33,6 +33,11 @@ public class MyData {
         mEditor.putBoolean("CHECK", check);
         mEditor.commit();
     }
+
+    public void save_xx(Boolean xx) {
+        mEditor.putBoolean("XX", xx);
+        mEditor.commit();
+    }
     public void save_sex(String sex) {
         mEditor.putString("SEX",sex);
         mEditor.commit();
@@ -80,6 +85,9 @@ public class MyData {
     }
     public Boolean load_net() {
         return mPreferences.getBoolean("NET", true);
+    }
+    public Boolean load_xx() {
+        return mPreferences.getBoolean("XX", false);
     }
     public String load_name(){
         return mPreferences.getString("NAME","暂无昵称");

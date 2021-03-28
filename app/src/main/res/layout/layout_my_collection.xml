@@ -30,16 +30,30 @@
                 android:textColor="@color/black"
                 android:textSize="20dp"></TextView>
         </RelativeLayout>
+
         <RelativeLayout
+            android:id="@+id/rv_fans"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@id/chat_top"
             android:background="#F2F2F2">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerview"
+            <com.scwang.smartrefresh.layout.SmartRefreshLayout
+                android:id="@+id/new_srl1"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent">
+                <com.scwang.smartrefresh.layout.header.BezierRadarHeader
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerview"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+
+                <com.scwang.smartrefresh.layout.footer.BallPulseFooter
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+            </com.scwang.smartrefresh.layout.SmartRefreshLayout>
         </RelativeLayout>
     </RelativeLayout>
 
