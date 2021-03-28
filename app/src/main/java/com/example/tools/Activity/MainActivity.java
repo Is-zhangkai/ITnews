@@ -30,18 +30,19 @@ import java.util.List;
 import q.rorbin.badgeview.QBadgeView;
 
 public class MainActivity extends AppCompatActivity {
-    public MessageDate messageDate=new MessageDate(this);
+    public MessageDate messageDate = new MessageDate(this);
     private RelativeLayout news;
     private RelativeLayout paper;
     private RelativeLayout message;
     private RelativeLayout user;
     private ImageView mes;
-    private NewsFragment newsFragment = new  NewsFragment();
-    private MessageFragment messageFragment= new MessageFragment();
-    private MyPaperFragment myPaperFragment=new MyPaperFragment();
-    private UserFragment userFragment =new UserFragment();
+    private NewsFragment newsFragment = new NewsFragment();
+    private MessageFragment messageFragment = new MessageFragment();
+    private MyPaperFragment myPaperFragment = new MyPaperFragment();
+    private UserFragment userFragment = new UserFragment();
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
-    private static String[] PERMISSIONS_STORAGE = {"android.permission.READ_EXTERNAL_STORAGE","android.permission.WRITE_EXTERNAL_STORAGE" };
+    private static String[] PERMISSIONS_STORAGE = {"android.permission.READ_EXTERNAL_STORAGE", "android.permission.WRITE_EXTERNAL_STORAGE"};
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,16 +55,26 @@ public class MainActivity extends AppCompatActivity {
         news.setSelected(true);
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment, newsFragment).commit();
 
-        int permission = ActivityCompat.checkSelfPermission(MainActivity.this,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE);
-
+//        int permission = ActivityCompat.checkSelfPermission(MainActivity.this,
+//                Manifest.permission.WRITE_EXTERNAL_STORAGE);
+//
+//        if (permission != PackageManager.PERMISSION_GRANTED) {
+//            // We don't have permission so prompt the user
+//            ActivityCompat.requestPermissions(MainActivity.this, PERMISSIONS_STORAGE,
+//                    REQUEST_EXTERNAL_STORAGE);
+//        }
+//        if (!ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)) {
+//            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 0);
+//        }
+        int permission = ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
         if (permission != PackageManager.PERMISSION_GRANTED) {
             // We don't have permission so prompt the user
-            ActivityCompat.requestPermissions(MainActivity.this, PERMISSIONS_STORAGE,
-                    REQUEST_EXTERNAL_STORAGE);
+            ActivityCompat.requestPermissions(
+                    this,
+                    PERMISSIONS_STORAGE,
+                    REQUEST_EXTERNAL_STORAGE
+            );
         }
-
-
         news.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -110,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        Log.i("test","MainonResume");
+        Log.i("test", "MainonResume");
         try {
             DbManager dbManager = x.getDb(((myApplication) getApplicationContext()).getDaoConfig());
             List<operation> operations = new ArrayList<>();
@@ -119,7 +130,7 @@ public class MainActivity extends AppCompatActivity {
                 messageDate.setAll_msg(0);
             } else {
                 messageDate.setAll_msg(operations.size());
-                Log.i("test",String.valueOf(messageDate.getAll_msg()));
+                Log.i("test", String.valueOf(messageDate.getAll_msg()));
             }
             List<operation> operations1 = new ArrayList<>();
             operations1 = dbManager.selector(operation.class).orderBy("id", true).limit(1000).where("type", "=", 2).and("read", "=", 1).findAll();
@@ -157,9 +168,9 @@ public class MainActivity extends AppCompatActivity {
         }
         QBadgeView qBadgeView = new QBadgeView(this);
         qBadgeView.bindTarget(message);
-        Log.i("test",String.valueOf(messageDate.getAll_msg()));
+        Log.i("test", String.valueOf(messageDate.getAll_msg()));
         qBadgeView.setBadgeNumber(messageDate.getAll_msg());
         qBadgeView.setGravityOffset(10, 3, true);
-        Log.i("test",String.valueOf(messageDate.getAll_msg()));
+        Log.i("test", String.valueOf(messageDate.getAll_msg()));
     }
 }

@@ -37,11 +37,15 @@ import com.bumptech.glide.request.RequestOptions;
 import com.example.tools.MyData;
 import com.example.tools.R;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
 
 import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -95,7 +99,7 @@ public class ChangeActivity extends AppCompatActivity {
 
         MyData myData = new MyData(ChangeActivity.this);
         my_info = myData.load_info();
-        my_name = "✎"+myData.load_name();
+        my_name = myData.load_name();
         pic_url = myData.load_pic_url();
         if (myData.load_sex() == "男") {
             my_sex = 1;
@@ -205,8 +209,7 @@ public class ChangeActivity extends AppCompatActivity {
                                             Toast.makeText(ChangeActivity.this, "昵称最多输入8个字符！", Toast.LENGTH_SHORT).show();
                                             return;
                                         } else {
-                                            my_name = "✎"+edit.getText().toString();
-                                            Log.d("1233nn", "here");
+                                            my_name = edit.getText().toString();
                                             change_my_info();
                                         }
                                     }
@@ -256,14 +259,14 @@ public class ChangeActivity extends AppCompatActivity {
                 OkHttpClient client = new OkHttpClient().newBuilder()
                         .build();
                 MediaType mediaType = MediaType.parse("application/json");
-                RequestBody body = RequestBody.create(mediaType, "{\n        \"info\": \""+my_info+"\",\n        \"nickname\": \""+my_name+"\",\n        \"gender\": "+my_sex+"\n    }");
+                RequestBody body = RequestBody.create(mediaType, "{\n        \"info\": \"" + my_info + "\",\n        \"nickname\": \"" + my_name + "\",\n        \"gender\": " + my_sex + "\n    }");
                 Request request = new Request.Builder()
                         .url("http://122.9.2.27/api/self/info-refresh")
                         .method("POST", body)
                         .addHeader("Authorization", token)
                         .addHeader("Content-Type", "application/json")
                         .build();
-                Log.d("1233c h", request.toString() );
+                Log.d("1233c h", request.toString());
                 try {
                     Response response = client.newCall(request).execute();
                     Log.d("1233 hhh", response.toString());
@@ -286,7 +289,7 @@ public class ChangeActivity extends AppCompatActivity {
         } else {
             tv_sex.setText("女");
         }
-        change_name.setText(my_name);
+        change_name.setText("✎" + my_name);
         tv_info.setText(my_info);
 
     }
@@ -296,6 +299,7 @@ public class ChangeActivity extends AppCompatActivity {
                 .apply(RequestOptions.bitmapTransform(new CircleCrop()))
                 .into(change_pic);
     }
+
     private void selectCamera() {
         outputImage = new File(ChangeActivity.this.getExternalCacheDir(), "camera_photos.jpg");
         try {
@@ -312,6 +316,7 @@ public class ChangeActivity extends AppCompatActivity {
         intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
         startActivityForResult(intent, TAKE_PHOTO);
     }
+
     private void selectPhoto() {
         Intent intent = new Intent(Intent.ACTION_PICK, null);
         intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, STR_IMAGE);
@@ -338,36 +343,94 @@ public class ChangeActivity extends AppCompatActivity {
                             try {
                                 Log.d("1233p", "000123");
                                 final Bitmap headImage = BitmapFactory.decodeStream(ChangeActivity.this.getContentResolver().openInputStream(cropImgUri));
-                                Objects.requireNonNull(ChangeActivity.this).runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        change_pic.setImageBitmap(headImage);
-                                    }
-                                });
+//                                Objects.requireNonNull(ChangeActivity.this).runOnUiThread(new Runnable() {
+//                                    @Override
+//                                    public void run() {
+//                                        change_pic.setImageBitmap(headImage);
+//                                    }
+//                                });
                                 final String Photo = getRealPath(ChangeActivity.this, cropImgUri);
-                                Log.d("1233p", Photo);
+                                Log.d("1233p", "????");
                                 MyData myData = new MyData(ChangeActivity.this);
-//                                OkHttpClient client = new OkHttpClient().newBuilder()
-//                                        .build();
-//                                RequestBody body = new MultipartBody.Builder().setType(MultipartBody.FORM)
-//                                        .addFormDataPart("img", Photo,
-//                                                RequestBody.create(MediaType.parse("application/octet-stream"),
-//                                                        new File(Photo)))
-//                                        .build();
-//                                Request request = new Request.Builder()
-//                                        .url("http://49.232.214.94/api/upload/head")
-//                                        .method("POST", body)
-//                                        .addHeader("Accept", "application/json")
-//                                        .addHeader("Authorization", myData.load_token())
-//                                        .build();
-//                                Response response = client.newCall(request).execute();
-//                                Log.d("1233p", String.valueOf(response));
+                                OkHttpClient client = new OkHttpClient().newBuilder()
+                                        .build();
+                                MediaType mediaType = MediaType.parse("text/plain");
+                                RequestBody body = new MultipartBody.Builder().setType(MultipartBody.FORM)
+                                        .addFormDataPart("img", Photo, RequestBody.create(MediaType.parse("application/octet-stream"), new File(Photo)))
+                                        .addFormDataPart("type", "1")
+                                        .build();
+                                Request request = new Request.Builder()
+                                        .url("http://122.9.2.27/api/img-upload")
+                                        .method("POST", body)
+                                        .addHeader("Authorization", myData.load_token())
+                                        .build();
+                                Response response = client.newCall(request).execute();
+
+                                String responseData = response.body().string();
+                                Log.d("1233g", "onResponse:123 " + responseData);
+                                try {
+                                    JSONObject jsonObject1 = new JSONObject(responseData);
+                                    int code = jsonObject1.getInt("code");
+                                    final String msg = jsonObject1.getString("msg");
+                                    if (code != 1000) {
+                                        Objects.requireNonNull(ChangeActivity.this).runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                Toast.makeText(ChangeActivity.this, "图片过大,上传失败1", Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
+                                    } else {
+                                        JSONObject jsonObject2 = jsonObject1.getJSONObject("data");
+                                        int img_id = jsonObject2.getInt("img_id");
+
+                                        OkHttpClient client2 = new OkHttpClient().newBuilder()
+                                                .build();
+                                        MediaType mediaType2 = MediaType.parse("application/json");
+                                        RequestBody body2 = RequestBody.create(mediaType2, "{\n    \"img_id\": " + img_id + "\n}");
+                                        Request request2 = new Request.Builder()
+                                                .url("http://122.9.2.27/api/self/avatar-upload")
+                                                .method("POST", body2)
+                                                .addHeader("Authorization", token)
+                                                .addHeader("Content-Type", "application/json")
+                                                .build();
+                                        Response response2 = client2.newCall(request2).execute();
+                                        String responseData2 = response.body().string();
+                                        Log.d("1233g", "onResponse:666 " + responseData);
+                                        try {
+                                            JSONObject jsonObject3 = new JSONObject(responseData);
+                                            int code3 = jsonObject3.getInt("code");
+                                            final String msg3 = jsonObject3.getString("msg");
+                                            if (code3 != 1000) {
+                                                Objects.requireNonNull(ChangeActivity.this).runOnUiThread(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        Toast.makeText(ChangeActivity.this, msg3, Toast.LENGTH_SHORT).show();
+                                                    }
+                                                });
+                                            } else {
+                                                JSONObject jsonObject4 = jsonObject3.getJSONObject("data");
+                                                String avatar = jsonObject4.getString("avatar");
+                                                pic_url = avatar;
+                                                Objects.requireNonNull(ChangeActivity.this).runOnUiThread(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        change_my_pic();
+                                                    }
+                                                });
+                                            }
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
 
                             } catch (Exception e) {
                                 Objects.requireNonNull(ChangeActivity.this).runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
-                                        Toast.makeText(ChangeActivity.this, "图片过大,上传失败", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(ChangeActivity.this, "图片过大,上传失败2", Toast.LENGTH_SHORT).show();
                                     }
                                 });
                                 e.printStackTrace();
@@ -376,11 +439,12 @@ public class ChangeActivity extends AppCompatActivity {
                     }).start();
                 } else {
                     Toast.makeText(ChangeActivity.this, "cropImgUri为空！", Toast.LENGTH_SHORT).show();
-        }
+                }
                 break;
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
+
     public void cropRawPhoto(Uri uri) {
         File cropImage = new File(Environment.getExternalStorageDirectory(), "crop_image.jpg");
         String path = cropImage.getAbsolutePath();
@@ -411,6 +475,7 @@ public class ChangeActivity extends AppCompatActivity {
         intent.putExtra("noFaceDetection", true); // no face detection
         startActivityForResult(intent, RESULT_REQUEST_CODE);
     }
+
     public static String getRealPath(Context context, Uri uri) {
         if (context == null || uri == null) {
             Log.d("1233p", "smdmy");
@@ -430,6 +495,7 @@ public class ChangeActivity extends AppCompatActivity {
         String filePath = uri2Str.substring(uri2Str.indexOf(":") + 3);
         return filePath;
     }
+
     @SuppressLint("NewApi")
     private static String getRealPathFromUri_AboveApi19(Context context, Uri uri) {
         String filePath = null;
@@ -474,6 +540,8 @@ public class ChangeActivity extends AppCompatActivity {
     }
 
     void change_my_pic() {
-
+        Glide.with(ChangeActivity.this).load(pic_url)
+                .apply(RequestOptions.bitmapTransform(new CircleCrop()))
+                .into(change_pic);
     }
 }
