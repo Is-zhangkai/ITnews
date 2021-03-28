@@ -101,7 +101,7 @@ public class ChangeActivity extends AppCompatActivity {
         my_info = myData.load_info();
         my_name = myData.load_name();
         pic_url = myData.load_pic_url();
-        if (myData.load_sex() == "男") {
+        if (myData.load_sex().equals("男")) {
             my_sex = 1;
         } else {
             my_sex = 0;
@@ -260,6 +260,7 @@ public class ChangeActivity extends AppCompatActivity {
                         .build();
                 MediaType mediaType = MediaType.parse("application/json");
                 RequestBody body = RequestBody.create(mediaType, "{\n        \"info\": \"" + my_info + "\",\n        \"nickname\": \"" + my_name + "\",\n        \"gender\": " + my_sex + "\n    }");
+                Log.d("1233c h", my_sex+"");
                 Request request = new Request.Builder()
                         .url("http://122.9.2.27/api/self/info-refresh")
                         .method("POST", body)
@@ -291,7 +292,6 @@ public class ChangeActivity extends AppCompatActivity {
         }
         change_name.setText("✎" + my_name);
         tv_info.setText(my_info);
-
     }
 
     void go_pic() {
@@ -334,7 +334,6 @@ public class ChangeActivity extends AppCompatActivity {
             case TAKE_PHOTO://   拍照返回
                 cropRawPhoto(photoUri);
                 break;
-
             case RESULT_REQUEST_CODE:   //裁剪完照片
                 if (cropImgUri != null) {
                     new Thread(new Runnable() {
@@ -343,12 +342,7 @@ public class ChangeActivity extends AppCompatActivity {
                             try {
                                 Log.d("1233p", "000123");
                                 final Bitmap headImage = BitmapFactory.decodeStream(ChangeActivity.this.getContentResolver().openInputStream(cropImgUri));
-//                                Objects.requireNonNull(ChangeActivity.this).runOnUiThread(new Runnable() {
-//                                    @Override
-//                                    public void run() {
-//                                        change_pic.setImageBitmap(headImage);
-//                                    }
-//                                });
+
                                 final String Photo = getRealPath(ChangeActivity.this, cropImgUri);
                                 Log.d("1233p", "????");
                                 MyData myData = new MyData(ChangeActivity.this);
@@ -376,13 +370,14 @@ public class ChangeActivity extends AppCompatActivity {
                                         Objects.requireNonNull(ChangeActivity.this).runOnUiThread(new Runnable() {
                                             @Override
                                             public void run() {
-                                                Toast.makeText(ChangeActivity.this, "图片过大,上传失败1", Toast.LENGTH_SHORT).show();
+                                                Log.d("1233pp", "sbsbsb");
+                                                Toast.makeText(ChangeActivity.this, "图片过大,上传失败6", Toast.LENGTH_SHORT).show();
                                             }
                                         });
                                     } else {
                                         JSONObject jsonObject2 = jsonObject1.getJSONObject("data");
                                         int img_id = jsonObject2.getInt("img_id");
-
+                                        pic_url = jsonObject2.getString("img_url");
                                         OkHttpClient client2 = new OkHttpClient().newBuilder()
                                                 .build();
                                         MediaType mediaType2 = MediaType.parse("application/json");
@@ -394,33 +389,16 @@ public class ChangeActivity extends AppCompatActivity {
                                                 .addHeader("Content-Type", "application/json")
                                                 .build();
                                         Response response2 = client2.newCall(request2).execute();
-                                        String responseData2 = response.body().string();
-                                        Log.d("1233g", "onResponse:666 " + responseData);
-                                        try {
-                                            JSONObject jsonObject3 = new JSONObject(responseData);
-                                            int code3 = jsonObject3.getInt("code");
-                                            final String msg3 = jsonObject3.getString("msg");
-                                            if (code3 != 1000) {
-                                                Objects.requireNonNull(ChangeActivity.this).runOnUiThread(new Runnable() {
-                                                    @Override
-                                                    public void run() {
-                                                        Toast.makeText(ChangeActivity.this, msg3, Toast.LENGTH_SHORT).show();
-                                                    }
-                                                });
-                                            } else {
-                                                JSONObject jsonObject4 = jsonObject3.getJSONObject("data");
-                                                String avatar = jsonObject4.getString("avatar");
-                                                pic_url = avatar;
-                                                Objects.requireNonNull(ChangeActivity.this).runOnUiThread(new Runnable() {
-                                                    @Override
-                                                    public void run() {
-                                                        change_my_pic();
-                                                    }
-                                                });
+
+                                        Objects.requireNonNull(ChangeActivity.this).runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                Glide.with(ChangeActivity.this).load(pic_url)
+                                                        .apply(RequestOptions.bitmapTransform(new CircleCrop()))
+                                                        .into(change_pic);
                                             }
-                                        } catch (JSONException e) {
-                                            e.printStackTrace();
-                                        }
+                                        });
+                                        Log.d("1233g", "onResponse:666 " + responseData);
                                     }
                                 } catch (JSONException e) {
                                     e.printStackTrace();
@@ -430,6 +408,7 @@ public class ChangeActivity extends AppCompatActivity {
                                 Objects.requireNonNull(ChangeActivity.this).runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
+                                        Log.d("1233pp", "aaaa");
                                         Toast.makeText(ChangeActivity.this, "图片过大,上传失败2", Toast.LENGTH_SHORT).show();
                                     }
                                 });

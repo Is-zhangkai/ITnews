@@ -188,7 +188,15 @@ public class UserFragment extends Fragment {
         super.onStart();
         final MyData myData = new MyData(getContext());
         final String my_token= myData.load_token();
-        if(my_token!="NO"&&!myData.load_xx()){
+        if(myData.load_xx()){
+            tv_fans_num.setText(myData.load_fans()+"");
+            tv_attentions_num.setText(""+myData.load_attentions());
+            tv_name.setText(myData.load_name());
+            Glide.with(getContext()).load(myData.load_pic_url())
+                    .apply(RequestOptions.bitmapTransform(new CircleCrop()))
+                    .into(iv_head);
+        }
+        if(my_token!="NO"){
             new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -260,14 +268,8 @@ public class UserFragment extends Fragment {
                     });
                 }
             }).start();
-        }else if(myData.load_xx()){
-            tv_fans_num.setText(myData.load_fans()+"");
-            tv_attentions_num.setText(""+myData.load_attentions());
-            tv_name.setText(myData.load_name());
-            Glide.with(getContext()).load(myData.load_pic_url())
-                    .apply(RequestOptions.bitmapTransform(new CircleCrop()))
-                    .into(iv_head);
         }
+
     }
 
 
