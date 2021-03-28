@@ -24,14 +24,17 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.tools.Adapter.NineGridAdapter;
 import com.example.tools.Adapter.OnAddPicturesListener;
+import com.example.tools.MyData;
 import com.example.tools.R;
 import com.example.tools.Utils;
 import com.example.tools.tools.ImgResponse;
+import com.example.tools.tools.PostNewsResponse;
 import com.google.gson.Gson;
 
 import java.io.File;
@@ -50,18 +53,24 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class WriteActivity extends AppCompatActivity {
+    private String token;
+    private EditText edit_title;
+    private EditText edit_content;
     private ImageView back;
     private Button post;
     private Button edit_tag;
     private RecyclerView recyclerView;
     private NineGridAdapter nineGridAdapter;
+    private String paper_title=null;
+    private String paper_content=null;
+    private int paper_tag=0;
     private Uri photoUri;   //相机拍照返回图片路径
     private File outputImage;
     private static final int GET_BACKGROUND_FROM_CAPTURE_RESOULT = 1;
     private static final int RESULT_REQUEST_CODE = 2;
     private static final int TAKE_PHOTO = 3;
     final List<Map<String,Object>> list = new ArrayList<>();
-    private List<Map<String,Object>> IdList=new ArrayList<>();
+    private List<String> IdList=new ArrayList<>();
 
     private void selectCamera() {
 
@@ -100,48 +109,57 @@ public class WriteActivity extends AppCompatActivity {
 
             case RESULT_REQUEST_CODE:   //相册返回
                 final String selectPhoto = getRealPathFromUri(this,cropImgUri);
+                Thread thread=new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            OkHttpClient client = new OkHttpClient().newBuilder()
+                                    .build();
+                            MediaType mediaType = MediaType.parse("text/plain");
+                            RequestBody body = new MultipartBody.Builder().setType(MultipartBody.FORM)
+                                    .addFormDataPart("img",selectPhoto,
+                                            RequestBody.create(MediaType.parse("application/octet-stream"),
+                                                    new File(selectPhoto)))
+                                    .addFormDataPart("type", "2")
+                                    .build();
+                            Request request = new Request.Builder()
+                                    .url("http://122.9.2.27/api/img-upload")
+                                    .method("POST", body)
+                                    .addHeader("Authorization", token)
+                                    .build();
 
-                try {
-                    OkHttpClient client = new OkHttpClient().newBuilder()
-                            .build();
-                    MediaType mediaType = MediaType.parse("text/plain");
-                    RequestBody body = new MultipartBody.Builder().setType(MultipartBody.FORM)
-                            .addFormDataPart("img",selectPhoto,
-                                    RequestBody.create(MediaType.parse("application/octet-stream"),
-                                            new File(selectPhoto)))
-                            .addFormDataPart("type", "2")
-                            .build();
-                    Request request = new Request.Builder()
-                            .url("http://122.9.2.27/api/img-upload")
-                            .method("POST", body)
-                            .addHeader("Authorization", "")
-                            .build();
+                            Response response = client.newCall(request).execute();
+                            String responseData = response.body().string();
+                            Gson gson=new Gson();
+                            ImgResponse imgResponse=gson.fromJson(responseData,ImgResponse.class);
+                            String url=imgResponse.getData().getImg_url();
+                            int id=imgResponse.getData().getImg_id();
+                            int size=list.size();
+                            list.remove(size-1);
+                            Map<String,Object> map=new HashMap<>();
+                            map.put("type",1);
+                            map.put("uri",url);
+                            list.add(map);
+                            IdList.add(String.valueOf(id));
+                            if(list.size()!=9) {
+                                Map<String, Object> map2 = new HashMap<>();
+                                map2.put("type", 1);
+                                list.add(map2);}
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
 
-                    Response response = client.newCall(request).execute();
-                    String responseData = response.body().string();
-                    Gson gson=new Gson();
-                    ImgResponse imgResponse=gson.fromJson(responseData,ImgResponse.class);
-                    String url=imgResponse.getData().getImg_url();
-                    int id=imgResponse.getData().getImg_id();
-                    int size=list.size();
-                    list.remove(size-1);
-                    Map<String,Object> map=new HashMap<>();
-                    map.put("type",1);
-                    map.put("uri",url);
-                    list.add(map);
-                    Map<String,Object> map1=new HashMap<>();
-                    map1.put("id",id);
-                    IdList.add(map1);
-                    if(list.size()!=9) {
-                        Map<String, Object> map2 = new HashMap<>();
-                        map1.put("type", 1);
-                        list.add(map2);}
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                nineGridAdapter.notifyDataSetChanged();
+                            }
+                        });
 
+                    }
+                });
+                thread.start();
 
-                nineGridAdapter.notifyDataSetChanged();
 
                 break;
 
@@ -282,9 +300,14 @@ public class WriteActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_write);
+        post=findViewById(R.id.edit_post);
+        MyData data=new MyData(WriteActivity.this);
+        edit_title=findViewById(R.id.edit_title);
+        edit_content=findViewById(R.id.edit_content);
         edit_tag=findViewById(R.id.edit_tag);
         back=findViewById(R.id.edit_back);
         recyclerView=findViewById(R.id.edit_image);
+        token=data.load_token();
         Map<String,Object> map=new HashMap<>();
         map.put("type",1);
         list.add(map);
@@ -303,13 +326,26 @@ public class WriteActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if(which==0)
+                        {
                             edit_tag.setText("游戏");
+                            paper_tag=1;
+
+                        }
                         else if (which==1)
+                        {
                             edit_tag.setText("体育");
+                            paper_tag=2;
+                        }
                         else if (which==2)
+                        {
                             edit_tag.setText("汽车");
+                            paper_tag=3;
+                        }
                         else
+                        {
                             edit_tag.setText("军事");
+                            paper_tag=4;
+                        }
                     }
                 });
                 builder.create().show();
@@ -350,8 +386,82 @@ public class WriteActivity extends AppCompatActivity {
                         }
                     }
                 });
+                builder1.create().show();
             }
 
+        });
+        post.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                paper_title=edit_title.getText().toString();
+                paper_content=edit_content.getText().toString();
+                if(paper_title.equals(""))
+                {
+                    Toast.makeText(WriteActivity.this,"标题不能为空",Toast.LENGTH_SHORT).show();
+                }
+                else if(paper_content.equals(""))
+                {
+                    Toast.makeText(WriteActivity.this,"内容不能为空",Toast.LENGTH_SHORT).show();
+                }
+                else if (paper_tag==0)
+                {
+                    Toast.makeText(WriteActivity.this,"未选择文章标签",Toast.LENGTH_SHORT).show();
+                }
+                else if(IdList.size()==0)
+                {
+                    Toast.makeText(WriteActivity.this,"新闻发布至少需要添加一张图片",Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                     String ids=IdList.toString();
+                    String s=ids.substring(1,ids.length()-1);
+                    final String img_ids=s;
+                    Thread thread=new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            OkHttpClient client = new OkHttpClient().newBuilder()
+                                    .build();
+                            MediaType mediaType = MediaType.parse("application/x-www-form-urlencoded");
+                            RequestBody body = RequestBody.create(mediaType, "title="+paper_title+"&content="+paper_content+"&tag="+paper_tag+"&img_ids="+img_ids);
+                            Request request = new Request.Builder()
+                                    .url("http://122.9.2.27/api/news/release")
+                                    .method("POST", body)
+                                    .addHeader("Authorization", token)
+                                    .build();
+                            try {
+                                Response response = client.newCall(request).execute();
+                                String responseData = response.body().string();
+                                Gson gson=new Gson();
+                                PostNewsResponse postNewsResponse=gson.fromJson(responseData, PostNewsResponse.class);
+                                final int code=postNewsResponse.getCode();
+                                final String tip=postNewsResponse.getMsg();
+                                {
+
+                                        runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                if(code==200)
+                                                {
+                                                    Toast.makeText(WriteActivity.this,"发布成功",Toast.LENGTH_SHORT).show();
+                                                    finish();
+                                                }
+                                                else
+                                                {
+                                                    Toast.makeText(WriteActivity.this,tip,Toast.LENGTH_SHORT).show();
+                                                    finish();
+                                                }
+                                            }
+                                        });
+
+                                }
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+                    thread.start();
+                }
+            }
         });
     }
 }

@@ -38,6 +38,7 @@ import org.xutils.ex.DbException;
 import org.xutils.x;
 
 import java.io.IOException;
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -155,8 +156,9 @@ public class NewsDetailsActivity extends AppCompatActivity {
         btn_collection=findViewById(R.id.news_collection);
         recyclerView=this.findViewById(R.id.details_recycler);
         smartRefreshLayout=findViewById(R.id.comment_srl);
-        day= Calendar.DAY_OF_MONTH;
-        month=Calendar.MONTH;
+        Calendar c=Calendar.getInstance();
+        month=c.get(Calendar.MONTH)+1;
+        day=c.get(Calendar.DAY_OF_MONTH);
         Like_num=findViewById(R.id.like_num);
         recyclerView.setLayoutManager(new LinearLayoutManager(NewsDetailsActivity.this));
         MyData myData = new MyData(NewsDetailsActivity.this);
