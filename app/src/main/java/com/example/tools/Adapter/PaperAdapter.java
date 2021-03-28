@@ -1,5 +1,6 @@
 package com.example.tools.Adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,21 +21,32 @@ import com.example.tools.Fragment.MyPaperFragment;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+
+import com.example.tools.MyData;
 import com.example.tools.R;
+import com.example.tools.Utils;
 import com.example.tools.tools.Comments;
 import com.example.tools.tools.Data;
 import com.example.tools.tools.MyNews;
+
+import org.json.JSONObject;
+
+import okhttp3.Response;
 
 public class PaperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private Context context;
     private  List<MyNews> list;
     private View inflater;
+    private String token;
     private static final int no = 0;
     private static final int yes = 1;
     private static final int net=2;
     public PaperAdapter(Context context,  List<MyNews> list) {
         this.context = context;
         this.list = list;
+        MyData myData=new MyData(context);
+        token=myData.load_token();
     }
 
 
@@ -44,6 +57,13 @@ public class PaperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
     }
 
+
+    public void removeData(int position) {
+        list.remove(position);
+        //删除动画
+        notifyItemRemoved(position);
+        notifyDataSetChanged();
+    }
 
     @Override
     public int getItemViewType(int i) {
@@ -80,7 +100,7 @@ public class PaperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int i) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, final int i) {
         int viewType=getItemViewType(i);
         if(viewType==yes)
         {
@@ -94,6 +114,40 @@ public class PaperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             viewHolder.delete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+
+                    try {
+                        Utils.post_json(token,"http://122.9.2.27/api/news/operator/"+list.get(i).getId()+"/remove","", new Utils.OkhttpCallBack() {
+                                @Override
+                                public void onSuccess(final Response response) {
+
+                                    ((Activity)context).runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+
+
+                                            try {
+
+                                                removeData(i);
+                                            } catch (Exception e) {
+                                                e.printStackTrace();
+                                            }
+                                        }  });
+                                }
+
+                            @Override
+                            public void onFail(String error) {
+
+                                ((Activity)context).runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Toast.makeText(context,"失败，过一会再试吧！",Toast.LENGTH_SHORT).show(); }
+                                });
+                            }
+                        });
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
 
                 }
             });
