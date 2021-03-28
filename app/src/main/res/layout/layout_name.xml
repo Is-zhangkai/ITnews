@@ -7,14 +7,14 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_marginTop="30dp"
-        android:hint="最多8个字符"
+        android:hint="最多6个字符"
         android:textSize="15dp"
         android:singleLine="true"
         android:paddingLeft="15dp"
         android:paddingVertical="10dp"
         android:background="@drawable/white_circle"
         android:layout_height="60dp"
-        android:maxLength = "8"
+        android:maxLength = "6"
         android:id="@+id/name"/>
 
 </LinearLayout>

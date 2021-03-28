@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tools.Adapter.CommentAdapter;
 import com.example.tools.Adapter.NewsAdapter;
+import com.example.tools.MyData;
 import com.example.tools.R;
 import com.example.tools.SQLite.myApplication;
 import com.example.tools.Utils;
@@ -57,8 +58,7 @@ public class NewsDetailsActivity extends AppCompatActivity {
     private TextView Like_num;
     private Boolean refresh=true;
     private String title,writer,photo;
-    private String token= "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MTY4NjAyMDAsImlhdCI6MTYxNjc3MzgwMCwiaXNzIjoicnVhIiwiZGF0YSI6eyJ1c2VyaWQiOjR9fQ.yLIYMDhekjIpi9_L6D1XJrxTWi2tHZ3blxxv3qXnRJg";
-
+    private String token;
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -161,7 +161,8 @@ public class NewsDetailsActivity extends AppCompatActivity {
         day=c.get(Calendar.DAY_OF_MONTH);
         Like_num=findViewById(R.id.like_num);
         recyclerView.setLayoutManager(new LinearLayoutManager(NewsDetailsActivity.this));
-
+        MyData myData = new MyData(NewsDetailsActivity.this);
+        token = myData.load_token();
 
         id = getIntent().getIntExtra("id", 0);
         writer=getIntent().getStringExtra("writer");
