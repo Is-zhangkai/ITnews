@@ -99,6 +99,10 @@ public class UserFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getActivity(), LoginActivity.class));
+                MyData myData = new MyData(getActivity());
+                myData.save_check(false);
+                myData.save_xx(false);
+                getActivity().finish();
             }
         });
         collection.setOnClickListener(new View.OnClickListener() {
@@ -182,9 +186,9 @@ public class UserFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        MyData myData = new MyData(getContext());
+        final MyData myData = new MyData(getContext());
         final String my_token= myData.load_token();
-        if(my_token!="NO"){
+        if(my_token!="NO"&&!myData.load_xx()){
             new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -199,13 +203,13 @@ public class UserFragment extends Fragment {
                     call.enqueue(new Callback() {
                         @Override
                         public void onFailure(Call call, IOException e) {
-                            Log.d("1233g", "onFailure: "+e.getMessage());
+                            Log.d("1233gg", "onFailure: "+e.getMessage());
                         }
 
                         @Override
                         public void onResponse(Call call, Response response) throws IOException {
                             String responseData = response.body().string();
-                            Log.d("1233g", "onResponse: " + responseData);
+                            Log.d("1233gg", "onResponse: " + responseData);
                             try {
                                 JSONObject jsonObject1 = new JSONObject(responseData);
                                 int code = jsonObject1.getInt("code");
@@ -229,7 +233,7 @@ public class UserFragment extends Fragment {
                                     gender =jsonObject2.getString("gender");
                                     fans_num =jsonObject2.getInt("fans_num");
                                     follow_num =jsonObject2.getInt("follow_num");
-                                    avatar =jsonObject2.getString("avatar");
+                                    avatar =jsonObject2.getString("avatar_90x90");
                                     data2.save_attentions(follow_num);
                                     data2.save_info(info);
                                     data2.save_name(name);
@@ -245,19 +249,24 @@ public class UserFragment extends Fragment {
                                             Glide.with(getContext()).load(avatar)
                                                     .apply(RequestOptions.bitmapTransform(new CircleCrop()))
                                                     .into(iv_head);
+                                            myData.save_xx(true);
                                         }
                                     });
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
-
-
-
                         }
                     });
                 }
             }).start();
+        }else if(myData.load_xx()){
+            tv_fans_num.setText(myData.load_fans()+"");
+            tv_attentions_num.setText(""+myData.load_attentions());
+            tv_name.setText(myData.load_name());
+            Glide.with(getContext()).load(myData.load_pic_url())
+                    .apply(RequestOptions.bitmapTransform(new CircleCrop()))
+                    .into(iv_head);
         }
     }
 
