@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.tools.Adapter.NewsAdapter;
 import com.example.tools.MyData;
@@ -42,7 +43,7 @@ public class RecommendFragment extends Fragment {
     private SmartRefreshLayout smartRefreshLayout;
 
     private String token;
-    private int page=1,size=4,o_page;
+    private int page=1,size=5,o_page=1;
     private Boolean refresh=true;
 
     @Nullable
@@ -67,6 +68,7 @@ public class RecommendFragment extends Fragment {
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
                 refresh=false;
+                page++;
                 List<Data> list=new ArrayList<>();
                 GetNews(list,refresh);
                 refreshLayout.finishLoadMore();
@@ -74,6 +76,7 @@ public class RecommendFragment extends Fragment {
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
                 refresh=true;
+                page=1;o_page=1;
                 List<Data> list=new ArrayList<>();
                 GetData(list);
                 refreshLayout.finishRefresh();
@@ -142,68 +145,78 @@ public class RecommendFragment extends Fragment {
 
     public void GetNews(final List<Data> list, final Boolean refresh){
 
+        if (page<=o_page) {
 
-        Utils.get_token("http://122.9.2.27/api/news/recommend/v4?page=1&size="+size, token, new Utils.OkhttpCallBack() {
-            @Override
-            public void onSuccess(Response response) {
+            Utils.get("http://122.9.2.27/api/news/recommend/v4?page=" + page + "&size=" + size, new Utils.OkhttpCallBack() {
+                @Override
+                public void onSuccess(Response response) {
 
-                try {
-                    JSONObject jsonObject21=new JSONObject(Objects.requireNonNull(response.body()).string());
-                    JSONObject jsonObject22=jsonObject21.getJSONObject("data");
-                    o_page=jsonObject22.getInt( "count");
-                    JSONArray jsonArray21=jsonObject22.getJSONArray("news");
-                    Log.i("asd",jsonObject21.getString("msg"));
+                    try {
+                        JSONObject jsonObject21 = new JSONObject(Objects.requireNonNull(response.body()).string());
+                        JSONObject jsonObject22 = jsonObject21.getJSONObject("data");
+                        o_page = jsonObject22.getInt("count");
+                        JSONArray jsonArray21 = jsonObject22.getJSONArray("news");
+                        Log.i("asd", jsonObject21.getString("msg"));
 
-                    for (int i=0;i<jsonArray21.length();i++){
-                        Data data21=new Data();
-                        JSONObject jsonObject23=jsonArray21.getJSONObject(i);
-                        data21.setTitle(jsonObject23.getString("title"));
-                        data21.setNews_Id(jsonObject23.getInt("id"));
-                        JSONArray jsonArray22=jsonObject23.getJSONArray("news_pics_set");
-                        if (jsonArray22.length()!=0){
-                            data21.setNews_pics_set(jsonArray22.getString(0));
+                        for (int i = 0; i < jsonArray21.length(); i++) {
+                            Data data21 = new Data();
+                            JSONObject jsonObject23 = jsonArray21.getJSONObject(i);
+                            data21.setTitle(jsonObject23.getString("title"));
+                            data21.setNews_Id(jsonObject23.getInt("id"));
+                            JSONArray jsonArray22 = jsonObject23.getJSONArray("news_pics_set");
+                            if (jsonArray22.length() != 0) {
+                                data21.setNews_pics_set(jsonArray22.getString(0));
+                            }
+                            data21.setLike_num(jsonObject23.getInt("like_num"));
+                            JSONObject jsonObject24 = jsonObject23.getJSONObject("author");
+                            data21.setWriter_id(jsonObject24.getInt("id"));
+                            data21.setWriter(jsonObject24.getString("username"));
+                            data21.setPhoto(jsonObject24.getString("avatar"));
+
+                            list.add(data21);
                         }
-                        data21.setLike_num(jsonObject23.getInt("like_num"));
-                        JSONObject jsonObject24=jsonObject23.getJSONObject( "author");
-                        data21.setWriter_id(jsonObject24.getInt("id"));
-                        data21.setWriter(jsonObject24.getString( "username"));
-                        data21.setPhoto(jsonObject24.getString("avatar"));
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
 
-                        list.add(data21);
+                                if (refresh) {
+                                    adapter = new NewsAdapter(getContext(), list);
+                                    recyclerView.setAdapter(adapter);
+                                } else {
+                                    adapter.addData(list);
+                                }
+                            }
+                        });
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
+                }
+
+                @Override
+                public void onFail(String error) {
+
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-
-                            if (refresh){
-                            adapter=new NewsAdapter(getContext(),list);
-                            recyclerView.setAdapter(adapter);}
-                            else {
-                               adapter.addData(list);
-                            }
+                            Data dataerror = new Data();
+                            dataerror.setError("error");
+                            list.add(dataerror);
+                            adapter = new NewsAdapter(getContext(), list);
+                            recyclerView.setAdapter(adapter);
                         }
                     });
-
-                } catch (Exception e) {
-                    e.printStackTrace();
                 }
-            }
-            @Override
-            public void onFail(String error) {
+            });
+        }else {
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(getContext(),"没有更多了",Toast.LENGTH_SHORT).show();
 
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Data dataerror=new Data();
-                        dataerror.setError("error");
-                        list.add(dataerror);
-                        adapter=new NewsAdapter(getContext(),list);
-                        recyclerView.setAdapter(adapter);
-                    }
-                });
-            }
-        });
-
+                }
+            });
+        }
     }
 
 }

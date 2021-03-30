@@ -119,7 +119,9 @@ public class MyPaperFragment extends Fragment {
                             news.setTag(jsonObject2.getInt("tag_type"));
 
                             list.add(news);
-                        }}else {  MyNews news=new MyNews();news.setNo("no");list.add(news);}
+                        }}else {
+                            MyNews news=new MyNews();
+                            news.setNo("no");list.add(news);}
                         Objects.requireNonNull(getActivity()).runOnUiThread(new Runnable() {
                             @Override
                             public void run() {

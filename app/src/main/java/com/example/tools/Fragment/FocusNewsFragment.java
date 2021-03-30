@@ -100,7 +100,7 @@ public class FocusNewsFragment extends Fragment {
     public void GetNews(final List<Data> list, final Boolean refresh){
 
 
-        Utils.get_token("http://122.9.2.27/api/news/recommend/v4?page=1&size="+size, token, new Utils.OkhttpCallBack() {
+        Utils.get_token("http://122.9.2.27/api/news/recommend/follow", token, new Utils.OkhttpCallBack() {
             @Override
             public void onSuccess(Response response) {
 
@@ -125,7 +125,6 @@ public class FocusNewsFragment extends Fragment {
                         data21.setWriter_id(jsonObject24.getInt("id"));
                         data21.setWriter(jsonObject24.getString( "username"));
                         data21.setPhoto(jsonObject24.getString("avatar"));
-
                         list.add(data21);
                     }
                     Objects.requireNonNull(getActivity()).runOnUiThread(new Runnable() {

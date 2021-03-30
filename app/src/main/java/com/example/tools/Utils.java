@@ -5,6 +5,8 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.google.gson.JsonObject;
+
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -195,10 +197,14 @@ public class Utils {
             public void run() {
                 getInstance();
 
+                try {
+                    JSONObject jsonObject=new JSONObject(json);
+
 
                 MediaType mediaType = MediaType.parse("application/json");
-                RequestBody body = RequestBody.create(mediaType, String.valueOf(json));
+                RequestBody body = RequestBody.create(mediaType, jsonObject.toString());
 
+                Log.i("asdqq", jsonObject.toString());
                 Request request = new Request.Builder()
                         .url(url)
                         .post(body)
@@ -217,7 +223,12 @@ public class Utils {
                     public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                         okhttpCallBack.onSuccess(response);
                     }
+
                 });
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
             }
         });
         thread.start();  } catch (Exception e) {

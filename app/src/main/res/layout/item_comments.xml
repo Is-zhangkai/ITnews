@@ -14,7 +14,7 @@
             android:layout_height="48dp"
             android:layout_marginStart="12dp"
             android:layout_marginTop="12dp"
-            android:background="@color/blue"/>
+            android:background="#EDEDED"/>
 
 
     </LinearLayout>
@@ -32,6 +32,9 @@
             android:layout_marginStart="12dp"
             android:text="我是评论人"
             android:textSize="17sp"
+
+            android:maxLines="1"
+            android:ellipsize="end"
             android:textStyle="bold"
             android:textColor="#393939"/>
         <TextView
@@ -41,9 +44,11 @@
             android:layout_marginTop="12dp"
             android:layout_marginStart="12dp"
             android:layout_marginEnd="24dp"
-            android:text="我是评论人fhbadshbadbvdhbfbbfbfabfhbfhfhahfbhhafhabhfb"
+            android:text="我是评论afhabhfb"
             android:textSize="17sp"
-            android:textColor="#393939"/>
+            android:textColor="#393939"
+            android:maxLines="5"
+            android:ellipsize="end"/>
 
 
     </LinearLayout>

@@ -173,7 +173,7 @@ public class PaperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             paperImage=itemView.findViewById(R.id.item_paper_image);
             paperTitle=itemView.findViewById(R.id.item_paper_title);
             paperTag=itemView.findViewById(R.id.item_paper_tag);
-            myPaper=itemView.findViewById(R.id.mypaper_item);
+
             delete=itemView.findViewById(R.id.delete);
         }
 
