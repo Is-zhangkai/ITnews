@@ -187,9 +187,9 @@ public class Utils {
             Log.i("asd","OKHTTP连接失败");
         }
     }
-//////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////
     // post json数据  token数据
-    public static void post_json(final String token,final String url, final String json,  final OkhttpCallBack okhttpCallBack) throws JSONException {
+    public static void post_jsonObject(final String token,final String url, final String json,  final OkhttpCallBack okhttpCallBack) throws JSONException {
 
         try {
         Thread thread=new Thread(new Runnable() {
@@ -199,7 +199,6 @@ public class Utils {
 
                 try {
                     JSONObject jsonObject=new JSONObject(json);
-
 
                 MediaType mediaType = MediaType.parse("application/json");
                 RequestBody body = RequestBody.create(mediaType, jsonObject.toString());
@@ -232,6 +231,52 @@ public class Utils {
             }
         });
         thread.start();  } catch (Exception e) {
+            e.printStackTrace();
+            Log.i("asd","OKHTTP连接失败");
+        }
+    }
+
+
+    ///////////////////////////////////////////
+
+    // post json数据  token数据
+    public static void post_json(final String token,final String url, final String json,  final OkhttpCallBack okhttpCallBack) throws JSONException {
+
+        try {
+            Thread thread=new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    getInstance();
+
+                        MediaType mediaType = MediaType.parse("application/json");
+                        RequestBody body = RequestBody.create(mediaType, json);
+
+                        Log.i("asdqq",json);
+                        Request request = new Request.Builder()
+                                .url(url)
+                                .post(body)
+                                .addHeader("Accept", "application/json")
+                                .addHeader("Authorization", token)
+                                .addHeader("User-Agent", "apifox/1.0.26 (https://www.apifox.cn)")
+                                .addHeader("Content-Type", "application/json")
+                                .build();
+                        okHttpClient.newCall(request).enqueue(new Callback() {
+                            @Override
+                            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                                okhttpCallBack.onFail(e.getMessage() + "asdfghjkl");
+                            }
+
+                            @Override
+                            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                                okhttpCallBack.onSuccess(response);
+                            }
+
+                        });
+
+
+                }
+            });
+            thread.start();  } catch (Exception e) {
             e.printStackTrace();
             Log.i("asd","OKHTTP连接失败");
         }

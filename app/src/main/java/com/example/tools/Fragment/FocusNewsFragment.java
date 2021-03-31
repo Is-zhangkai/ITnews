@@ -69,6 +69,7 @@ public class FocusNewsFragment extends Fragment {
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
 
+                page++;
                 List<Data> list=new ArrayList<>();
                 GetNews(list, false);
                 refreshLayout.finishLoadMore();
@@ -100,7 +101,7 @@ public class FocusNewsFragment extends Fragment {
     public void GetNews(final List<Data> list, final Boolean refresh){
 
 
-        Utils.get_token("http://122.9.2.27/api/news/recommend/follow", token, new Utils.OkhttpCallBack() {
+        Utils.get_token("http://122.9.2.27/api/news/recommend/follow" , token, new Utils.OkhttpCallBack() {
             @Override
             public void onSuccess(Response response) {
 
