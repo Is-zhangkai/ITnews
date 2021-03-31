@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.tools.Activity.NewsDetailsActivity;
 import com.example.tools.R;
 
@@ -73,6 +75,7 @@ public class MixAdapter  extends RecyclerView.Adapter<RecyclerView.ViewHolder>  
             viewHolder.tv_title.setText((list.get(position).get("title").toString()));
             viewHolder.tv_writer.setText((list.get(position).get("nickname").toString()));
             viewHolder.news_type.setText((list.get(position).get("tag_type").toString()));
+            Glide.with(context).load(list.get(position).get("news_pic").toString()).centerCrop().into(viewHolder.iv_pic);
             viewHolder.relativeLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -80,14 +83,17 @@ public class MixAdapter  extends RecyclerView.Adapter<RecyclerView.ViewHolder>  
                     intent.putExtra("id",Integer.valueOf(list.get(position).get("news_id").toString()));
                     intent.putExtra("user_id",Integer.valueOf(list.get(position).get("author_id").toString()));
                     intent.putExtra("writer",list.get(position).get("username").toString());
-//                    intent.putExtra("photo",list.get(position).get("author_id").toString());
+                    intent.putExtra("photo",list.get(position).get("author_id").toString());
                     context.startActivity(intent);
                 }
             });
         }else if(holder instanceof  NetHolder){
 
-        }else {
-
+        }else if(holder instanceof  PeoHolder) {
+            PeoHolder viewHolder = (PeoHolder) holder;
+            viewHolder.tv_info.setText(list.get(position).get("info").toString());
+            viewHolder.tv_name.setText(list.get(position).get("name").toString());
+            Glide.with(context).load(list.get(position).get("head_url").toString()).centerCrop().into(viewHolder.iv_head);
         }
     }
 
@@ -133,9 +139,16 @@ public class MixAdapter  extends RecyclerView.Adapter<RecyclerView.ViewHolder>  
         }
     }
     class PeoHolder extends RecyclerView.ViewHolder {
-
+        TextView tv_name;
+        TextView tv_info;
+        ImageView iv_head;
+        Button button;
         PeoHolder(@NonNull View itemView) {
             super(itemView);
+            tv_name = itemView.findViewById(R.id.textView);
+            tv_info = itemView.findViewById(R.id.textView7);
+            iv_head = itemView.findViewById(R.id.imageView16);
+            button = itemView.findViewById(R.id.details_btn);
         }
     }
 }

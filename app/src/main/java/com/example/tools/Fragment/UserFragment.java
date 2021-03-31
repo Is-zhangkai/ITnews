@@ -121,7 +121,7 @@ public class UserFragment extends Fragment {
             public void onClick(View v) {
                 Intent intent=new Intent(getActivity(), MyCollections.class);
                 Bundle bd=new Bundle();
-                bd.putString("name","历史记录");
+                bd.putString("name","历史点赞");
                 bd.putInt("num",2);
                 intent.putExtras(bd);
                 startActivity(intent);
