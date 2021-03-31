@@ -27,12 +27,12 @@
                 android:hint="想说点什么"
                 android:imeOptions="flagNoExtractUi"
                 android:lineSpacingMultiplier="1.2"
-                android:maxLength="200"
+                android:maxLength="50"
                 android:maxLines="6"
                 android:minHeight="104dp"
-                android:paddingBottom="10dp"
+                android:paddingVertical="10dp"
                 android:paddingHorizontal="15dp"
-                android:paddingTop="10dp"
+
                 android:scrollbars="vertical"
                 android:textColor="#FF333333"
                 android:textColorHint="@color/black"
@@ -57,7 +57,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="0/200"
+                    android:text="0/50"
                     android:textColor="@color/black" />
 
                 <LinearLayout

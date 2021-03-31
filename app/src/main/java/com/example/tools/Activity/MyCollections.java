@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -18,11 +19,16 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -41,6 +47,8 @@ public class MyCollections extends AppCompatActivity {
     private String tp_url;
     private int type;
     private String token;
+    private int len;
+    private MixAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,29 +56,36 @@ public class MyCollections extends AppCompatActivity {
         setContentView(R.layout.layout_my_collection);
 
         head = findViewById(R.id.chat_name);
-        back =findViewById(R.id.chat_back);
+        back = findViewById(R.id.chat_back);
         recyclerView = findViewById(R.id.recyclerview);
         refreshLayout = findViewById(R.id.new_srl1);
 
 
-        Intent intent=getIntent();
-        Bundle bd=intent.getExtras();
-        String name=bd.getString("name");
+        Intent intent = getIntent();
+        Bundle bd = intent.getExtras();
+        String name = bd.getString("name");
         head.setText(name);
 
-        type=bd.getInt("type");   // 1:collection 2:history  3:fans  4:attentions;
-
-        switch (type){
-            case 1: tp_url="star-news-ids";break;
-            case 2: tp_url="history-news";break;
-            case 3: tp_url="fans-ids";break;
-            case 4: tp_url="followee-ids";break;
+        type = bd.getInt("num");   // 1:collection 2:history good  3:fans  4:attentions;
+        switch (type) {
+            case 1:
+                tp_url = "star-news-ids";
+                break;
+            case 2:
+                tp_url = "like-news-ids";
+                break;
+            case 3:
+                tp_url = "fans-ids";
+                break;
+            case 4:
+                tp_url = "followee-ids";
+                break;
         }
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               finish();
+                finish();
             }
         });
     }
@@ -80,7 +95,10 @@ public class MyCollections extends AppCompatActivity {
         super.onStart();
         recyclerView.setHasFixedSize(true);
         recyclerView.setNestedScrollingEnabled(false);  //避免滑动卡顿
+
         list.clear();
+        adapter = new MixAdapter(MyCollections.this, list);
+        adapter.myNotifyDataSetChange();
         MyData myData = new MyData(MyCollections.this);
         token = myData.load_token();
         wzy();
@@ -90,26 +108,29 @@ public class MyCollections extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         list.clear();
+        adapter = new MixAdapter(MyCollections.this, list);
+        adapter.myNotifyDataSetChange();
         i = 0;
         new Thread(() -> {
             try {
-                Log.d("12333","here");
                 OkHttpClient client = new OkHttpClient().newBuilder()
                         .build();
                 Request request = new Request.Builder()
-                        .url("http://122.9.2.27/api/self/"+tp_url)
+                        .url("http://122.9.2.27/api/self/" + tp_url)
                         .method("GET", null)
-                        .addHeader("Authorization",token)
+                        .addHeader("Authorization", token)
                         .build();
                 Response response = client.newCall(request).execute();
                 responseData = response.body().string();
                 getfeedback(responseData);
             } catch (IOException e) {
                 list.clear();
-                responseData="";
-                flag = 1;
+                adapter = new MixAdapter(MyCollections.this, list);
+                adapter.myNotifyDataSetChange();
+                responseData = "";
+                flag = 0;
                 Map map2 = new HashMap();
-                map2.put("type", 0);
+                map2.put("type", 3);
                 list.add(map2);
                 Log.d("1233", String.valueOf(map2));
                 MyCollections.this.runOnUiThread(() -> {
@@ -126,74 +147,197 @@ public class MyCollections extends AppCompatActivity {
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
-
+                flag = 0;
+                i = 0;
+                list.clear();
+                adapter = new MixAdapter(MyCollections.this, list);
+                adapter.myNotifyDataSetChange();
+                responseData = "";
                 onResume();
                 refreshlayout.finishRefresh(1000/*,false*/);
-
             }
         });
         refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore(RefreshLayout refreshlayout) {
                 getfeedback(responseData);
-                refreshlayout.finishLoadMore(200/*,false*/);//传入false表示加载失败
+                refreshlayout.finishLoadMore(500/*,false*/);//传入false表示加载失败
             }
         });
-
     }
 
     public void getfeedback(String responseData) {
-//        if (responseData != "") {
-//            try {
-//                JSONObject jsonObject = new JSONObject(responseData);
-//                if (jsonObject.getInt("code") == 200) {
-//                    JSONObject jsonObject1 = jsonObject.getJSONObject("data");
-//                    JSONArray jsonArray = jsonObject1.getJSONArray("goods");
-//                    for (int j = 0; i < jsonArray.length() && j < 8; i++, j++) {
-//                        Log.d("1233i", "1:" + i);
-//                        JSONObject jsonObject2 = jsonArray.getJSONObject(i);
-//                        int good_id = jsonObject2.getInt("good_id");
-//                        int user_id = jsonObject2.getInt("user_id");
-//                        int quantity = jsonObject2.getInt("quantity");
-//                        long price = jsonObject2.getLong("price");
-//                        String name = jsonObject2.getString("name");
-//                        String info = jsonObject2.getString("info");
-//                        String img = jsonObject2.getString("img");
-//
-//                        Map map = new HashMap();
-//
-//                        map.put("good_id", good_id);
-//                        map.put("user_id", user_id);
-//                        map.put("quantity", quantity);
-//                        map.put("price", price);
-//                        map.put("info", info);
-//                        map.put("name", name);
-//                        map.put("img", img);
-//                        map.put("type", 1);
-//                        list.add(map);
-//
-//                    }
-//                    if (i == jsonArray.length()) {
-//                        Objects.requireNonNull(getActivity()).runOnUiThread(new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                Toast.makeText(getActivity(), "到底了~", Toast.LENGTH_SHORT).show();
-//                            }
-//                        });
-//                    }
-//
-//                }
-//                Objects.requireNonNull(getActivity()).runOnUiThread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
-//                        recyclerView.setAdapter(new BuyAdapter(getActivity(), list));
-//                    }
-//                });
-//
-//            } catch (JSONException e) {
-//                e.printStackTrace();
-//            }
-//        }
+        if (responseData != "") {
+            switch (type) {
+                case 1:
+                case 2:
+                    try {
+                        JSONObject jsonObject = new JSONObject(responseData);
+                        if (jsonObject.getInt("code") == 1000) {
+                            JSONObject jsonObject1 = jsonObject.getJSONObject("data");
+                            JSONArray jsonArray = jsonObject1.getJSONArray("news");
+                            Log.d("12332l", "" + jsonArray.length());
+
+                            len = jsonArray.length();
+                            for (int j = 0; i < jsonArray.length() && j < 8; i++, j++) {
+                                Log.d("1233i", "1:" + i);
+                                Log.d("1233i", "leng:" + jsonArray.length());
+                                JSONObject jsonObject2 = jsonArray.getJSONObject(i);
+                                Log.d("12332", jsonObject2.toString());
+                                int news_id = jsonObject2.getInt("id");
+                                int tag_type = jsonObject2.getInt("tag_type");
+                                String title = jsonObject2.getString("title");
+                                JSONArray jsonArray22 = jsonObject2.getJSONArray("news_pics_set");
+                                String news_pic = "no";
+                                if (jsonArray22.length() != 0) {
+                                    news_pic = jsonArray22.getString(0);
+                                }
+
+                                JSONObject jsonObject24 = jsonObject2.getJSONObject("author");
+                                int author_id = jsonObject24.getInt("id");
+                                String username = jsonObject24.getString("username");
+                                String nickname = jsonObject24.getString("nickname");
+                                String user_pic = jsonObject24.getString("avatar");
+                                Map map = new HashMap();
+
+                                map.put("news_id", news_id);
+                                map.put("tag_type", tag_type);
+                                map.put("news_pic", news_pic);
+                                map.put("author_id", author_id);
+                                map.put("title", title);
+                                map.put("username", username);
+                                map.put("nickname", nickname);
+                                map.put("user_pic", user_pic);
+                                map.put("type", 2);
+                                list.add(map);
+                            }
+
+                            if (i == jsonArray.length()) {
+                                MyCollections.this.runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Toast.makeText(MyCollections.this, "到底了~", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            }
+                        } else if (jsonObject.getInt("code") == 6666) {
+                            list.clear();
+                            adapter = new MixAdapter(MyCollections.this, list);
+                            adapter.myNotifyDataSetChange();
+                            responseData = "";
+                            Map map2 = new HashMap();
+                            map2.put("type", 0);
+                            Log.d("12332", type + "资料");
+                            switch (type) {
+                                case 1:
+                                    map2.put("text", "您还没有收藏任何新闻");
+                                    break;
+                                case 2:
+                                    map2.put("text", "您没有任何浏览记录");
+                                    break;
+                                case 3:
+                                    map2.put("text", "还没有人关注您，发发新闻吧");
+                                    break;
+                                case 4:
+                                    map2.put("text", "您没有关注任何人");
+                                    break;
+                            }
+                            list.add(map2);
+                        }
+
+                        Objects.requireNonNull(MyCollections.this).runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (flag != 666) {
+                                    recyclerView.setLayoutManager(new LinearLayoutManager(MyCollections.this));
+                                    recyclerView.setAdapter(new MixAdapter(MyCollections.this, list));
+                                    Log.d("12332", "2here");
+                                }
+                                if (i == len) {
+                                    flag = 666;
+                                }
+                            }
+                        });
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                case 3:
+                    try {
+                        JSONObject jsonObject = new JSONObject(responseData);
+                        if (jsonObject.getInt("code") == 1000) {
+                            JSONObject jsonObject1 = jsonObject.getJSONObject("data");
+                            JSONArray jsonArray = jsonObject1.getJSONArray("users");
+                            len = jsonArray.length();
+                            for (int j = 0; i < jsonArray.length() && j < 8; i++, j++) {
+                                Log.d("1233i", "1:" + i);
+                                Log.d("1233i", "leng:" + jsonArray.length());
+                                JSONObject jsonObject2 = jsonArray.getJSONObject(i);
+                                Log.d("12332", jsonObject2.toString());
+                                int peo_id = jsonObject2.getInt("id");
+                                String info = jsonObject2.getString("info");
+                                String name = jsonObject2.getString("nickname");
+                                String head_url = jsonObject2.getString("avatar");
+                                Map map = new HashMap();
+
+                                map.put("peo_id", peo_id);
+                                map.put("info",info);
+                                map.put("name",name);
+                                map.put("head_url",head_url);
+                                map.put("type",1);
+                                list.add(map);
+                            }
+                            if (i == jsonArray.length()) {
+                                MyCollections.this.runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Toast.makeText(MyCollections.this, "到底了~", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            }
+                        } else if (jsonObject.getInt("code") == 6666) {
+                            list.clear();
+                            adapter = new MixAdapter(MyCollections.this, list);
+                            adapter.myNotifyDataSetChange();
+                            responseData = "";
+                            Map map2 = new HashMap();
+                            map2.put("type", 0);
+                            Log.d("12332", type + "资料");
+                            switch (type) {
+                                case 1:
+                                    map2.put("text", "您还没有收藏任何新闻");
+                                    break;
+                                case 2:
+                                    map2.put("text", "您没有任何浏览记录");
+                                    break;
+                                case 3:
+                                    map2.put("text", "还没有人关注您，发发新闻吧");
+                                    break;
+                                case 4:
+                                    map2.put("text", "您没有关注任何人");
+                                    break;
+                            }
+                            list.add(map2);
+                        }
+
+                        Objects.requireNonNull(MyCollections.this).runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (flag != 666) {
+                                    recyclerView.setLayoutManager(new LinearLayoutManager(MyCollections.this));
+                                    recyclerView.setAdapter(new MixAdapter(MyCollections.this, list));
+                                    Log.d("12332", "2here");
+                                }
+                                if (i == len) {
+                                    flag = 666;
+                                }
+                            }
+                        });
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+            }
+        }
     }
 }

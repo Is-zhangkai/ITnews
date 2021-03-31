@@ -76,8 +76,7 @@ public class NewsDetailsActivity extends AppCompatActivity {
             operation.setRead(1);
             operation.setEmail(email);
             dbManager.save(operation);
-            String s=null;
-            Utils.post_json(token, "http://122.9.2.27/api/news/operator/" + id + "/like", s, new Utils.OkhttpCallBack() {
+            Utils.post_json(token, "http://122.9.2.27/api/news/operator/" + id + "/like", "", new Utils.OkhttpCallBack() {
                 @Override
                 public void onSuccess(Response response) {
                     try {
@@ -115,8 +114,7 @@ public class NewsDetailsActivity extends AppCompatActivity {
             operation.setRead(1);
             operation.setEmail(email);
             dbManager.save(operation);
-            String s=null;
-            Utils.post_json(token, "http://122.9.2.27/api/news/operator/" + id + "/star", s, new Utils.OkhttpCallBack() {
+            Utils.post_json(token, "http://122.9.2.27/api/news/operator/" + id + "/star", "", new Utils.OkhttpCallBack() {
                 @Override
                 public void onSuccess(Response response) {
                     try {
@@ -211,10 +209,10 @@ public class NewsDetailsActivity extends AppCompatActivity {
                     public void onTextSend(String msg) {
                         //点击发送按钮后，回调此方法，msg为输入的值
                          String json="{\"content\": \""+msg+"\"}";
-                         Log.i("asd",json);
+
                         try {
 
-                            Utils.post_json(token, "http://122.9.2.27/api/news/operator/"+id+"/comment", json, new Utils.OkhttpCallBack() {
+                            Utils.post_jsonObject(token, "http://122.9.2.27/api/news/operator/"+id+"/comment", json, new Utils.OkhttpCallBack() {
                                 @Override
                                 public void onSuccess(Response response) {
                                     try {
@@ -277,7 +275,7 @@ public class NewsDetailsActivity extends AppCompatActivity {
                     }
                 });
                 //设置评论字数
-                inputTextMsgDialog.setMaxNumber(60);
+                inputTextMsgDialog.setMaxNumber(50);
                 inputTextMsgDialog .show();
             }
         });
@@ -436,8 +434,11 @@ try {
                         for (int i = 0; i < jsonArray2.length(); i++) {
                             Comments comments = new Comments();
                             JSONObject jsonObject3 = jsonArray2.getJSONObject(i);
-                            comments.setComment_writer(jsonObject3.getString("username"));
+                            comments.setComment_writer(jsonObject3.getString("nickname"));
                             comments.setComment_content(jsonObject3.getString("content"));
+                            String time=jsonObject3.getString("create_time");
+
+                            comments.setCreate_time(time);
                             comments.setPhoto(jsonObject3.getString("avatar"));
                             list.add(comments);
                         }
