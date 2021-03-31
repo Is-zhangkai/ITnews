@@ -210,12 +210,12 @@ public class NewsDetailsActivity extends AppCompatActivity {
                          String json="{\"content\": \""+msg+"\"}";
                          Log.i("asd",json);
                         try {
-                            inputTextMsgDialog.clearText();
-                            inputTextMsgDialog.dismiss();
+
                             Utils.post_json(token, "http://122.9.2.27/api/news/operator/"+id+"/comment", json, new Utils.OkhttpCallBack() {
                                 @Override
                                 public void onSuccess(Response response) {
                                     try {
+                                        Log.i("asd","bhvbhd");
                                         JSONObject jsonObject21 = new JSONObject(Objects.requireNonNull(response.body()).string());
                                         final String msg1 = jsonObject21.getString("msg");
                                         Log.i("asd1", msg1);
@@ -252,6 +252,9 @@ public class NewsDetailsActivity extends AppCompatActivity {
 
 
                                     } catch (Exception e) {
+                                        Toast.makeText(NewsDetailsActivity.this,"评sss论失败",Toast.LENGTH_SHORT).show();
+
+
                                         e.printStackTrace();
                                     }
                                 }
