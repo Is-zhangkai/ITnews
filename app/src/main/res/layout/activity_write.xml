@@ -83,6 +83,8 @@
                 android:layout_marginRight="20dp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="20dp"
+                android:gravity="left"
+                android:paddingVertical="10dp"
                 android:minLines="10"
                 android:maxLines="15">
             </EditText>
