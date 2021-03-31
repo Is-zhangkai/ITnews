@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.tools.CountDownTimerUtils;
 import com.example.tools.R;
 import com.google.gson.Gson;
 
@@ -39,7 +40,6 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText get_verify;
     private Button get_get_verify;
     private Button gogo;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,6 +110,8 @@ public class RegisterActivity extends AppCompatActivity {
                                             RegisterActivity.this.runOnUiThread(new Runnable() {
                                                 @Override
                                                 public void run() {
+                                                    CountDownTimerUtils mCountDownTimerUtils = new CountDownTimerUtils(get_get_verify, 60000, 1000);
+                                                    mCountDownTimerUtils.start();
                                                     Toast.makeText(RegisterActivity.this, "获取成功", Toast.LENGTH_SHORT).show();
                                                 }
                                             });

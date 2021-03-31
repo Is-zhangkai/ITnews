@@ -22,6 +22,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -164,7 +165,15 @@ public class ChangeActivity extends AppCompatActivity {
                 LayoutInflater factory = LayoutInflater.from(ChangeActivity.this);
                 final View view = factory.inflate(R.layout.layout_sex, null);
                 rgSex = (RadioGroup) view.findViewById(R.id.rgSex);
-
+                RadioButton rb_1 = (RadioButton) rgSex.findViewById(R.id.radio0);
+                RadioButton rb_0 = (RadioButton) rgSex.findViewById(R.id.radio1);
+                if(my_sex==1){
+                    rb_1.setChecked(true);
+                    rb_0.setChecked(false);
+                }else{
+                    rb_0.setChecked(true);
+                    rb_1.setChecked(false);
+                }
                 new AlertDialog.Builder(ChangeActivity.this)
                         .setTitle("请选择新的性别吧~")//提示框标题
                         .setView(view)
@@ -194,7 +203,7 @@ public class ChangeActivity extends AppCompatActivity {
                 LayoutInflater factory = LayoutInflater.from(ChangeActivity.this);
                 final View view = factory.inflate(R.layout.layout_name, null);
                 edit = view.findViewById(R.id.name);
-
+                edit.setText(my_name);
                 new AlertDialog.Builder(ChangeActivity.this)
                         .setTitle("请输入新的昵称")
                         .setView(view)
@@ -227,6 +236,7 @@ public class ChangeActivity extends AppCompatActivity {
                 LayoutInflater factory = LayoutInflater.from(ChangeActivity.this);
                 final View view = factory.inflate(R.layout.layout_info, null);
                 edit = view.findViewById(R.id.name);
+                edit.setText(my_info);
                 new AlertDialog.Builder(ChangeActivity.this)
                         .setTitle("请输入新的签名")
                         .setView(view)
@@ -236,8 +246,8 @@ public class ChangeActivity extends AppCompatActivity {
                                     public void onClick(DialogInterface dialog,
                                                         int which) {
                                         //事件
-                                        if (edit.getText().toString().length() == 0) {
-                                            Toast.makeText(ChangeActivity.this, "不能为空！", Toast.LENGTH_SHORT).show();
+                                        if (!checkInfo(edit.getText().toString())) {
+                                            Toast.makeText(ChangeActivity.this, "修改失败，签名不合法！", Toast.LENGTH_SHORT).show();
                                             return;
                                         } else {
                                             my_info = edit.getText().toString();
@@ -523,6 +533,12 @@ public class ChangeActivity extends AppCompatActivity {
 
     public boolean checkName(String str) {
         String regexp = "^[\\u4e00-\\u9fa50-9a-zA-Z]{1,6}$";
+        Pattern pattern = Pattern.compile(regexp);
+        Matcher matcher = pattern.matcher(str);
+        return matcher.matches();
+    }
+    public boolean checkInfo(String str) {
+        String regexp = "^[\\u4e00-\\u9fa50-9a-zA-Z]{1,20}$";
         Pattern pattern = Pattern.compile(regexp);
         Matcher matcher = pattern.matcher(str);
         return matcher.matches();

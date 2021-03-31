@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.tools.CountDownTimerUtils;
 import com.example.tools.R;
 import com.google.gson.Gson;
 
@@ -60,6 +61,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
+
                             Gson gson = new Gson();
                             ChangePasswordActivity.Myemail myemail = new ChangePasswordActivity.Myemail();
                             myemail.email = email;
@@ -98,7 +100,10 @@ public class ChangePasswordActivity extends AppCompatActivity {
                                             ChangePasswordActivity.this.runOnUiThread(new Runnable() {
                                                 @Override
                                                 public void run() {
+                                                    CountDownTimerUtils mCountDownTimerUtils = new CountDownTimerUtils(get_get_verify, 60000, 1000);
+                                                    mCountDownTimerUtils.start();
                                                     Toast.makeText(ChangePasswordActivity.this, "获取成功", Toast.LENGTH_SHORT).show();
+
                                                 }
                                             });
 
@@ -114,6 +119,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
                         }
                     }).start();
                 }
+
             }
         });
 
@@ -219,4 +225,6 @@ public class ChangePasswordActivity extends AppCompatActivity {
         public String email;
         int usage;
     }
+
+
 }

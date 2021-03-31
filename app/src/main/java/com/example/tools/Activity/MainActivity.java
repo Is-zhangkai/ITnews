@@ -58,6 +58,8 @@ import q.rorbin.badgeview.QBadgeView;
         news.setSelected(true);
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment, newsFragment).commit();
 
+        MyData myData = new MyData(MainActivity.this);
+//        if()
 //        int permission = ActivityCompat.checkSelfPermission(MainActivity.this,
 //                Manifest.permission.WRITE_EXTERNAL_STORAGE);
 //

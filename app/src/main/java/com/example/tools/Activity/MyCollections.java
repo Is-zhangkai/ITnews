@@ -263,6 +263,7 @@ public class MyCollections extends AppCompatActivity {
                     }
                     break;
                 case 3:
+                case 4:
                     try {
                         JSONObject jsonObject = new JSONObject(responseData);
                         if (jsonObject.getInt("code") == 1000) {
@@ -281,10 +282,10 @@ public class MyCollections extends AppCompatActivity {
                                 Map map = new HashMap();
 
                                 map.put("peo_id", peo_id);
-                                map.put("info",info);
-                                map.put("name",name);
-                                map.put("head_url",head_url);
-                                map.put("type",1);
+                                map.put("info", info);
+                                map.put("name", name);
+                                map.put("head_url", head_url);
+                                map.put("type", 1);
                                 list.add(map);
                             }
                             if (i == jsonArray.length()) {
@@ -308,7 +309,7 @@ public class MyCollections extends AppCompatActivity {
                                     map2.put("text", "您还没有收藏任何新闻");
                                     break;
                                 case 2:
-                                    map2.put("text", "您没有任何浏览记录");
+                                    map2.put("text", "您没有点赞任何新闻");
                                     break;
                                 case 3:
                                     map2.put("text", "还没有人关注您，发发新闻吧");
@@ -336,7 +337,7 @@ public class MyCollections extends AppCompatActivity {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-
+                    break;
             }
         }
     }

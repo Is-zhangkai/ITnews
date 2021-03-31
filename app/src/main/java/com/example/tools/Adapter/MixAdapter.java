@@ -15,6 +15,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CircleCrop;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.tools.Activity.NewsDetailsActivity;
 import com.example.tools.R;
 
@@ -93,7 +95,9 @@ public class MixAdapter  extends RecyclerView.Adapter<RecyclerView.ViewHolder>  
             PeoHolder viewHolder = (PeoHolder) holder;
             viewHolder.tv_info.setText(list.get(position).get("info").toString());
             viewHolder.tv_name.setText(list.get(position).get("name").toString());
-            Glide.with(context).load(list.get(position).get("head_url").toString()).centerCrop().into(viewHolder.iv_head);
+            Glide.with(context).load(list.get(position).get("head_url").toString())
+                    .apply(RequestOptions.bitmapTransform(new CircleCrop()))
+                    .into(viewHolder.iv_head);
         }
     }
 
