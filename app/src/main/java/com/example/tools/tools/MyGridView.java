@@ -23,6 +23,10 @@ public class MyGridView extends GridView {
 
         setMeasuredDimension(getDefaultSize(0, widthMeasureSpec), getDefaultSize(0, heightMeasureSpec));
 
+
+
+
+
         int expandSpec = MeasureSpec.makeMeasureSpec(Integer.MAX_VALUE >> 2,
                 MeasureSpec.AT_MOST);
         super.onMeasure(widthMeasureSpec, expandSpec);
@@ -30,7 +34,7 @@ public class MyGridView extends GridView {
     }
 
     @Override
-    public int getNumColumns() {
+    public int getNumColumns() {//可以不复写，但必须在xml中声明android:numColumns="3"
         return 3;
     }
 }
