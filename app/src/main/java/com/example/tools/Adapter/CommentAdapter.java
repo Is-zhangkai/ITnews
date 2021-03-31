@@ -20,14 +20,19 @@ import com.bumptech.glide.Glide;
 import com.example.tools.Activity.NewsDetailsActivity;
 import com.example.tools.MyData;
 import com.example.tools.R;
+import com.example.tools.SQLite.myApplication;
+import com.example.tools.SQLite.operation;
 import com.example.tools.Utils;
 import com.example.tools.tools.Comments;
 import com.example.tools.tools.Data;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.xutils.DbManager;
+import org.xutils.x;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Objects;
 
@@ -38,6 +43,9 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     public static final int TYPE_HEADER = 0; //说明是带有Header的
     public static final int TYPE_NORMAL = 1;
     public static final int TYPE_no =3;
+    private String email;
+    private int month;
+    private int day;
     private boolean focus,type;
     private Context context;
     private GridViewAdapter gridAdpter;
@@ -54,6 +62,9 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         this.list=list;
         MyData myData = new MyData(context);
         token = myData.load_token();
+        Calendar c=Calendar.getInstance();
+        month=c.get(Calendar.MONTH)+1;
+        day=c.get(Calendar.DAY_OF_MONTH);
     }
 
 
@@ -160,8 +171,15 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                                             Log.i("asd", msg2);
                                             Toast.makeText(context,msg2,Toast.LENGTH_SHORT).show();
                                             if (msg2.equals("关注成功")){
-
-
+                                                String write=list.get(i).getComment_writer();
+                                                DbManager dbManager = x.getDb(((myApplication) context.getApplicationContext()).getDaoConfig());
+                                                operation operation=new operation();
+                                                operation.setTitle(write);
+                                                operation.setType(5);
+                                                operation.setDate(month+"月"+day+"日");
+                                                operation.setRead(1);
+                                                operation.setEmail(email);
+                                                dbManager.save(operation);
                                                 ( (ViewHolderNews)holder).btn_focus.setBackgroundResource(R.drawable.button_focus);
                                                 ( (ViewHolderNews)holder).btn_focus.setText("已关注");
                                                 ( (ViewHolderNews)holder).btn_focus.setTextColor(context.getResources().getColor(R.color.gradientstart));

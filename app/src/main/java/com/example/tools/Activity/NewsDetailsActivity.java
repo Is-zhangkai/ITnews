@@ -56,6 +56,7 @@ public class NewsDetailsActivity extends AppCompatActivity {
     private int id,user_id,page=1,all_page=1,size=9,like_nummber,refresh_num=0;
      int day,month;
     private TextView Like_num;
+    private String email;
     private Boolean refresh=true;
     private String title,writer,photo;
     private String token;
@@ -73,6 +74,7 @@ public class NewsDetailsActivity extends AppCompatActivity {
             operation.setType(2);
             operation.setDate(month+"月"+day+"日");
             operation.setRead(1);
+            operation.setEmail(email);
             dbManager.save(operation);
             String s=null;
             Utils.post_json(token, "http://122.9.2.27/api/news/operator/" + id + "/like", s, new Utils.OkhttpCallBack() {
@@ -111,6 +113,7 @@ public class NewsDetailsActivity extends AppCompatActivity {
             operation.setType(3);
             operation.setDate(month+"月"+day+"日");
             operation.setRead(1);
+            operation.setEmail(email);
             dbManager.save(operation);
             String s=null;
             Utils.post_json(token, "http://122.9.2.27/api/news/operator/" + id + "/star", s, new Utils.OkhttpCallBack() {
@@ -237,9 +240,10 @@ public class NewsDetailsActivity extends AppCompatActivity {
                                                         dbManager = x.getDb(((myApplication)getApplicationContext()).getDaoConfig());
                                                         operation operation=new operation();
                                                         operation.setTitle(title);
-                                                        operation.setType(3);
+                                                        operation.setType(4);
                                                         operation.setDate(month+"月"+day+"日");
                                                         operation.setRead(1);
+                                                        operation.setEmail(email);
                                                         dbManager.save(operation);
                                                     } catch (DbException e) {
                                                         e.printStackTrace();
