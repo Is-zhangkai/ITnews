@@ -52,6 +52,10 @@ public class MyData {
         mEditor.putString("NAME",name);
         mEditor.commit();
     }
+    public void save_email(String email){
+        mEditor.putString("EMAIL",email);
+        mEditor.commit();
+    }
     public void save_info(String info){
         mEditor.putString("INFO",info);
         mEditor.commit();
@@ -98,5 +102,7 @@ public class MyData {
     public int load_fans(){return mPreferences.getInt("FANS",0);}
     public int load_attentions(){return mPreferences.getInt("ATTENTIONS",0);}
     public int load_id(){return mPreferences.getInt("MY",1);}
-
+    public String load_email(){
+        return mPreferences.getString("EMAIL","NO");
+    }
 }
