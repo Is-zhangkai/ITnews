@@ -161,7 +161,6 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                                             Toast.makeText(context,msg2,Toast.LENGTH_SHORT).show();
                                             if (msg2.equals("关注成功")){
 
-
                                                 ( (ViewHolderNews)holder).btn_focus.setBackgroundResource(R.drawable.button_focus);
                                                 ( (ViewHolderNews)holder).btn_focus.setText("已关注");
                                                 ( (ViewHolderNews)holder).btn_focus.setTextColor(context.getResources().getColor(R.color.gradientstart));
