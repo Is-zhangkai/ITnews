@@ -5,8 +5,6 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.google.gson.JsonObject;
-
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -196,7 +194,6 @@ public class Utils {
             @Override
             public void run() {
                 getInstance();
-
                 try {
                     JSONObject jsonObject=new JSONObject(json);
 

@@ -8,10 +8,10 @@
     android:id="@+id/LinearLayout_item">
 
     <RelativeLayout
+        android:id="@+id/relativelayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="15dp"
-        android:background="@color/whitesmoke">
+        android:padding="15dp">
 
         <TextView
             android:id="@+id/textView5"
@@ -36,9 +36,7 @@
             android:layout_toStartOf="@+id/imageView2"
             android:singleLine="false"
             android:text="你知道电影 4K 修复技术是什"
-            android:maxEms="18"
-            android:maxLines="1"
-            android:ellipsize="end"
+
             android:textColor="#D9000000"
             android:textSize="16sp"
             android:textStyle="bold"
@@ -56,12 +54,11 @@
             android:id="@+id/imageView3"
             android:layout_width="wrap_content"
             android:layout_height="20dp"
-            android:text="标签："
             android:layout_alignParentBottom="true"
             android:layout_marginStart="30dp"
             android:layout_marginBottom="7dp"
             android:layout_toEndOf="@+id/textView6"
-          />
+            android:text="标签：" />
 
         <TextView
             android:id="@+id/textView6"
@@ -71,11 +68,8 @@
             android:layout_marginStart="0dp"
             android:layout_marginBottom="9dp"
             android:layout_toRightOf="@+id/textView5"
-            android:text="用户名"
             android:maxLength="9"
-            android:maxEms="8"
-            android:maxLines="1"
-            android:ellipsize="end"
+            android:text="用户名"
             android:textColor="#66000000"
             android:textSize="12sp" />
 
