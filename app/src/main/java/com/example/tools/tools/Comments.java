@@ -22,11 +22,18 @@ public class Comments {
     private int star_num;
     private int tag;
     private int author_id;
-    private String title,writer,photo;
+    private String title,writer,photo,first;
     private List<String> pics;
     private String content,comment_writer,comment_content,error,noComments;
     private Boolean follow;
 
+    public String getFirst() {
+        return first;
+    }
+
+    public void setFirst(String first) {
+        this.first = first;
+    }
 
     public void setFollow(Boolean follow) {
         this.follow = follow;

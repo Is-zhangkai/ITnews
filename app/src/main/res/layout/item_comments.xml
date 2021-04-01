@@ -3,18 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#DDDDDD"/>
-    <TextView
-        android:id="@+id/comments_num"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="按揭车不开的笔记本可"
-        android:layout_marginStart="24dp"
-        android:textSize="18sp"
-        android:padding="3dp"/>
+
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -77,5 +66,10 @@
             android:textColor="#393939" />
 
     </LinearLayout>
+
 </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#DDDDDD"/>
 </LinearLayout>

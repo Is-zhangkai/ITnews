@@ -434,6 +434,13 @@ try {
 
                     } else {
                         all_page=jsonObject2.getInt("count");
+
+                        if (page==1){
+                            Comments comments = new Comments();
+                            comments.setFirst("评论");
+                            list.add(comments);
+                        }
+
                         JSONArray jsonArray2 = jsonObject2.getJSONArray("comments");
                         for (int i = 0; i < jsonArray2.length(); i++) {
                             Comments comments = new Comments();
@@ -451,7 +458,8 @@ try {
                             @Override
                             public void run() {
 
-                                if (refresh) {if (refresh_num==0){Like_num.setText(like_nummber+"");
+                                if (refresh) {if (refresh_num==0){
+                                    Like_num.setText(like_nummber+"");
                                     if (like){  btn_like.setBackgroundResource(R.drawable.like_fill);
                                     }else {  btn_like.setBackgroundResource(R.drawable.like_nor);}
                                     if (collection){  btn_collection.setBackgroundResource(R.drawable.collection_fill);

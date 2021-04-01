@@ -118,6 +118,7 @@ public class MyPaperFragment extends Fragment {
                         Log.i("asd",msg);
                         JSONObject jsonObject1=jsonObject.getJSONObject("data");
                         JSONArray jsonArray=jsonObject1.getJSONArray("news");
+                        Log.i("asd",jsonObject1.toString());
                         Log.i("asd",jsonArray.length()+"");
                         if (jsonArray.length()!=0){
                         for (int i=0;i<jsonArray.length();i++){
@@ -126,7 +127,10 @@ public class MyPaperFragment extends Fragment {
                             news.setMy_title(jsonObject2.getString("title"));
                             news.setId(jsonObject2.getInt("id"));
                             JSONArray jsonArray1=jsonObject2.getJSONArray("news_pics_set");
-                            news.setImg(jsonArray1.getString(0));
+                            if (jsonArray1.length()!=0){
+                                news.setImg(jsonArray1.getString(0));
+                            }
+
                             news.setTag(jsonObject2.getInt("tag_type"));
                             list.add(news);
                         }}else {

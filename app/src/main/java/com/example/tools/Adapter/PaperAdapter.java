@@ -118,6 +118,7 @@ public class PaperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
            else if ( list.get(i).getTag()==4){ ((ViewHolder)holder).paperTag.setText("军事");}
             else{ ((ViewHolder)holder).paperTag.setText("其他");}
             ( (ViewHolder)holder).paperTitle.setText(list.get(i).getMy_title());
+
             Glide.with(context).load(list.get(i).getImg()).error(R.drawable.error).into(( (ViewHolder)holder).paperImage);
 
             ( (ViewHolder)holder).delete.setOnClickListener(new View.OnClickListener() {
