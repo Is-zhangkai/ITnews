@@ -2,7 +2,9 @@ package com.example.tools.Adapter;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -117,39 +119,51 @@ public class PaperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 @Override
                 public void onClick(View v) {
 
-                    try {
-                        Utils.post_json(token,"http://122.9.2.27/api/news/operator/"+list.get(i).getId()+"/remove","", new Utils.OkhttpCallBack() {
+
+                    AlertDialog textTips = new AlertDialog.Builder(context)
+                            .setTitle("删除新闻:")
+                            .setMessage("您确定要删除该新闻吗？")
+                            .setNegativeButton("我再想想" ,new DialogInterface.OnClickListener() {
                                 @Override
-                                public void onSuccess(final Response response) {
+                                public void onClick(DialogInterface dialog, int which) {
 
-                                    ((Activity)context).runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-
-
-                                            try {
-
-                                                removeData(i);
-                                            } catch (Exception e) {
-                                                e.printStackTrace();
-                                            }
-                                        }  });
                                 }
+                            })
+                            .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    try {
+                                        Utils.post_json(token,"http://122.9.2.27/api/news/operator/"+list.get(i).getId()+"/remove","", new Utils.OkhttpCallBack() {
+                                            @Override
+                                            public void onSuccess(final Response response) {
 
-                            @Override
-                            public void onFail(String error) {
+                                                ((Activity)context).runOnUiThread(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        try {
+                                                            removeData(i);
+                                                        } catch (Exception e) {
+                                                            e.printStackTrace();
+                                                        }
+                                                    }  });
+                                            }
 
-                                ((Activity)context).runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        Toast.makeText(context,"失败，过一会再试吧！",Toast.LENGTH_SHORT).show(); }
-                                });
-                            }
-                        });
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                                            @Override
+                                            public void onFail(String error) {
 
+                                                ((Activity)context).runOnUiThread(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        Toast.makeText(context,"失败，过一会再试吧！",Toast.LENGTH_SHORT).show(); }
+                                                });
+                                            }
+                                        });
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }).create();
+                    textTips.show();
 
                 }
             });

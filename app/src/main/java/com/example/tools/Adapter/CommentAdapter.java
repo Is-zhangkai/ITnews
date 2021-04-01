@@ -172,6 +172,10 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                                             Toast.makeText(context,msg2,Toast.LENGTH_SHORT).show();
                                             if (msg2.equals("关注成功")){
                                                 String write=list.get(i).getComment_writer();
+
+                                                ( (ViewHolderNews)holder).btn_focus.setBackgroundResource(R.drawable.button_focus);
+                                                ( (ViewHolderNews)holder).btn_focus.setText("已关注");
+                                                ( (ViewHolderNews)holder).btn_focus.setTextColor(context.getResources().getColor(R.color.gradientstart));
                                                 DbManager dbManager = x.getDb(((myApplication) context.getApplicationContext()).getDaoConfig());
                                                 operation operation=new operation();
                                                 operation.setTitle(write);
@@ -180,10 +184,6 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                                                 operation.setRead(1);
                                                 operation.setEmail(email);
                                                 dbManager.save(operation);
-                                                ( (ViewHolderNews)holder).btn_focus.setBackgroundResource(R.drawable.button_focus);
-                                                ( (ViewHolderNews)holder).btn_focus.setText("已关注");
-                                                ( (ViewHolderNews)holder).btn_focus.setTextColor(context.getResources().getColor(R.color.gradientstart));
-
                                     }else { ( (ViewHolderNews)holder).btn_focus.setBackgroundResource(R.drawable.btn_focus_fill);
                                             ( (ViewHolderNews)holder).btn_focus.setText("关注");
                                             ( (ViewHolderNews)holder).btn_focus.setTextColor(context.getResources().getColor(R.color.white)); }
