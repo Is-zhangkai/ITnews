@@ -491,6 +491,7 @@ try {
                             comments.setComment_content(jsonObject3.getString("content"));
                             String time=jsonObject3.getString("create_time");
 
+                            time=time.substring(6,10);
                             comments.setCreate_time(time);
                             comments.setPhoto(jsonObject3.getString("avatar"));
                             list.add(comments);

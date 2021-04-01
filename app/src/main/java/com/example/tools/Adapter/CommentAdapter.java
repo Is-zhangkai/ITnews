@@ -132,6 +132,7 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         if (holder instanceof ViewHolderComments){
             ( (ViewHolderComments)holder).comment.setText(list.get(i).getComment_content());
             ( (ViewHolderComments)holder).writer.setText(list.get(i).getComment_writer());
+            ( (ViewHolderComments)holder).time.setText(list.get(i).getCreate_time()+"");
             Glide.with(context).load(list.get(i).getPhoto()).error(R.drawable.errorhead).circleCrop().into(( (ViewHolderComments)holder).img);
 
 
@@ -156,8 +157,6 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 ( (ViewHolderNews)holder).btn_focus.setText("关注");
                 ( (ViewHolderNews)holder).btn_focus.setTextColor(context.getResources().getColor(R.color.white));
                }
-
-
             //关注按钮
             ( (ViewHolderNews)holder).btn_focus.setOnClickListener(new View.OnClickListener() {
 
@@ -249,11 +248,12 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
 
     public static class ViewHolderComments extends RecyclerView.ViewHolder {
-        TextView writer,comment;
+        TextView writer,comment,time;
         ImageView img;
         public ViewHolderComments(@NonNull View itemView) {
             super(itemView);
             comment=itemView.findViewById(R.id.comments);
+            time=itemView.findViewById(R.id.comments_time);
             writer=itemView.findViewById(R.id.comment_writer);
             img=itemView.findViewById(R.id.comment_head);
 
