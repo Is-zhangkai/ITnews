@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +21,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.tools.Activity.NewsDetailsActivity;
 import com.example.tools.Fragment.MyPaperFragment;
 
 import java.util.List;
@@ -118,9 +120,6 @@ public class PaperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             ( (ViewHolder)holder).paperTitle.setText(list.get(i).getMy_title());
             Glide.with(context).load(list.get(i).getImg()).error(R.drawable.error).into(( (ViewHolder)holder).paperImage);
 
-
-
-
             ( (ViewHolder)holder).delete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -171,6 +170,20 @@ public class PaperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                             }).create();
                     textTips.show();
 
+                }
+            });
+
+            ( (ViewHolder)holder).itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    MyData myData=new MyData(context);
+                    Intent intent=new Intent(context, NewsDetailsActivity.class);
+                    intent.putExtra("id",list.get(i).getId());
+                    intent.putExtra("user_id",myData.load_id());
+                    intent.putExtra("writer",myData.load_name());
+                    intent.putExtra("photo",myData.load_pic_url());
+
+                    context.startActivity(intent);
                 }
             });
         }
