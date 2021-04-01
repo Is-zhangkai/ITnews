@@ -63,9 +63,11 @@ public class NewsDetailsActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
+        MyData myData = new MyData(NewsDetailsActivity.this);
+        token = myData.load_token();
         refresh_num=0;
         //点赞
+        Log.i("asd",oldLike+""+like);
         if (like!=oldLike){
         try {
 
@@ -114,7 +116,14 @@ public class NewsDetailsActivity extends AppCompatActivity {
                         JSONObject jsonObject21 = new JSONObject(Objects.requireNonNull(response.body()).string());
                         final String msg3 = jsonObject21.getString("msg");
                         Log.i("asd", msg3);
-
+                        DbManager dbManager= x.getDb(((myApplication)getApplicationContext()).getDaoConfig());
+                        operation operation=new operation();
+                        operation.setTitle(title);
+                        operation.setType(3);
+                        operation.setDate(month+"月"+day+"日");
+                        operation.setRead(1);
+                        operation.setEmail(email);
+                        dbManager.save(operation);
 
 
                         runOnUiThread(new Runnable() {

@@ -101,7 +101,7 @@ public class MyPaperFragment extends Fragment {
                 @Override
                 public void onSuccess(Response response) {
                     try {
-                        JSONObject jsonObject=new JSONObject(response.body().string());
+                        JSONObject jsonObject=new JSONObject(Objects.requireNonNull(response.body()).string());
                         String msg=jsonObject.getString("msg");
                         Log.i("asd",msg);
                         JSONObject jsonObject1=jsonObject.getJSONObject("data");
@@ -159,5 +159,12 @@ public class MyPaperFragment extends Fragment {
         }
 
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        List<MyNews> list=new ArrayList<>();
+        GetNews(list);
     }
 }
