@@ -83,6 +83,8 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     /** 重写这个方法,通过判断item的类型，从而绑定不同的view * */
     @Override
     public int getItemViewType(int i) {
+
+
         if (list.get(i).getNoComments()!=null)
         {
             return TYPE_no;

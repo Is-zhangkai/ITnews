@@ -77,7 +77,7 @@ public class FocusNewsFragment extends Fragment {
             }
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-                smartRefreshLayout.setEnableLoadMore(false);
+                smartRefreshLayout.setEnableLoadMore(true);
                 List<Data> list=new ArrayList<>();
                 page=1;
                 GetNews(list, true);
@@ -149,7 +149,7 @@ public class FocusNewsFragment extends Fragment {
                 @Override
                 public void onFail(String error) {
 
-                    getActivity().runOnUiThread(new Runnable() {
+                    Objects.requireNonNull(getActivity()).runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             Data dataerror = new Data();
@@ -162,11 +162,11 @@ public class FocusNewsFragment extends Fragment {
                 }
             });
         }else {
-            getActivity().runOnUiThread(new Runnable() {
+            Objects.requireNonNull(getActivity()).runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     Toast.makeText(getContext(),"没有更多了",Toast.LENGTH_SHORT).show();
-                    smartRefreshLayout.setEnableLoadMore(true);
+                    smartRefreshLayout.setEnableLoadMore(false);
 
                 }
             });

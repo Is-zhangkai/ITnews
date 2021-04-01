@@ -424,7 +424,6 @@ try {
                 @Override
                 public void onFail(String error) {
 
-
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -440,7 +439,10 @@ try {
 
                 }
             });
-    } catch (Exception e) { e.printStackTrace(); }
+    } catch (Exception e) { e.printStackTrace();
+
+
+}
 
     }
 
