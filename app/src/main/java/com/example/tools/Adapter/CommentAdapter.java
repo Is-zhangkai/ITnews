@@ -141,6 +141,7 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             ( (ViewHolderNews)holder).title.setText(list.get(i).getTitle());
             ( (ViewHolderNews)holder).writer.setText(list.get(i).getWriter());
             ( (ViewHolderNews)holder).content.setText(list.get(i).getContent());
+          //  ( (ViewHolderNews)holder).info.setText(list.get(i).);
             Glide.with(context).load(list.get(i).getPhoto()).error(R.drawable.error).circleCrop().into(  ( (ViewHolderNews)holder).photo);
 
             if (list.get(i).getPics()!=null){
@@ -276,7 +277,7 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     public static class ViewHolderNews extends RecyclerView.ViewHolder {
         GridView gridView;
-        TextView title,content,writer;
+        TextView title,content,writer,info;
         Button btn_focus;
         ImageView photo;
         public ViewHolderNews(@NonNull View itemView) {
@@ -287,7 +288,7 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             content=itemView.findViewById(R.id.details_news);
             photo=itemView.findViewById(R.id.details_photo);
             writer=itemView.findViewById(R.id.details_writer);
-
+            info=itemView.findViewById(R.id.details_info);
         }
     }
      }

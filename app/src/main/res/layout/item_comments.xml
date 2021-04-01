@@ -51,9 +51,7 @@
             android:layout_marginEnd="24dp"
             android:text="我是评论afhabhfb"
             android:textSize="17sp"
-            android:textColor="#393939"
-            android:maxLines="5"
-            android:ellipsize="end"/>
+            android:textColor="#393939" />
         <TextView
             android:id="@+id/comments_time"
             android:layout_width="wrap_content"
