@@ -132,7 +132,7 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         if (holder instanceof ViewHolderComments){
             ( (ViewHolderComments)holder).comment.setText(list.get(i).getComment_content());
             ( (ViewHolderComments)holder).writer.setText(list.get(i).getComment_writer());
-            Glide.with(context).load(list.get(i).getPhoto()).error(R.drawable.errorhead).into(( (ViewHolderComments)holder).img);
+            Glide.with(context).load(list.get(i).getPhoto()).error(R.drawable.errorhead).circleCrop().into(( (ViewHolderComments)holder).img);
 
 
         }else if (holder instanceof ViewHolderNews){
