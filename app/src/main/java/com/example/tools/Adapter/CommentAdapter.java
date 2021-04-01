@@ -179,13 +179,24 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                                                 operation.setType(5);
                                                 operation.setDate(month+"月"+day+"日");
                                                 operation.setRead(1);
+                                                operation.setChoice(1);
                                                 operation.setEmail(email);
                                                 dbManager.save(operation);
                                                 ( (ViewHolderNews)holder).btn_focus.setBackgroundResource(R.drawable.button_focus);
                                                 ( (ViewHolderNews)holder).btn_focus.setText("已关注");
                                                 ( (ViewHolderNews)holder).btn_focus.setTextColor(context.getResources().getColor(R.color.gradientstart));
 
-                                    }else { ( (ViewHolderNews)holder).btn_focus.setBackgroundResource(R.drawable.btn_focus_fill);
+                                    }else {  String write=list.get(i).getWriter();
+                                                DbManager dbManager = x.getDb(((myApplication) context.getApplicationContext()).getDaoConfig());
+                                                operation operation=new operation();
+                                                operation.setTitle(write);
+                                                operation.setType(5);
+                                                operation.setDate(month+"月"+day+"日");
+                                                operation.setRead(1);
+                                                operation.setChoice(0);
+                                                operation.setEmail(email);
+                                                dbManager.save(operation);
+                                                ( (ViewHolderNews)holder).btn_focus.setBackgroundResource(R.drawable.btn_focus_fill);
                                             ( (ViewHolderNews)holder).btn_focus.setText("关注");
                                             ( (ViewHolderNews)holder).btn_focus.setTextColor(context.getResources().getColor(R.color.white)); }
                                         } catch (Exception e) {

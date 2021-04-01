@@ -78,14 +78,6 @@ public class NewsDetailsActivity extends AppCompatActivity {
                         JSONObject jsonObject21 = new JSONObject(Objects.requireNonNull(response.body()).string());
                         final String msg2 = jsonObject21.getString("msg");
                         Log.i("asd", msg2);
-                        DbManager dbManager= x.getDb(((myApplication)getApplicationContext()).getDaoConfig());
-                        operation operation=new operation();
-                        operation.setTitle(title);
-                        operation.setType(2);
-                        operation.setDate(month+"月"+day+"日");
-                        operation.setRead(1);
-                        operation.setEmail(email);
-                        dbManager.save(operation);
 
 
                     } catch (Exception e) {
@@ -116,14 +108,6 @@ public class NewsDetailsActivity extends AppCompatActivity {
                         JSONObject jsonObject21 = new JSONObject(Objects.requireNonNull(response.body()).string());
                         final String msg3 = jsonObject21.getString("msg");
                         Log.i("asd", msg3);
-                        DbManager dbManager= x.getDb(((myApplication)getApplicationContext()).getDaoConfig());
-                        operation operation=new operation();
-                        operation.setTitle(title);
-                        operation.setType(3);
-                        operation.setDate(month+"月"+day+"日");
-                        operation.setRead(1);
-                        operation.setEmail(email);
-                        dbManager.save(operation);
 
 
                         runOnUiThread(new Runnable() {
@@ -246,6 +230,7 @@ public class NewsDetailsActivity extends AppCompatActivity {
                                                         operation.setDate(month+"月"+day+"日");
                                                         operation.setRead(1);
                                                         operation.setEmail(email);
+                                                        operation.setChoice(1);
                                                         dbManager.save(operation);
                                                     } catch (DbException e) {
                                                         e.printStackTrace();
@@ -291,7 +276,35 @@ public class NewsDetailsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (like){like=false;  btn_like.setBackgroundResource(R.drawable.like_nor);like_nummber=like_nummber-1;Like_num.setText(like_nummber+"");
-                }else {like=true;  btn_like.setBackgroundResource(R.drawable.like_fill);like_nummber=like_nummber+1;Like_num.setText(like_nummber+"");}
+                    DbManager dbManager= null;
+                    try {
+                        dbManager = x.getDb(((myApplication)getApplicationContext()).getDaoConfig());
+                        operation operation=new operation();
+                        operation.setTitle(title);
+                        operation.setType(2);
+                        operation.setDate(month+"月"+day+"日");
+                        operation.setRead(1);
+                        operation.setEmail(email);
+                        operation.setChoice(1);
+                        dbManager.save(operation);
+                    } catch (DbException e) {
+                        e.printStackTrace();
+                    }
+                }else {like=true;  btn_like.setBackgroundResource(R.drawable.like_fill);like_nummber=like_nummber+1;Like_num.setText(like_nummber+"");
+                    DbManager dbManager= null;
+                    try {
+                        dbManager = x.getDb(((myApplication)getApplicationContext()).getDaoConfig());
+                        operation operation=new operation();
+                        operation.setTitle(title);
+                        operation.setType(2);
+                        operation.setDate(month+"月"+day+"日");
+                        operation.setRead(1);
+                        operation.setEmail(email);
+                        operation.setChoice(0);
+                        dbManager.save(operation);
+                    } catch (DbException e) {
+                        e.printStackTrace();
+                    }}
 
             }
         });
@@ -300,7 +313,36 @@ public class NewsDetailsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (collection){collection=false;  btn_collection.setBackgroundResource(R.drawable.collection_nor);
-                }else {collection=true;  btn_collection.setBackgroundResource(R.drawable.collection_fill);}
+                    DbManager dbManager= null;
+                    try {
+                        dbManager = x.getDb(((myApplication)getApplicationContext()).getDaoConfig());
+                        operation operation=new operation();
+                        operation.setTitle(title);
+                        operation.setType(3);
+                        operation.setDate(month+"月"+day+"日");
+                        operation.setRead(1);
+                        operation.setEmail(email);
+                        operation.setChoice(1);
+                        dbManager.save(operation);
+                    } catch (DbException e) {
+                        e.printStackTrace();
+                    }
+
+                }else {collection=true;  btn_collection.setBackgroundResource(R.drawable.collection_fill);
+                    DbManager dbManager= null;
+                    try {
+                        dbManager = x.getDb(((myApplication)getApplicationContext()).getDaoConfig());
+                        operation operation=new operation();
+                        operation.setTitle(title);
+                        operation.setType(3);
+                        operation.setDate(month+"月"+day+"日");
+                        operation.setRead(1);
+                        operation.setEmail(email);
+                        operation.setChoice(0);
+                        dbManager.save(operation);
+                    } catch (DbException e) {
+                        e.printStackTrace();
+                    }}
             }
         });
         //返回

@@ -60,6 +60,7 @@ public class ChatActivity extends AppCompatActivity {
                 Map<String,Object> map=new HashMap<>();
                 map.put("date",operations.get(i).getDate());
                 map.put("title",operations.get(i).getTitle());
+                map.put("choice",operations.get(i).getChoice());
                 map.put("type",n);
                 list.add(map);
             }

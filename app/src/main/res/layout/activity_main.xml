@@ -101,6 +101,21 @@
                     android:src="@drawable/message_icon">
 
                 </ImageView>
+                <TextView
+                    android:id="@+id/red_all"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="@drawable/rednumber"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="15dp"
+                    android:text="99+"
+                    android:gravity="center"
+                    android:textColor="@color/white"
+                    android:textSize="10dp">
+
+                </TextView>
+
+
 
                 <TextView
                     android:layout_width="wrap_content"
