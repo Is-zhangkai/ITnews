@@ -51,9 +51,7 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private GridViewAdapter gridAdpter;
     private List<Comments> list;
     private String token;
-    //全局定义
     private long lastClickTime = 0L;
-    // 两次点击间隔不能少于1000ms
     private static final int FAST_CLICK_DELAY_TIME = 5000;
 
 
@@ -79,7 +77,7 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         }
     }
 
-    /** 重写这个方法,通过判断item的类型，从而绑定不同的view * */
+
     @Override
     public int getItemViewType(int i) {
         if (list.get(i).getNoComments()!=null)
@@ -131,14 +129,14 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             ( (ViewHolderNews)holder).title.setText(list.get(i).getTitle());
             ( (ViewHolderNews)holder).writer.setText(list.get(i).getWriter());
             ( (ViewHolderNews)holder).content.setText(list.get(i).getContent());
-            Glide.with(context).load(list.get(i).getPhoto()).error(R.drawable.error).circleCrop().into(  ( (ViewHolderNews)holder).photo);
+            Glide.with(context).load(list.get(i).getPhoto()).error(R.drawable.user_icon).circleCrop().into(  ( (ViewHolderNews)holder).photo);
 
             if (list.get(i).getPics()!=null){
             gridAdpter = new GridViewAdapter(context,list.get(i).getPics());
             ( (ViewHolderNews)holder).gridView.setAdapter(gridAdpter);}
 
-            focus=list.get(i).getFollow();
 
+            focus=list.get(i).getFollow();
             Log.i("asd1",focus+"");
             if (focus){
                 ( (ViewHolderNews)holder).btn_focus.setBackgroundResource(R.drawable.button_focus);
@@ -149,10 +147,8 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 ( (ViewHolderNews)holder).btn_focus.setTextColor(context.getResources().getColor(R.color.white));
                }
 
-
             //关注按钮
             ( (ViewHolderNews)holder).btn_focus.setOnClickListener(new View.OnClickListener() {
-
                 @Override
                 public void onClick(View v) {
 
@@ -226,9 +222,6 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     }
 
 
-
-
-
     public static class ViewHolderComments extends RecyclerView.ViewHolder {
         TextView writer,comment;
         ImageView img;
@@ -240,7 +233,6 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
         }
     }
-
 
     public static class ViewHolderNo extends RecyclerView.ViewHolder {
 
@@ -263,7 +255,6 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             content=itemView.findViewById(R.id.details_news);
             photo=itemView.findViewById(R.id.details_photo);
             writer=itemView.findViewById(R.id.details_writer);
-
         }
     }
      }

@@ -167,7 +167,7 @@ public class RecommendFragment extends Fragment {
                             if (jsonArray22.length() != 0) {
                                 data21.setNews_pics_set(jsonArray22.getString(0));
                             }
-                            data21.setLike_num(jsonObject23.getInt("like_num"));
+                            data21.setTag(jsonObject23.getInt("tag_type"));
                             JSONObject jsonObject24 = jsonObject23.getJSONObject("author");
                             data21.setWriter_id(jsonObject24.getInt("id"));
                             data21.setWriter(jsonObject24.getString("nickname"));

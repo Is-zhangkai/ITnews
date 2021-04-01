@@ -27,18 +27,18 @@
                 android:layout_width="54dp"
                 android:layout_height="54dp"
                 android:layout_centerVertical="true"
-                android:layout_marginStart="24dp"
-                android:background="@color/blueviolet"/>
+                android:layout_marginStart="20dp" />
             <TextView
                 android:id="@+id/details_writer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toEndOf="@id/details_photo"
                 android:layout_marginTop="13dp"
-                android:layout_marginStart="24dp"
+                android:layout_marginStart="12dp"
                 android:text="我是作者"
                 android:textColor="#666666"
                 android:padding="3dp"
+                android:layout_toStartOf="@id/details_btn"
                 android:textSize="15sp"/>
 
             <TextView
@@ -46,13 +46,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
-                android:layout_marginStart="24dp"
+                android:layout_marginStart="12dp"
                 android:layout_marginEnd="6dp"
                 android:layout_marginBottom="13dp"
                 android:layout_toLeftOf="@id/details_btn"
                 android:layout_toEndOf="@id/details_photo"
                 android:maxLines="1"
                 android:padding="3dp"
+                android:layout_toStartOf="@id/details_btn"
                 android:text="啊实打实的发给哈桑顶顶顶顶顶顶顶顶顶顶"
                 android:textSize="12sp" />
 

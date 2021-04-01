@@ -81,7 +81,11 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
             ((NewsHolder)holder).title.setText(list.get(i).getTitle());
             ((NewsHolder)holder).writer.setText(list.get(i).getWriter());
-            ((NewsHolder)holder).like_num.setText(list.get(i).getLike_num()+"");
+            if ( list.get(i).getTag()==1){ ((NewsHolder)holder).like_num.setText("游戏");}
+            else if ( list.get(i).getTag()==2){ ((NewsHolder)holder).like_num.setText("体育");}
+           else if ( list.get(i).getTag()==3){ ((NewsHolder)holder).like_num.setText("汽车");}
+            else if ( list.get(i).getTag()==4){ ((NewsHolder)holder).like_num.setText("军事");}
+            else{ ((NewsHolder)holder).like_num.setText("其他");}
                     Glide.with(context)
                     .load(list.get(i).getNews_pics_set())
                     .error(R.drawable.error)
