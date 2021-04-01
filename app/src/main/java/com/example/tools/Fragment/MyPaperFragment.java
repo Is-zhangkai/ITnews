@@ -159,12 +159,12 @@ public class MyPaperFragment extends Fragment {
                             adapter= new PaperAdapter(getActivity(), list);
                             recyclerView.setAdapter(adapter);
                             Toast.makeText(getContext(),"连接失败，请刷新重试",Toast.LENGTH_SHORT).show();
-
                         }
                     });
                 }
             });
         } catch (Exception e) {
+
             e.printStackTrace();
         }
 
