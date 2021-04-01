@@ -49,19 +49,18 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private int day;
     private boolean focus,type;
     private Context context;
+    private MyData myData;
     private GridViewAdapter gridAdpter;
     private List<Comments> list;
     private String token;
-    //全局定义
     private long lastClickTime = 0L;
-    // 两次点击间隔不能少于1000ms
     private static final int FAST_CLICK_DELAY_TIME = 5000;
 
 
     public CommentAdapter(Context context,List<Comments> list) {
         this.context=context;
         this.list=list;
-        MyData myData = new MyData(context);
+        myData = new MyData(context);
         token = myData.load_token();
         email=myData.load_email();
         Calendar c=Calendar.getInstance();
@@ -146,6 +145,10 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             gridAdpter = new GridViewAdapter(context,list.get(i).getPics());
             ( (ViewHolderNews)holder).gridView.setAdapter(gridAdpter);}
 
+
+            if (list.get(i).getWriter().equals(myData.load_name())){
+                ( (ViewHolderNews)holder).btn_focus.setVisibility(View.GONE);
+            }else {
             focus=list.get(i).getFollow();
 
             Log.i("asd1",focus+"");
@@ -232,7 +235,7 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     }
                         }
             });
-        }
+        }}
 
 
     }
