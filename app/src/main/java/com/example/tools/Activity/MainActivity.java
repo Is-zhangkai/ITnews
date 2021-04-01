@@ -20,6 +20,7 @@ import com.example.tools.R;
 import com.example.tools.SQLite.MessageDate;
 import com.example.tools.SQLite.myApplication;
 import com.example.tools.SQLite.operation;
+import com.facebook.stetho.Stetho;
 
 import org.xutils.DbManager;
 import org.xutils.ex.DbException;
@@ -50,6 +51,9 @@ import q.rorbin.badgeview.QBadgeView;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         MyData data=new MyData(MainActivity.this);
+        email=data.load_email();
+        String token =data.load_token();
+        Stetho.initializeWithDefaults(this);
         mes = findViewById(R.id.message);
         news = findViewById(R.id.news_layout);
         paper = findViewById(R.id.paper_layout);
@@ -169,11 +173,6 @@ import q.rorbin.badgeview.QBadgeView;
         } catch (DbException e) {
             e.printStackTrace();
         }
-        QBadgeView qBadgeView = new QBadgeView(this);
-        qBadgeView.bindTarget(message);
-        Log.i("test", String.valueOf(messageDate.getAll_msg()));
-        qBadgeView.setBadgeNumber(messageDate.getAll_msg());
-        qBadgeView.setGravityOffset(10, 3, true);
-        Log.i("test", String.valueOf(messageDate.getAll_msg()));
+
     }
 }

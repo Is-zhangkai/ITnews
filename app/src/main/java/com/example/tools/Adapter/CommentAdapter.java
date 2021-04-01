@@ -62,6 +62,7 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         this.list=list;
         MyData myData = new MyData(context);
         token = myData.load_token();
+        email=myData.load_email();
         Calendar c=Calendar.getInstance();
         month=c.get(Calendar.MONTH)+1;
         day=c.get(Calendar.DAY_OF_MONTH);
@@ -171,7 +172,7 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                                             Log.i("asd", msg2);
                                             Toast.makeText(context,msg2,Toast.LENGTH_SHORT).show();
                                             if (msg2.equals("关注成功")){
-                                                String write=list.get(i).getComment_writer();
+                                                String write=list.get(i).getWriter();
                                                 DbManager dbManager = x.getDb(((myApplication) context.getApplicationContext()).getDaoConfig());
                                                 operation operation=new operation();
                                                 operation.setTitle(write);

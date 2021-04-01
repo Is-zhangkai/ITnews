@@ -68,14 +68,7 @@ public class NewsDetailsActivity extends AppCompatActivity {
         //点赞
         if (like!=oldLike){
         try {
-            DbManager dbManager= x.getDb(((myApplication)getApplicationContext()).getDaoConfig());
-            operation operation=new operation();
-            operation.setTitle(title);
-            operation.setType(2);
-            operation.setDate(month+"月"+day+"日");
-            operation.setRead(1);
-            operation.setEmail(email);
-            dbManager.save(operation);
+
             Utils.post_json(token, "http://122.9.2.27/api/news/operator/" + id + "/like", "", new Utils.OkhttpCallBack() {
                 @Override
                 public void onSuccess(Response response) {
@@ -83,7 +76,14 @@ public class NewsDetailsActivity extends AppCompatActivity {
                         JSONObject jsonObject21 = new JSONObject(Objects.requireNonNull(response.body()).string());
                         final String msg2 = jsonObject21.getString("msg");
                         Log.i("asd", msg2);
-
+                        DbManager dbManager= x.getDb(((myApplication)getApplicationContext()).getDaoConfig());
+                        operation operation=new operation();
+                        operation.setTitle(title);
+                        operation.setType(2);
+                        operation.setDate(month+"月"+day+"日");
+                        operation.setRead(1);
+                        operation.setEmail(email);
+                        dbManager.save(operation);
 
 
                     } catch (Exception e) {
@@ -106,14 +106,7 @@ public class NewsDetailsActivity extends AppCompatActivity {
         //收藏
         if (collection!=old_collection){
         try {
-            DbManager dbManager= x.getDb(((myApplication)getApplicationContext()).getDaoConfig());
-            operation operation=new operation();
-            operation.setTitle(title);
-            operation.setType(3);
-            operation.setDate(month+"月"+day+"日");
-            operation.setRead(1);
-            operation.setEmail(email);
-            dbManager.save(operation);
+
             Utils.post_json(token, "http://122.9.2.27/api/news/operator/" + id + "/star", "", new Utils.OkhttpCallBack() {
                 @Override
                 public void onSuccess(Response response) {
@@ -121,6 +114,7 @@ public class NewsDetailsActivity extends AppCompatActivity {
                         JSONObject jsonObject21 = new JSONObject(Objects.requireNonNull(response.body()).string());
                         final String msg3 = jsonObject21.getString("msg");
                         Log.i("asd", msg3);
+
 
 
                         runOnUiThread(new Runnable() {
@@ -164,6 +158,7 @@ public class NewsDetailsActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(NewsDetailsActivity.this));
         MyData myData = new MyData(NewsDetailsActivity.this);
         token = myData.load_token();
+        email=myData.load_email();
 
         id = getIntent().getIntExtra("id", 0);
         writer=getIntent().getStringExtra("writer");
