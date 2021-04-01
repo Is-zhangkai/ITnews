@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +21,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.tools.Activity.NewsDetailsActivity;
 import com.example.tools.Fragment.MyPaperFragment;
 
 import java.util.List;
@@ -109,11 +111,14 @@ public class PaperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         if(holder instanceof ViewHolder)
         {
 
+
+            if ( list.get(i).getTag()==1){ ( (ViewHolder)holder).paperTag.setText("游戏");}
+            else if ( list.get(i).getTag()==2){ ((ViewHolder)holder).paperTag.setText("体育");}
+           else if ( list.get(i).getTag()==3){ ((ViewHolder)holder).paperTag.setText("汽车");}
+           else if ( list.get(i).getTag()==4){ ((ViewHolder)holder).paperTag.setText("军事");}
+            else{ ((ViewHolder)holder).paperTag.setText("其他");}
             ( (ViewHolder)holder).paperTitle.setText(list.get(i).getMy_title());
             Glide.with(context).load(list.get(i).getImg()).error(R.drawable.error).into(( (ViewHolder)holder).paperImage);
-
-
-
 
             ( (ViewHolder)holder).delete.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -167,6 +172,20 @@ public class PaperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
                 }
             });
+
+            ( (ViewHolder)holder).itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    MyData myData=new MyData(context);
+                    Intent intent=new Intent(context, NewsDetailsActivity.class);
+                    intent.putExtra("id",list.get(i).getId());
+                    intent.putExtra("user_id",myData.load_id());
+                    intent.putExtra("writer",myData.load_name());
+                    intent.putExtra("photo",myData.load_pic_url());
+
+                    context.startActivity(intent);
+                }
+            });
         }
 
     }
@@ -179,7 +198,7 @@ public class PaperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             ImageView paperImage;
             TextView paperTitle;
             TextView paperTag;
-            RelativeLayout myPaper;
+
             Button delete;
 
         public ViewHolder(@NonNull View itemView) {

@@ -14,9 +14,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.tools.Activity.NewsDetailsActivity;
 import com.example.tools.Activity.WriteActivity;
 import com.example.tools.Adapter.CommentAdapter;
@@ -47,6 +50,9 @@ public class MyPaperFragment extends Fragment {
     private PaperAdapter adapter;
     private String token;
     private RecyclerView recyclerView;
+    private TextView name;
+    private ImageView img;
+    private int id;
 
 
     @Override
@@ -67,6 +73,8 @@ public class MyPaperFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
 
+        name=getActivity().findViewById(R.id.myPaper_name);
+        img=getActivity().findViewById(R.id.myPaper_userHead);
         go_edit= Objects.requireNonNull(getActivity()).findViewById(R.id.go_edit);
         go_edit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,6 +89,10 @@ public class MyPaperFragment extends Fragment {
 
         MyData myData=new MyData(getContext());
         token=myData.load_token();
+        name.setText(myData.load_name());
+
+
+        Glide.with(getContext()).load(myData.load_pic_url()).error(R.drawable.user_icon).circleCrop().into(img);
 
 
 
@@ -111,13 +123,11 @@ public class MyPaperFragment extends Fragment {
                         for (int i=0;i<jsonArray.length();i++){
                             JSONObject jsonObject2=jsonArray.getJSONObject(i);
                             MyNews news=new MyNews();
-
                             news.setMy_title(jsonObject2.getString("title"));
                             news.setId(jsonObject2.getInt("id"));
                             JSONArray jsonArray1=jsonObject2.getJSONArray("news_pics_set");
                             news.setImg(jsonArray1.getString(0));
                             news.setTag(jsonObject2.getInt("tag_type"));
-
                             list.add(news);
                         }}else {
                             MyNews news=new MyNews();
@@ -149,12 +159,12 @@ public class MyPaperFragment extends Fragment {
                             adapter= new PaperAdapter(getActivity(), list);
                             recyclerView.setAdapter(adapter);
                             Toast.makeText(getContext(),"连接失败，请刷新重试",Toast.LENGTH_SHORT).show();
-
                         }
                     });
                 }
             });
         } catch (Exception e) {
+
             e.printStackTrace();
         }
 

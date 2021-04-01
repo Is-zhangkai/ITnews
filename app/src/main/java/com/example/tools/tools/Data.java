@@ -20,7 +20,7 @@ public class Data {
      */
     private List<String> pics;
     private String news_pics_set;
-    private int like_num;
+    private int tag;
     private String create_time;
     private int star_num;
     private int news_id,writer_id;
@@ -31,6 +31,14 @@ public class Data {
     private String error;
     private String photo;
 
+
+    public void setTag(int tag) {
+        this.tag = tag;
+    }
+
+    public int getTag() {
+        return tag;
+    }
 
     public void setPhoto(String photo) {
         this.photo = photo;
@@ -64,9 +72,6 @@ public class Data {
         this.news_pics_set = news_pics_set;
     }
 
-    public void setLike_num(int like_num) {
-        this.like_num = like_num;
-    }
 
     public void setCreate_time(String create_time) {
         this.create_time = create_time;
@@ -106,9 +111,7 @@ public class Data {
         return news_pics_set;
     }
 
-    public int getLike_num() {
-        return like_num;
-    }
+
 
     public String getCreate_time() {
         return create_time;
