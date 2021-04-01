@@ -125,6 +125,7 @@ public class NewsDetailsActivity extends AppCompatActivity {
                         operation.setEmail(email);
                         dbManager.save(operation);
 
+
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -166,6 +167,7 @@ public class NewsDetailsActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(NewsDetailsActivity.this));
         MyData myData = new MyData(NewsDetailsActivity.this);
         token = myData.load_token();
+        email=myData.load_email();
 
         id = getIntent().getIntExtra("id", 0);
         writer=getIntent().getStringExtra("writer");

@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -66,6 +67,7 @@ public class MessageFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         MyData data=new MyData(getActivity());
+        email=data.load_email();
         focus=view.findViewById(R.id.message_itemFocus);
         it=view.findViewById(R.id.message_itemIT);
         like=view.findViewById(R.id.message_itemLike);
@@ -154,12 +156,7 @@ public class MessageFragment extends Fragment {
         });
 
     }
-    public void setRedNumber(View view,int number)
-    {
-        QBadgeView qBadgeView=new QBadgeView(getActivity());
-        qBadgeView.bindTarget(view);
-        qBadgeView.setBadgeNumber(number);
-    }
+
 
     @Override
     public void onResume() {
@@ -173,7 +170,7 @@ public class MessageFragment extends Fragment {
                 messageDate.setAll_msg(0);
             } else {
                 messageDate.setAll_msg(operations.size());
-                Log.i("test", String.valueOf(messageDate.getAll_msg()));
+                Log.i("test", String.valueOf(messageDate.getAll_msg())+"fragmentONresume");
             }
             List<operation> operations1 = new ArrayList<>();
             operations1 = dbManager.selector(operation.class).orderBy("id", true).limit(1000).where("type", "=", 2).and("read", "=", 1).and("email", "=", email).findAll();
@@ -189,6 +186,7 @@ public class MessageFragment extends Fragment {
                 messageDate.setCollect_msg(0);
             } else {
                 messageDate.setCollect_msg(operations2.size());
+                Log.i("test", String.valueOf(messageDate.getCollect_msg())+"fragmentONresume");
 
             }
             List<operation> operations3 = new ArrayList<>();
@@ -210,10 +208,7 @@ public class MessageFragment extends Fragment {
         } catch (DbException e) {
             e.printStackTrace();
         }
-        setRedNumber(icon_focus, messageDate.getFocus_msg());
-        setRedNumber(icon_it, 0);
-        setRedNumber(icon_collect, messageDate.getCollect_msg());
-        setRedNumber(icon_like, messageDate.getLike_msg());
-        setRedNumber(icon_comment, messageDate.getComment_msg());
+
+
     }
 }
