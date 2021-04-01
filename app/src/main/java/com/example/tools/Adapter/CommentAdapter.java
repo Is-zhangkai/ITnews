@@ -63,7 +63,7 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         myData = new MyData(context);
         token = myData.load_token();
         email=myData.load_email();
-        Calendar c=Calendar.getInstance();
+        Calendar c=Calendar.getInstance(); 
         month=c.get(Calendar.MONTH)+1;
         day=c.get(Calendar.DAY_OF_MONTH);
     }

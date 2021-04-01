@@ -26,6 +26,7 @@ import androidx.appcompat.app.AppCompatDialog;
 import com.example.tools.R;
 
 import java.util.Objects;
+import java.util.regex.Pattern;
 
 public class InputTextMsgDialog extends AppCompatDialog {
     private Context mContext;
@@ -124,6 +125,15 @@ public class InputTextMsgDialog extends AppCompatDialog {
             @Override
             public void onClick(View view) {
                 String msg = messageTextView.getText().toString().trim();
+
+                if (Regex.checkContinuous(msg)){
+                    Toast.makeText(mContext, "连续多个空白字符,不符合规范！", Toast.LENGTH_SHORT).show();
+                    return ;
+                }
+                if (Regex.checkLenth(msg)){
+                    Toast.makeText(mContext, "空白字符过多，不符合规范！", Toast.LENGTH_SHORT).show();
+                    return ;
+                }
                 if (msg.length() > maxNumber) {
                     Toast.makeText(mContext, "超过最大字数限制", Toast.LENGTH_SHORT).show();
                     return;
@@ -147,6 +157,8 @@ public class InputTextMsgDialog extends AppCompatDialog {
                 switch (actionId) {
                     case KeyEvent.KEYCODE_ENDCALL:
                     case KeyEvent.KEYCODE_ENTER:
+
+
                         if (messageTextView.getText().length() > maxNumber) {
                             Toast.makeText(mContext, "超过最大字数限制", Toast.LENGTH_SHORT).show();
                             return true;
