@@ -52,15 +52,16 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private GridViewAdapter gridAdpter;
     private List<Comments> list;
     private String token;
-    private MyData myData;
+    //全局定义
     private long lastClickTime = 0L;
+    // 两次点击间隔不能少于1000ms
     private static final int FAST_CLICK_DELAY_TIME = 5000;
 
 
     public CommentAdapter(Context context,List<Comments> list) {
         this.context=context;
         this.list=list;
-        myData = new MyData(context);
+        MyData myData = new MyData(context);
         token = myData.load_token();
         email=myData.load_email();
         Calendar c=Calendar.getInstance();
@@ -80,7 +81,7 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         }
     }
 
-
+    /** 重写这个方法,通过判断item的类型，从而绑定不同的view * */
     @Override
     public int getItemViewType(int i) {
         if (list.get(i).getNoComments()!=null)
@@ -134,104 +135,106 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             Glide.with(context).load(list.get(i).getPhoto()).error(R.drawable.errorhead).into(( (ViewHolderComments)holder).img);
 
 
-        }else if (holder instanceof ViewHolderNews) {
-            ((ViewHolderNews) holder).title.setText(list.get(i).getTitle());
-            ((ViewHolderNews) holder).writer.setText(list.get(i).getWriter());
-            ((ViewHolderNews) holder).content.setText(list.get(i).getContent());
-            Glide.with(context).load(list.get(i).getPhoto()).error(R.drawable.user_icon).circleCrop().into(((ViewHolderNews) holder).photo);
+        }else if (holder instanceof ViewHolderNews){
+            ( (ViewHolderNews)holder).title.setText(list.get(i).getTitle());
+            ( (ViewHolderNews)holder).writer.setText(list.get(i).getWriter());
+            ( (ViewHolderNews)holder).content.setText(list.get(i).getContent());
+            Glide.with(context).load(list.get(i).getPhoto()).error(R.drawable.error).circleCrop().into(  ( (ViewHolderNews)holder).photo);
 
-            if (list.get(i).getPics() != null) {
-                gridAdpter = new GridViewAdapter(context, list.get(i).getPics());
-                ((ViewHolderNews) holder).gridView.setAdapter(gridAdpter);
-            }
+            if (list.get(i).getPics()!=null){
+            gridAdpter = new GridViewAdapter(context,list.get(i).getPics());
+            ( (ViewHolderNews)holder).gridView.setAdapter(gridAdpter);}
+
+            focus=list.get(i).getFollow();
+
+            Log.i("asd1",focus+"");
+            if (focus){
+                ( (ViewHolderNews)holder).btn_focus.setBackgroundResource(R.drawable.button_focus);
+                ( (ViewHolderNews)holder).btn_focus.setText("已关注");
+                ( (ViewHolderNews)holder).btn_focus.setTextColor(context.getResources().getColor(R.color.gradientstart));
+            }else {  ( (ViewHolderNews)holder).btn_focus.setBackgroundResource(R.drawable.btn_focus_fill);
+                ( (ViewHolderNews)holder).btn_focus.setText("关注");
+                ( (ViewHolderNews)holder).btn_focus.setTextColor(context.getResources().getColor(R.color.white));
+               }
 
 
-            if (list.get(i).getWriter().equals(myData.load_name())) {
-                ((ViewHolderNews) holder).btn_focus.setVisibility(View.GONE);
-            } else {
-                focus = list.get(i).getFollow();
-                Log.i("asd1", focus + "");
-                if (focus) {
-                    ((ViewHolderNews) holder).btn_focus.setBackgroundResource(R.drawable.button_focus);
-                    ((ViewHolderNews) holder).btn_focus.setText("已关注");
-                    ((ViewHolderNews) holder).btn_focus.setTextColor(context.getResources().getColor(R.color.gradientstart));
-                } else {
-                    ((ViewHolderNews) holder).btn_focus.setBackgroundResource(R.drawable.btn_focus_fill);
-                    ((ViewHolderNews) holder).btn_focus.setText("关注");
-                    ((ViewHolderNews) holder).btn_focus.setTextColor(context.getResources().getColor(R.color.white));
-                }
+            //关注按钮
+            ( (ViewHolderNews)holder).btn_focus.setOnClickListener(new View.OnClickListener() {
 
-                //关注按钮
-                ((ViewHolderNews) holder).btn_focus.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
+                @Override
+                public void onClick(View v) {
 
-                        if (System.currentTimeMillis() - lastClickTime >= FAST_CLICK_DELAY_TIME) {
-                            type = true;
-                            try {
-                                Utils.post_json(token, "http://122.9.2.27/api/users/" + list.get(i).getAuthor_id() + "/operator/follow", "", new Utils.OkhttpCallBack() {
-                                    @Override
-                                    public void onSuccess(final Response response) {
+                    if (System.currentTimeMillis() - lastClickTime >= FAST_CLICK_DELAY_TIME) {
+                        type=true;
+                        try {
+                            Utils.post_json(token,"http://122.9.2.27/api/users/"+list.get(i).getAuthor_id()+"/operator/follow","", new Utils.OkhttpCallBack() {
+                                @Override
+                                public void onSuccess(final Response response) {
 
-                                        ((Activity) context).runOnUiThread(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                try {
-                                                    JSONObject jsonObject21 = new JSONObject(Objects.requireNonNull(response.body()).string());
-                                                    final String msg2 = jsonObject21.getString("msg");
-                                                    Log.i("asd", msg2);
-                                                    Toast.makeText(context, msg2, Toast.LENGTH_SHORT).show();
-                                                    if (msg2.equals("关注成功")) {
-                                                        String write = list.get(i).getWriter();
-                                                        DbManager dbManager = x.getDb(((myApplication) context.getApplicationContext()).getDaoConfig());
-                                                        operation operation = new operation();
-                                                        operation.setTitle(write);
-                                                        operation.setType(5);
-                                                        operation.setDate(month + "月" + day + "日");
-                                                        operation.setRead(1);
-                                                        operation.setEmail(email);
-                                                        dbManager.save(operation);
-                                                        ((ViewHolderNews) holder).btn_focus.setBackgroundResource(R.drawable.button_focus);
-                                                        ((ViewHolderNews) holder).btn_focus.setText("已关注");
-                                                        ((ViewHolderNews) holder).btn_focus.setTextColor(context.getResources().getColor(R.color.gradientstart));
+                                    ((Activity)context).runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {try {
+                                            JSONObject jsonObject21 = new JSONObject(Objects.requireNonNull(response.body()).string());
+                                            final String msg2 = jsonObject21.getString("msg");
+                                            Log.i("asd", msg2);
+                                            Toast.makeText(context,msg2,Toast.LENGTH_SHORT).show();
+                                            if (msg2.equals("关注成功")){
+                                                String write=list.get(i).getWriter();
+                                                DbManager dbManager = x.getDb(((myApplication) context.getApplicationContext()).getDaoConfig());
+                                                operation operation=new operation();
+                                                operation.setTitle(write);
+                                                operation.setType(5);
+                                                operation.setDate(month+"月"+day+"日");
+                                                operation.setRead(1);
+                                                operation.setChoice(1);
+                                                operation.setEmail(email);
+                                                dbManager.save(operation);
+                                                ( (ViewHolderNews)holder).btn_focus.setBackgroundResource(R.drawable.button_focus);
+                                                ( (ViewHolderNews)holder).btn_focus.setText("已关注");
+                                                ( (ViewHolderNews)holder).btn_focus.setTextColor(context.getResources().getColor(R.color.gradientstart));
 
-                                                    } else {
-                                                        ((ViewHolderNews) holder).btn_focus.setBackgroundResource(R.drawable.btn_focus_fill);
-                                                        ((ViewHolderNews) holder).btn_focus.setText("关注");
-                                                        ((ViewHolderNews) holder).btn_focus.setTextColor(context.getResources().getColor(R.color.white));
-                                                    }
-                                                } catch (Exception e) {
-                                                    e.printStackTrace();
-                                                }
-                                            }
-                                        });
-                                    }
-
-                                    @Override
-                                    public void onFail(String error) {
-
-                                        ((Activity) context).runOnUiThread(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                Toast.makeText(context, "关注失败，过一会再试吧！", Toast.LENGTH_SHORT).show();
-                                            }
-                                        });
-                                    }
-                                });
-                            } catch (Exception e) {
-                                e.printStackTrace();
+                                    }else {  String write=list.get(i).getWriter();
+                                                DbManager dbManager = x.getDb(((myApplication) context.getApplicationContext()).getDaoConfig());
+                                                operation operation=new operation();
+                                                operation.setTitle(write);
+                                                operation.setType(5);
+                                                operation.setDate(month+"月"+day+"日");
+                                                operation.setRead(1);
+                                                operation.setChoice(0);
+                                                operation.setEmail(email);
+                                                dbManager.save(operation);
+                                                ( (ViewHolderNews)holder).btn_focus.setBackgroundResource(R.drawable.btn_focus_fill);
+                                            ( (ViewHolderNews)holder).btn_focus.setText("关注");
+                                            ( (ViewHolderNews)holder).btn_focus.setTextColor(context.getResources().getColor(R.color.white)); }
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                        }
+                                    }  });
                             }
-                            lastClickTime = System.currentTimeMillis();
-                        } else {
-                            if (type) {
-                                type = false;
-                                Toast.makeText(context, "操作频繁，过一会再试吧！", Toast.LENGTH_SHORT).show();
-                            }
+
+                            @Override
+                                public void onFail(String error) {
+
+                                    ((Activity)context).runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Toast.makeText(context,"关注失败，过一会再试吧！",Toast.LENGTH_SHORT).show(); }
+                                    });
+                                }
+                            });
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        lastClickTime = System.currentTimeMillis();
+                    } else {
+                        if (type){type=false;
+                       Toast.makeText(context,"操作频繁，过一会再试吧！",Toast.LENGTH_SHORT).show();
                         }
                     }
-                });
-            }
+                        }
+            });
         }
+
 
     }
 
@@ -240,6 +243,9 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
         return list.size();
     }
+
+
+
 
 
     public static class ViewHolderComments extends RecyclerView.ViewHolder {
@@ -253,6 +259,7 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
         }
     }
+
 
     public static class ViewHolderNo extends RecyclerView.ViewHolder {
 
@@ -275,6 +282,7 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             content=itemView.findViewById(R.id.details_news);
             photo=itemView.findViewById(R.id.details_photo);
             writer=itemView.findViewById(R.id.details_writer);
+
         }
     }
      }

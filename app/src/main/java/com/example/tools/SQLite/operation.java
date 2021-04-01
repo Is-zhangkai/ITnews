@@ -19,8 +19,19 @@ public class operation {
         private int read;
         @Column(name = "email")
         private String email;
+        @Column(name ="choice")
+        private int choice;
 
-        public  String getEmail()
+        public  int getChoice()
+        {
+            return choice;
+        }
+
+    public void setChoice(int choice) {
+        this.choice = choice;
+    }
+
+    public  String getEmail()
     {
         return email;
     }
