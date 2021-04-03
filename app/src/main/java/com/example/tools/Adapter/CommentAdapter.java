@@ -111,7 +111,7 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         RecyclerView.ViewHolder holder=null;
         if (i==TYPE_Error){
             view= LayoutInflater.from(context).inflate(R.layout.item_papernonet,viewGroup,false);
-            holder= new ViewHolderNo(view);
+            holder= new ViewHolderError(view);
         }
         if (i==TYPE_first){
             view= LayoutInflater.from(context).inflate(R.layout.item_com,viewGroup,false);
@@ -135,6 +135,7 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     @Override
     public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder holder, final int i) {
 
+
         if (holder instanceof ViewHolderComments){
             ( (ViewHolderComments)holder).comment.setText(list.get(i).getComment_content());
             ( (ViewHolderComments)holder).writer.setText(list.get(i).getComment_writer());
@@ -146,6 +147,7 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             ( (ViewHolderNews)holder).title.setText(list.get(i).getTitle());
             ( (ViewHolderNews)holder).writer.setText(list.get(i).getWriter());
             ( (ViewHolderNews)holder).content.setText(list.get(i).getContent());
+            ( (ViewHolderNews)holder).info.setText(list.get(i).getInfo());
           //  ( (ViewHolderNews)holder).info.setText(list.get(i).);
             Glide.with(context).load(list.get(i).getPhoto()).error(R.drawable.error).circleCrop().into(  ( (ViewHolderNews)holder).photo);
 
@@ -248,9 +250,7 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     }
 
-
     public int getItemCount() {
-
         return list.size();
     }
 
@@ -296,5 +296,15 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             info=itemView.findViewById(R.id.details_info);
         }
     }
+
+
+    public static class ViewHolderError extends RecyclerView.ViewHolder {
+
+        public ViewHolderError(@NonNull View itemView) {
+            super(itemView);
+
+        }
+    }
+
      }
 

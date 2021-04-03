@@ -29,8 +29,16 @@ public class Data {
     private int status;
     private String writer;
     private String error;
-    private String photo;
+    private String photo,info;
 
+
+    public String getInfo() {
+        return info;
+    }
+
+    public void setInfo(String info) {
+        this.info = info;
+    }
 
     public void setTag(int tag) {
         this.tag = tag;

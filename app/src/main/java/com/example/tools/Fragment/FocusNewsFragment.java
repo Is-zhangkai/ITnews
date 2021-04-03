@@ -38,7 +38,7 @@ public class FocusNewsFragment extends Fragment {
     private NewsAdapter adapter;
     private SmartRefreshLayout smartRefreshLayout;
     private String token;
-    private int page=1,size=9,o_page=1;
+    private int page=1,size=9,o_page=1,refresh_num=0;
 
 
 
@@ -80,6 +80,7 @@ public class FocusNewsFragment extends Fragment {
                 smartRefreshLayout.setEnableLoadMore(true);
                 List<Data> list=new ArrayList<>();
                 page=1;
+                refresh_num++;
                 GetNews(list, true);
                 refreshLayout.finishRefresh();
             }
@@ -123,6 +124,7 @@ public class FocusNewsFragment extends Fragment {
                             data21.setTag(jsonObject23.getInt("tag_type"));
                             JSONObject jsonObject24 = jsonObject23.getJSONObject("author");
                             data21.setWriter_id(jsonObject24.getInt("id"));
+                            data21.setInfo(jsonObject24.getString("info"));
                             data21.setWriter(jsonObject24.getString("nickname"));
                             data21.setPhoto(jsonObject24.getString("avatar"));
 
@@ -152,11 +154,15 @@ public class FocusNewsFragment extends Fragment {
                     Objects.requireNonNull(getActivity()).runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+                            if (!refresh){page--;}
+                            if (refresh_num>=1){
+                                Toast.makeText(getContext(),"网络走丢了",Toast.LENGTH_SHORT).show();
+                            }else {
                             Data dataerror = new Data();
                             dataerror.setError("error");
                             list.add(dataerror);
                             adapter = new NewsAdapter(getContext(), list);
-                            recyclerView.setAdapter(adapter);
+                            recyclerView.setAdapter(adapter);}
                         }
                     });
                 }

@@ -58,7 +58,7 @@ public class NewsDetailsActivity extends AppCompatActivity {
     private TextView Like_num;
     private String email;
     private Boolean refresh=true;
-    private String title,writer,photo;
+    private String title,writer,photo,info;
     private String token;
     @Override
     protected void onDestroy() {
@@ -157,6 +157,7 @@ public class NewsDetailsActivity extends AppCompatActivity {
         writer=getIntent().getStringExtra("writer");
         user_id=getIntent().getIntExtra("user_id",0);
         photo=getIntent().getStringExtra("photo");
+        info=getIntent().getStringExtra("info");
 
 
 
@@ -405,6 +406,7 @@ try {
                         comments.setStar_num(jsonObject2.getInt( "star_num"));
                         comments.setPhoto(photo);
                         comments.setAuthor_id(user_id);
+                        comments.setInfo(info);
                         comments.setWriter(writer);
                         comments.setFollow(follow);
                         final JSONArray jsonArray=jsonObject2.getJSONArray("pics");
@@ -417,6 +419,14 @@ try {
                         list.add(comments);
                         GetComments(list);
 
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                btn_collection.setEnabled(true);
+                                btn_like.setEnabled(true);
+                            }
+                        });
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -427,13 +437,19 @@ try {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Comments error=new Comments();
-                            error.setError("error");
-                            list.add(error);
-                            commentAdapter = new CommentAdapter(NewsDetailsActivity.this, list);
-                            recyclerView.setAdapter(commentAdapter);
-                            Toast.makeText(NewsDetailsActivity.this,"连接失败，请刷新重试",Toast.LENGTH_SHORT).show();
+                            if (refresh_num>0){
+                                btn_collection.setEnabled(false);
+                                btn_like.setEnabled(false);
+                                Toast.makeText(NewsDetailsActivity.this, "连接失败，请刷新重试", Toast.LENGTH_SHORT).show();
 
+                            }else {
+                                Comments error = new Comments();
+                                error.setError("error");
+                                list.add(error);
+
+                                commentAdapter = new CommentAdapter(NewsDetailsActivity.this, list);
+                                recyclerView.setAdapter(commentAdapter);
+                            }
                         }
                     });
 
@@ -502,7 +518,8 @@ try {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-
+                                btn_collection.setEnabled(true);
+                                btn_like.setEnabled(true);
                                 if (refresh) {if (refresh_num==0){
                                     Like_num.setText(like_nummber+"");
                                     if (like){  btn_like.setBackgroundResource(R.drawable.like_fill);
@@ -531,11 +548,18 @@ try {
                     @Override
                     public void run() {
 
-                        Comments error=new Comments();
-                        error.setError("error");
-                        list.add(error);
-                        commentAdapter = new CommentAdapter(NewsDetailsActivity.this, list);
-                        recyclerView.setAdapter(commentAdapter);
+                        if (refresh_num>0){
+                            btn_collection.setEnabled(false);
+                            btn_like.setEnabled(false);
+                      Toast.makeText(NewsDetailsActivity.this,"网络走丢了",Toast.LENGTH_SHORT).show();
+                        }else {
+                            Comments error=new Comments();
+                            error.setError("error");
+                            list.add(error);
+
+                            commentAdapter = new CommentAdapter(NewsDetailsActivity.this, list);
+                            recyclerView.setAdapter(commentAdapter);
+                        }
                     }
                 });
             }
