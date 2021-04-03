@@ -102,6 +102,7 @@ public class UserFragment extends Fragment {
                 MyData myData = new MyData(getActivity());
                 myData.save_check(false);
                 myData.save_xx(false);
+                myData.save_token("error");
                 getActivity().finish();
             }
         });
