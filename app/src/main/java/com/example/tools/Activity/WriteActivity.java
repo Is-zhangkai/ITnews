@@ -35,6 +35,7 @@ import com.example.tools.R;
 import com.example.tools.Utils;
 import com.example.tools.tools.ImgResponse;
 import com.example.tools.tools.PostNewsResponse;
+import com.example.tools.tools.Regex;
 import com.google.gson.Gson;
 
 import java.io.File;
@@ -395,6 +396,7 @@ public class WriteActivity extends AppCompatActivity {
             public void onClick(View v) {
                 paper_title=edit_title.getText().toString();
                 paper_content=edit_content.getText().toString();
+
                 if(paper_title.equals(""))
                 {
                     Toast.makeText(WriteActivity.this,"标题不能为空",Toast.LENGTH_SHORT).show();
@@ -410,6 +412,11 @@ public class WriteActivity extends AppCompatActivity {
                 else if(IdList.size()==0)
                 {
                     Toast.makeText(WriteActivity.this,"新闻发布至少需要添加一张图片",Toast.LENGTH_SHORT).show();
+                } else if  (Regex.checkContinuous(paper_content)){
+                    Toast.makeText(WriteActivity.this,"新闻内容有连续空白符",Toast.LENGTH_SHORT).show();
+                }
+                else  if (Regex.checkPaperLenth(paper_content)){
+                    Toast.makeText(WriteActivity.this,"新闻内容空白字符过多",Toast.LENGTH_SHORT).show();
                 }
                 else
                 {

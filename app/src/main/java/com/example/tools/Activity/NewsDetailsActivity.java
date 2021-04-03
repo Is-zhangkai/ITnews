@@ -380,6 +380,7 @@ try {
                          title=jsonObject2.getString("title");
                         comments.setTitle(title);
                         comments.setContent(jsonObject2.getString( "content"));
+                        comments.setAuthor_id(jsonObject2.getInt("author_id"));
                          if (jsonObject2.getInt("isFollow")==1){
                             follow=true;
                         }

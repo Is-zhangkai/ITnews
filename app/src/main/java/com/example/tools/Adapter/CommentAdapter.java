@@ -156,7 +156,7 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             ( (ViewHolderNews)holder).gridView.setAdapter(gridAdpter);}
 
 
-            if (list.get(i).getWriter().equals(myData.load_name())){
+            if (list.get(i).getAuthor_id()==(myData.load_id())){
                 ( (ViewHolderNews)holder).btn_focus.setVisibility(View.GONE);
             }else {
             focus=list.get(i).getFollow();

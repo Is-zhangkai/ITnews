@@ -1,6 +1,7 @@
 package com.example.tools.Activity;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,8 +22,10 @@ import com.example.tools.R;
 import com.example.tools.SQLite.MessageDate;
 import com.example.tools.SQLite.myApplication;
 import com.example.tools.SQLite.operation;
+import com.example.tools.Utils;
 import com.facebook.stetho.Stetho;
 
+import org.json.JSONObject;
 import org.xutils.DbManager;
 import org.xutils.ex.DbException;
 import org.xutils.x;
@@ -30,8 +33,10 @@ import org.xutils.x;
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.Response;
 
-    public class MainActivity extends AppCompatActivity {
+
+public class MainActivity extends AppCompatActivity {
     public MessageDate messageDate = new MessageDate(this);
     private RelativeLayout news;
     private RelativeLayout paper;
@@ -81,18 +86,49 @@ import java.util.List;
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment, newsFragment).commit();
 
 
+        try {
+            Utils.get_token("http://122.9.2.27/api/self/info", token, new Utils.OkhttpCallBack() {
+                @Override
+                public void onSuccess(Response response) {
+                    try {
+                        JSONObject jsonObject=new JSONObject(response.body().string());
+                        String msg=jsonObject.getString("msg");
+                        JSONObject jsonObject1=jsonObject.getJSONObject("data");
+                        data.save_name(jsonObject1.getString("nickname"));
+                        data.save_pic_url(jsonObject1.getString("avatar"));
+                        data.save_info(jsonObject1.getString("info"));
 
-//        int permission = ActivityCompat.checkSelfPermission(MainActivity.this,
-//                Manifest.permission.WRITE_EXTERNAL_STORAGE);
-//
-//        if (permission != PackageManager.PERMISSION_GRANTED) {
-//            // We don't have permission so prompt the user
-//            ActivityCompat.requestPermissions(MainActivity.this, PERMISSIONS_STORAGE,
-//                    REQUEST_EXTERNAL_STORAGE);
-//        }
-//        if (!ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)) {
-//            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 0);
-//        }
+
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (msg.equals("一切正常")){
+
+                                }else {
+
+                                }}
+                        });
+
+
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                }
+
+                @Override
+                public void onFail(String error) {
+
+                }
+            });
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+
         int permission = ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
         if (permission != PackageManager.PERMISSION_GRANTED) {
             // We don't have permission so prompt the user
