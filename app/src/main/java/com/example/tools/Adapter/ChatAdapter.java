@@ -38,15 +38,22 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         ViewHolder viewholder = (ViewHolder) holder;
         viewholder.date.setText(list.get(position).get("date").toString());
             String k=list.get(position).get("type").toString();
+            String c=list.get(position).get("choice").toString();
             if(k.equals("2"))
             {
                 viewholder.head.setImageResource(R.drawable.message_like);
+                if(c.equals("1"))
                 viewholder.msg.setText("您点赞了《"+list.get(position).get("title")+"》这篇文章 ");
+                else
+                    viewholder.msg.setText("您取消点赞了《"+list.get(position).get("title")+"》这篇文章 ");
             }
             else if(k.equals("3"))
             {
                 viewholder.head.setImageResource(R.drawable.message_collect);
+                if(c.equals("1"))
                 viewholder.msg.setText("您收藏了《"+list.get(position).get("title")+"》这篇文章 ");
+                else
+                    viewholder.msg.setText("您取消收藏了《"+list.get(position).get("title")+"》这篇文章 ");
             }
             else if(k.equals("4"))
             {
@@ -56,7 +63,10 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             else if(k.equals("5"))
             {
                 viewholder.head.setImageResource(R.drawable.message_focus);
+                if(c.equals("1"))
                 viewholder.msg.setText("您关注了"+list.get(position).get("title")+" 这位作者 ");
+                else
+                    viewholder.msg.setText("您取消关注了"+list.get(position).get("title")+" 这位作者 ");
             }
     }
 

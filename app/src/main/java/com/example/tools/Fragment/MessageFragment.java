@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -32,8 +33,6 @@ import org.xutils.x;
 import java.util.ArrayList;
 import java.util.List;
 
-import q.rorbin.badgeview.QBadgeView;
-
 
 public class MessageFragment extends Fragment {
     private ImageView icon_it;
@@ -42,17 +41,39 @@ public class MessageFragment extends Fragment {
     private ImageView icon_comment;
     private ImageView icon_focus;
     private ImageView clear_all;
+    private TextView red_like;
+    private TextView red_collect;
+    private TextView red_comment;
+    private TextView red_focus;
     private String email;
     private RelativeLayout it;
     private RelativeLayout like;
     private RelativeLayout collect;
     private RelativeLayout comment;
     private RelativeLayout focus;
+    private TextView red_all;
     public MessageDate messageDate=new MessageDate(getActivity());
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+    }
+    public void setRedNumber(TextView textView, int num)
+    {
+        if(num==0)
+        {
+            textView.setVisibility(View.GONE);
+        }
+        else if(num>0&&num<=99)
+        {
+            textView.setVisibility(View.VISIBLE);
+            textView.setText(String.valueOf(num));
+        }
+        else
+        {
+            textView.setVisibility(View.VISIBLE);
+            textView.setText("99+");
+        }
     }
 
     @Override
@@ -66,6 +87,11 @@ public class MessageFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         MyData data=new MyData(getActivity());
+        email=data.load_email();
+        red_collect=view.findViewById(R.id.red_collect);
+        red_like=view.findViewById(R.id.red_like);
+        red_comment=view.findViewById(R.id.red_comment);
+        red_focus=view.findViewById(R.id.red_focus);
         focus=view.findViewById(R.id.message_itemFocus);
         it=view.findViewById(R.id.message_itemIT);
         like=view.findViewById(R.id.message_itemLike);
@@ -76,6 +102,7 @@ public class MessageFragment extends Fragment {
         icon_like=view.findViewById(R.id.icon_like);
         icon_collect=view.findViewById(R.id.icon_collect);
         icon_comment=view.findViewById(R.id.icon_comment);
+        red_all=getActivity().findViewById(R.id.red_all);
         clear_all=view.findViewById(R.id.clear_all);
         clear_all.setOnClickListener(v -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
@@ -87,6 +114,12 @@ public class MessageFragment extends Fragment {
                     try {
                         DbManager dbManager = x.getDb(((myApplication) getActivity().getApplicationContext()).getDaoConfig());
                         dbManager.update(operation.class, WhereBuilder.b("read","=",1),new KeyValue("read",0));
+                        setRedNumber(red_all,0);
+                        setRedNumber(red_like,0);
+                        setRedNumber(red_comment,0);
+                        setRedNumber(red_collect,0);
+                        setRedNumber(red_focus,0);
+
                     } catch (DbException e) {
                         e.printStackTrace();
                     }
@@ -154,12 +187,7 @@ public class MessageFragment extends Fragment {
         });
 
     }
-    public void setRedNumber(View view,int number)
-    {
-        QBadgeView qBadgeView=new QBadgeView(getActivity());
-        qBadgeView.bindTarget(view);
-        qBadgeView.setBadgeNumber(number);
-    }
+
 
     @Override
     public void onResume() {
@@ -173,7 +201,7 @@ public class MessageFragment extends Fragment {
                 messageDate.setAll_msg(0);
             } else {
                 messageDate.setAll_msg(operations.size());
-                Log.i("test", String.valueOf(messageDate.getAll_msg()));
+                Log.i("test", String.valueOf(messageDate.getAll_msg())+"fragmentONresume");
             }
             List<operation> operations1 = new ArrayList<>();
             operations1 = dbManager.selector(operation.class).orderBy("id", true).limit(1000).where("type", "=", 2).and("read", "=", 1).and("email", "=", email).findAll();
@@ -189,6 +217,7 @@ public class MessageFragment extends Fragment {
                 messageDate.setCollect_msg(0);
             } else {
                 messageDate.setCollect_msg(operations2.size());
+                Log.i("test", String.valueOf(messageDate.getCollect_msg())+"fragmentONresume");
 
             }
             List<operation> operations3 = new ArrayList<>();
@@ -210,10 +239,10 @@ public class MessageFragment extends Fragment {
         } catch (DbException e) {
             e.printStackTrace();
         }
-        setRedNumber(icon_focus, messageDate.getFocus_msg());
-        setRedNumber(icon_it, 0);
-        setRedNumber(icon_collect, messageDate.getCollect_msg());
-        setRedNumber(icon_like, messageDate.getLike_msg());
-        setRedNumber(icon_comment, messageDate.getComment_msg());
+        setRedNumber(red_like,messageDate.getLike_msg());
+        setRedNumber(red_collect,messageDate.getCollect_msg());
+        setRedNumber(red_comment,messageDate.getComment_msg());
+        setRedNumber(red_focus,messageDate.getFocus_msg());
+
     }
 }

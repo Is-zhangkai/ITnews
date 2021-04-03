@@ -63,19 +63,14 @@ public class NewsDetailsActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
+        MyData myData = new MyData(NewsDetailsActivity.this);
+        token = myData.load_token();
         refresh_num=0;
         //点赞
+        Log.i("asd",oldLike+""+like);
         if (like!=oldLike){
         try {
-            DbManager dbManager= x.getDb(((myApplication)getApplicationContext()).getDaoConfig());
-            operation operation=new operation();
-            operation.setTitle(title);
-            operation.setType(2);
-            operation.setDate(month+"月"+day+"日");
-            operation.setRead(1);
-            operation.setEmail(email);
-            dbManager.save(operation);
+
             Utils.post_json(token, "http://122.9.2.27/api/news/operator/" + id + "/like", "", new Utils.OkhttpCallBack() {
                 @Override
                 public void onSuccess(Response response) {
@@ -83,7 +78,6 @@ public class NewsDetailsActivity extends AppCompatActivity {
                         JSONObject jsonObject21 = new JSONObject(Objects.requireNonNull(response.body()).string());
                         final String msg2 = jsonObject21.getString("msg");
                         Log.i("asd", msg2);
-
 
 
                     } catch (Exception e) {
@@ -106,14 +100,7 @@ public class NewsDetailsActivity extends AppCompatActivity {
         //收藏
         if (collection!=old_collection){
         try {
-            DbManager dbManager= x.getDb(((myApplication)getApplicationContext()).getDaoConfig());
-            operation operation=new operation();
-            operation.setTitle(title);
-            operation.setType(3);
-            operation.setDate(month+"月"+day+"日");
-            operation.setRead(1);
-            operation.setEmail(email);
-            dbManager.save(operation);
+
             Utils.post_json(token, "http://122.9.2.27/api/news/operator/" + id + "/star", "", new Utils.OkhttpCallBack() {
                 @Override
                 public void onSuccess(Response response) {
@@ -164,6 +151,7 @@ public class NewsDetailsActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(NewsDetailsActivity.this));
         MyData myData = new MyData(NewsDetailsActivity.this);
         token = myData.load_token();
+        email=myData.load_email();
 
         id = getIntent().getIntExtra("id", 0);
         writer=getIntent().getStringExtra("writer");
@@ -242,6 +230,7 @@ public class NewsDetailsActivity extends AppCompatActivity {
                                                         operation.setDate(month+"月"+day+"日");
                                                         operation.setRead(1);
                                                         operation.setEmail(email);
+                                                        operation.setChoice(1);
                                                         dbManager.save(operation);
                                                     } catch (DbException e) {
                                                         e.printStackTrace();
@@ -287,7 +276,35 @@ public class NewsDetailsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (like){like=false;  btn_like.setBackgroundResource(R.drawable.like_nor);like_nummber=like_nummber-1;Like_num.setText(like_nummber+"");
-                }else {like=true;  btn_like.setBackgroundResource(R.drawable.like_fill);like_nummber=like_nummber+1;Like_num.setText(like_nummber+"");}
+                    DbManager dbManager= null;
+                    try {
+                        dbManager = x.getDb(((myApplication)getApplicationContext()).getDaoConfig());
+                        operation operation=new operation();
+                        operation.setTitle(title);
+                        operation.setType(2);
+                        operation.setDate(month+"月"+day+"日");
+                        operation.setRead(1);
+                        operation.setEmail(email);
+                        operation.setChoice(1);
+                        dbManager.save(operation);
+                    } catch (DbException e) {
+                        e.printStackTrace();
+                    }
+                }else {like=true;  btn_like.setBackgroundResource(R.drawable.like_fill);like_nummber=like_nummber+1;Like_num.setText(like_nummber+"");
+                    DbManager dbManager= null;
+                    try {
+                        dbManager = x.getDb(((myApplication)getApplicationContext()).getDaoConfig());
+                        operation operation=new operation();
+                        operation.setTitle(title);
+                        operation.setType(2);
+                        operation.setDate(month+"月"+day+"日");
+                        operation.setRead(1);
+                        operation.setEmail(email);
+                        operation.setChoice(0);
+                        dbManager.save(operation);
+                    } catch (DbException e) {
+                        e.printStackTrace();
+                    }}
 
             }
         });
@@ -296,7 +313,36 @@ public class NewsDetailsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (collection){collection=false;  btn_collection.setBackgroundResource(R.drawable.collection_nor);
-                }else {collection=true;  btn_collection.setBackgroundResource(R.drawable.collection_fill);}
+                    DbManager dbManager= null;
+                    try {
+                        dbManager = x.getDb(((myApplication)getApplicationContext()).getDaoConfig());
+                        operation operation=new operation();
+                        operation.setTitle(title);
+                        operation.setType(3);
+                        operation.setDate(month+"月"+day+"日");
+                        operation.setRead(1);
+                        operation.setEmail(email);
+                        operation.setChoice(1);
+                        dbManager.save(operation);
+                    } catch (DbException e) {
+                        e.printStackTrace();
+                    }
+
+                }else {collection=true;  btn_collection.setBackgroundResource(R.drawable.collection_fill);
+                    DbManager dbManager= null;
+                    try {
+                        dbManager = x.getDb(((myApplication)getApplicationContext()).getDaoConfig());
+                        operation operation=new operation();
+                        operation.setTitle(title);
+                        operation.setType(3);
+                        operation.setDate(month+"月"+day+"日");
+                        operation.setRead(1);
+                        operation.setEmail(email);
+                        operation.setChoice(0);
+                        dbManager.save(operation);
+                    } catch (DbException e) {
+                        e.printStackTrace();
+                    }}
             }
         });
         //返回
@@ -378,7 +424,6 @@ try {
                 @Override
                 public void onFail(String error) {
 
-
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -394,7 +439,10 @@ try {
 
                 }
             });
-    } catch (Exception e) { e.printStackTrace(); }
+    } catch (Exception e) { e.printStackTrace();
+
+
+}
 
     }
 
@@ -430,6 +478,13 @@ try {
 
                     } else {
                         all_page=jsonObject2.getInt("count");
+
+                        if (page==1){
+                            Comments comments = new Comments();
+                            comments.setFirst("评论");
+                            list.add(comments);
+                        }
+
                         JSONArray jsonArray2 = jsonObject2.getJSONArray("comments");
                         for (int i = 0; i < jsonArray2.length(); i++) {
                             Comments comments = new Comments();
@@ -438,6 +493,7 @@ try {
                             comments.setComment_content(jsonObject3.getString("content"));
                             String time=jsonObject3.getString("create_time");
 
+                            time=time.substring(6,10);
                             comments.setCreate_time(time);
                             comments.setPhoto(jsonObject3.getString("avatar"));
                             list.add(comments);
@@ -447,7 +503,8 @@ try {
                             @Override
                             public void run() {
 
-                                if (refresh) {if (refresh_num==0){Like_num.setText(like_nummber+"");
+                                if (refresh) {if (refresh_num==0){
+                                    Like_num.setText(like_nummber+"");
                                     if (like){  btn_like.setBackgroundResource(R.drawable.like_fill);
                                     }else {  btn_like.setBackgroundResource(R.drawable.like_nor);}
                                     if (collection){  btn_collection.setBackgroundResource(R.drawable.collection_fill);

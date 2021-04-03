@@ -43,26 +43,28 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     public static final int TYPE_HEADER = 0; //说明是带有Header的
     public static final int TYPE_NORMAL = 1;
     public static final int TYPE_no =3;
+    public static final int TYPE_first =4;
+    public static final int TYPE_Error =5;
     private String email;
     private int month;
     private int day;
     private boolean focus,type;
     private Context context;
+    private MyData myData;
     private GridViewAdapter gridAdpter;
     private List<Comments> list;
     private String token;
-    //全局定义
     private long lastClickTime = 0L;
-    // 两次点击间隔不能少于1000ms
     private static final int FAST_CLICK_DELAY_TIME = 5000;
 
 
     public CommentAdapter(Context context,List<Comments> list) {
         this.context=context;
         this.list=list;
-        MyData myData = new MyData(context);
+        myData = new MyData(context);
         token = myData.load_token();
-        Calendar c=Calendar.getInstance();
+        email=myData.load_email();
+        Calendar c=Calendar.getInstance(); 
         month=c.get(Calendar.MONTH)+1;
         day=c.get(Calendar.DAY_OF_MONTH);
     }
@@ -82,18 +84,22 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     /** 重写这个方法,通过判断item的类型，从而绑定不同的view * */
     @Override
     public int getItemViewType(int i) {
+
+
         if (list.get(i).getNoComments()!=null)
         {
             return TYPE_no;
-        }  else {
-
+        }else if (list.get(i).getFirst()!=null){
+            return TYPE_first;
+        } else if (list.get(i).getError()!=null){
+            return TYPE_Error;
+        }else {
         if (i>0 ){
             return TYPE_NORMAL;
         }
         if (i == 0){
             return TYPE_HEADER;
         }}
-
         return super.getItemViewType(i);
     }
 
@@ -103,6 +109,14 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view=null;
         RecyclerView.ViewHolder holder=null;
+        if (i==TYPE_Error){
+            view= LayoutInflater.from(context).inflate(R.layout.item_papernonet,viewGroup,false);
+            holder= new ViewHolderNo(view);
+        }
+        if (i==TYPE_first){
+            view= LayoutInflater.from(context).inflate(R.layout.item_com,viewGroup,false);
+            holder= new ViewHolderNo(view);
+        }
         if (i==TYPE_no){
             view= LayoutInflater.from(context).inflate(R.layout.item_no,viewGroup,false);
             holder= new ViewHolderNo(view);
@@ -124,6 +138,7 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         if (holder instanceof ViewHolderComments){
             ( (ViewHolderComments)holder).comment.setText(list.get(i).getComment_content());
             ( (ViewHolderComments)holder).writer.setText(list.get(i).getComment_writer());
+            ( (ViewHolderComments)holder).time.setText(list.get(i).getCreate_time()+"");
             Glide.with(context).load(list.get(i).getPhoto()).error(R.drawable.errorhead).circleCrop().into(( (ViewHolderComments)holder).img);
 
 
@@ -131,12 +146,17 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             ( (ViewHolderNews)holder).title.setText(list.get(i).getTitle());
             ( (ViewHolderNews)holder).writer.setText(list.get(i).getWriter());
             ( (ViewHolderNews)holder).content.setText(list.get(i).getContent());
+          //  ( (ViewHolderNews)holder).info.setText(list.get(i).);
             Glide.with(context).load(list.get(i).getPhoto()).error(R.drawable.error).circleCrop().into(  ( (ViewHolderNews)holder).photo);
 
             if (list.get(i).getPics()!=null){
             gridAdpter = new GridViewAdapter(context,list.get(i).getPics());
             ( (ViewHolderNews)holder).gridView.setAdapter(gridAdpter);}
 
+
+            if (list.get(i).getWriter().equals(myData.load_name())){
+                ( (ViewHolderNews)holder).btn_focus.setVisibility(View.GONE);
+            }else {
             focus=list.get(i).getFollow();
 
             Log.i("asd1",focus+"");
@@ -148,8 +168,6 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 ( (ViewHolderNews)holder).btn_focus.setText("关注");
                 ( (ViewHolderNews)holder).btn_focus.setTextColor(context.getResources().getColor(R.color.white));
                }
-
-
             //关注按钮
             ( (ViewHolderNews)holder).btn_focus.setOnClickListener(new View.OnClickListener() {
 
@@ -171,20 +189,31 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                                             Log.i("asd", msg2);
                                             Toast.makeText(context,msg2,Toast.LENGTH_SHORT).show();
                                             if (msg2.equals("关注成功")){
-                                                String write=list.get(i).getComment_writer();
+                                                String write=list.get(i).getWriter();
                                                 DbManager dbManager = x.getDb(((myApplication) context.getApplicationContext()).getDaoConfig());
                                                 operation operation=new operation();
                                                 operation.setTitle(write);
                                                 operation.setType(5);
                                                 operation.setDate(month+"月"+day+"日");
                                                 operation.setRead(1);
+                                                operation.setChoice(1);
                                                 operation.setEmail(email);
                                                 dbManager.save(operation);
                                                 ( (ViewHolderNews)holder).btn_focus.setBackgroundResource(R.drawable.button_focus);
                                                 ( (ViewHolderNews)holder).btn_focus.setText("已关注");
                                                 ( (ViewHolderNews)holder).btn_focus.setTextColor(context.getResources().getColor(R.color.gradientstart));
 
-                                    }else { ( (ViewHolderNews)holder).btn_focus.setBackgroundResource(R.drawable.btn_focus_fill);
+                                    }else {  String write=list.get(i).getWriter();
+                                                DbManager dbManager = x.getDb(((myApplication) context.getApplicationContext()).getDaoConfig());
+                                                operation operation=new operation();
+                                                operation.setTitle(write);
+                                                operation.setType(5);
+                                                operation.setDate(month+"月"+day+"日");
+                                                operation.setRead(1);
+                                                operation.setChoice(0);
+                                                operation.setEmail(email);
+                                                dbManager.save(operation);
+                                                ( (ViewHolderNews)holder).btn_focus.setBackgroundResource(R.drawable.btn_focus_fill);
                                             ( (ViewHolderNews)holder).btn_focus.setText("关注");
                                             ( (ViewHolderNews)holder).btn_focus.setTextColor(context.getResources().getColor(R.color.white)); }
                                         } catch (Exception e) {
@@ -214,7 +243,7 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     }
                         }
             });
-        }
+        }}
 
 
     }
@@ -230,11 +259,12 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
 
     public static class ViewHolderComments extends RecyclerView.ViewHolder {
-        TextView writer,comment;
+        TextView writer,comment,time;
         ImageView img;
         public ViewHolderComments(@NonNull View itemView) {
             super(itemView);
             comment=itemView.findViewById(R.id.comments);
+            time=itemView.findViewById(R.id.comments_time);
             writer=itemView.findViewById(R.id.comment_writer);
             img=itemView.findViewById(R.id.comment_head);
 
@@ -252,7 +282,7 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     public static class ViewHolderNews extends RecyclerView.ViewHolder {
         GridView gridView;
-        TextView title,content,writer;
+        TextView title,content,writer,info;
         Button btn_focus;
         ImageView photo;
         public ViewHolderNews(@NonNull View itemView) {
@@ -263,7 +293,7 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             content=itemView.findViewById(R.id.details_news);
             photo=itemView.findViewById(R.id.details_photo);
             writer=itemView.findViewById(R.id.details_writer);
-
+            info=itemView.findViewById(R.id.details_info);
         }
     }
      }

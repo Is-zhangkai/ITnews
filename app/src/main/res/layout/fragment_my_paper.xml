@@ -23,6 +23,8 @@
 
             </ImageView>
             <TextView
+
+                android:id="@+id/myPaper_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="用户名"
@@ -52,7 +54,7 @@
             android:id="@+id/go_edit"
             android:layout_width="180dp"
             android:layout_height="50dp"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:textColor="@color/white"
             android:layout_marginTop="130dp"
             android:background="@drawable/black_circle">

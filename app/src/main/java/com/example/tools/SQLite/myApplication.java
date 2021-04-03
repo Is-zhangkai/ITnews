@@ -16,7 +16,7 @@ public class myApplication extends Application {
         super.onCreate();
         x.Ext.init(this);//Xutils初始化
         daoConfig = new DbManager.DaoConfig()
-                .setDbName("itnewss_db")//创建数据库的名称
+                .setDbName("itnews1_db")//创建数据库的名称
                 .setDbVersion(2)//数据库版本号
                 .setDbOpenListener(new DbManager.DbOpenListener() {
                     @Override

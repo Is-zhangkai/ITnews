@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -20,6 +21,7 @@ import com.example.tools.R;
 import com.example.tools.SQLite.MessageDate;
 import com.example.tools.SQLite.myApplication;
 import com.example.tools.SQLite.operation;
+import com.facebook.stetho.Stetho;
 
 import org.xutils.DbManager;
 import org.xutils.ex.DbException;
@@ -28,7 +30,6 @@ import org.xutils.x;
 import java.util.ArrayList;
 import java.util.List;
 
-import q.rorbin.badgeview.QBadgeView;
 
     public class MainActivity extends AppCompatActivity {
     public MessageDate messageDate = new MessageDate(this);
@@ -36,6 +37,7 @@ import q.rorbin.badgeview.QBadgeView;
     private RelativeLayout paper;
     private RelativeLayout message;
     private RelativeLayout user;
+    private TextView red_all;
     private String email;
     private ImageView mes;
     private NewsFragment newsFragment = new NewsFragment();
@@ -44,12 +46,32 @@ import q.rorbin.badgeview.QBadgeView;
     private UserFragment userFragment = new UserFragment();
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
     private static String[] PERMISSIONS_STORAGE = {"android.permission.READ_EXTERNAL_STORAGE", "android.permission.WRITE_EXTERNAL_STORAGE"};
-
+    public void setRedNumber(TextView textView, int num)
+    {
+        if(num==0)
+        {
+            textView.setVisibility(View.GONE);
+        }
+        else if(num>0&&num<=99)
+        {
+            textView.setVisibility(View.VISIBLE);
+            textView.setText(String.valueOf(num));
+        }
+        else
+        {
+            textView.setVisibility(View.VISIBLE);
+            textView.setText("99+");
+        }
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         MyData data=new MyData(MainActivity.this);
+        email=data.load_email();
+        String token =data.load_token();
+        Stetho.initializeWithDefaults(this);
+        red_all=findViewById(R.id.red_all);
         mes = findViewById(R.id.message);
         news = findViewById(R.id.news_layout);
         paper = findViewById(R.id.paper_layout);
@@ -166,16 +188,11 @@ import q.rorbin.badgeview.QBadgeView;
                 messageDate.setFocus_msg(0);
             } else {
                 messageDate.setFocus_msg(operations4.size());
-                ;
+
             }
         } catch (DbException e) {
             e.printStackTrace();
         }
-        QBadgeView qBadgeView = new QBadgeView(this);
-        qBadgeView.bindTarget(message);
-        Log.i("test", String.valueOf(messageDate.getAll_msg()));
-        qBadgeView.setBadgeNumber(messageDate.getAll_msg());
-        qBadgeView.setGravityOffset(10, 3, true);
-        Log.i("test", String.valueOf(messageDate.getAll_msg()));
+        setRedNumber(red_all,messageDate.getAll_msg());
     }
 }

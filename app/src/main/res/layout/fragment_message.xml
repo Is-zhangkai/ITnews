@@ -39,6 +39,7 @@
            android:layout_below="@id/message_topBar"
            android:layout_height="100dp">
 
+
            <ImageView
                android:id="@+id/icon_it"
                android:layout_width="50dp"
@@ -77,6 +78,7 @@
 
            </TextView>
 
+
            <ImageView
                android:id="@+id/icon_like"
                android:layout_width="50dp"
@@ -86,6 +88,20 @@
                android:layout_marginLeft="10dp">
            </ImageView>
            <TextView
+               android:layout_marginTop="20dp"
+               android:id="@+id/red_like"
+               android:layout_width="30dp"
+               android:layout_height="30dp"
+               android:background="@drawable/rednumber"
+               android:layout_marginLeft="45dp"
+               android:text="9"
+               android:gravity="center"
+               android:textColor="@color/white"
+               android:textSize="10dp">
+
+           </TextView>
+           <TextView
+               android:id="@+id/test"
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
                android:layout_toRightOf="@id/icon_like"
@@ -116,6 +132,19 @@
                android:layout_centerVertical="true"
                android:layout_marginLeft="10dp">
            </ImageView>
+           <TextView
+               android:layout_marginTop="20dp"
+               android:id="@+id/red_collect"
+               android:layout_width="30dp"
+               android:layout_height="30dp"
+               android:background="@drawable/rednumber"
+               android:layout_marginLeft="45dp"
+               android:text="9"
+               android:gravity="center"
+               android:textColor="@color/white"
+               android:textSize="10dp">
+
+           </TextView>
            <TextView
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
@@ -149,6 +178,19 @@
                android:layout_marginLeft="10dp">
            </ImageView>
            <TextView
+               android:layout_marginTop="20dp"
+               android:id="@+id/red_comment"
+               android:layout_width="30dp"
+               android:layout_height="30dp"
+               android:background="@drawable/rednumber"
+               android:layout_marginLeft="45dp"
+               android:text="9"
+               android:gravity="center"
+               android:textColor="@color/white"
+               android:textSize="10dp">
+
+           </TextView>
+           <TextView
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
                android:layout_toRightOf="@id/icon_comment"
@@ -179,6 +221,19 @@
                android:layout_centerVertical="true"
                android:layout_marginLeft="10dp">
            </ImageView>
+           <TextView
+               android:layout_marginTop="20dp"
+               android:id="@+id/red_focus"
+               android:layout_width="30dp"
+               android:layout_height="30dp"
+               android:background="@drawable/rednumber"
+               android:layout_marginLeft="45dp"
+               android:text="9"
+               android:gravity="center"
+               android:textColor="@color/white"
+               android:textSize="10dp">
+
+           </TextView>
            <TextView
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
