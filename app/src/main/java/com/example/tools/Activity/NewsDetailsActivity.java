@@ -417,6 +417,14 @@ try {
                         list.add(comments);
                         GetComments(list);
 
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                btn_collection.setEnabled(true);
+                                btn_like.setEnabled(true);
+                            }
+                        });
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -427,13 +435,19 @@ try {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Comments error=new Comments();
-                            error.setError("error");
-                            list.add(error);
-                            commentAdapter = new CommentAdapter(NewsDetailsActivity.this, list);
-                            recyclerView.setAdapter(commentAdapter);
-                            Toast.makeText(NewsDetailsActivity.this,"连接失败，请刷新重试",Toast.LENGTH_SHORT).show();
+                            if (refresh_num>0){
+                                btn_collection.setEnabled(false);
+                                btn_like.setEnabled(false);
+                                Toast.makeText(NewsDetailsActivity.this, "连接失败，请刷新重试", Toast.LENGTH_SHORT).show();
 
+                            }else {
+                                Comments error = new Comments();
+                                error.setError("error");
+                                list.add(error);
+
+                                commentAdapter = new CommentAdapter(NewsDetailsActivity.this, list);
+                                recyclerView.setAdapter(commentAdapter);
+                            }
                         }
                     });
 
@@ -502,7 +516,8 @@ try {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-
+                                btn_collection.setEnabled(true);
+                                btn_like.setEnabled(true);
                                 if (refresh) {if (refresh_num==0){
                                     Like_num.setText(like_nummber+"");
                                     if (like){  btn_like.setBackgroundResource(R.drawable.like_fill);
@@ -531,11 +546,18 @@ try {
                     @Override
                     public void run() {
 
-                        Comments error=new Comments();
-                        error.setError("error");
-                        list.add(error);
-                        commentAdapter = new CommentAdapter(NewsDetailsActivity.this, list);
-                        recyclerView.setAdapter(commentAdapter);
+                        if (refresh_num>0){
+                            btn_collection.setEnabled(false);
+                            btn_like.setEnabled(false);
+                      Toast.makeText(NewsDetailsActivity.this,"网络走丢了",Toast.LENGTH_SHORT).show();
+                        }else {
+                            Comments error=new Comments();
+                            error.setError("error");
+                            list.add(error);
+
+                            commentAdapter = new CommentAdapter(NewsDetailsActivity.this, list);
+                            recyclerView.setAdapter(commentAdapter);
+                        }
                     }
                 });
             }

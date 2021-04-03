@@ -111,7 +111,7 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         RecyclerView.ViewHolder holder=null;
         if (i==TYPE_Error){
             view= LayoutInflater.from(context).inflate(R.layout.item_papernonet,viewGroup,false);
-            holder= new ViewHolderNo(view);
+            holder= new ViewHolderError(view);
         }
         if (i==TYPE_first){
             view= LayoutInflater.from(context).inflate(R.layout.item_com,viewGroup,false);
@@ -134,6 +134,7 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder holder, final int i) {
+
 
         if (holder instanceof ViewHolderComments){
             ( (ViewHolderComments)holder).comment.setText(list.get(i).getComment_content());
@@ -296,5 +297,15 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             info=itemView.findViewById(R.id.details_info);
         }
     }
+
+
+    public static class ViewHolderError extends RecyclerView.ViewHolder {
+
+        public ViewHolderError(@NonNull View itemView) {
+            super(itemView);
+
+        }
+    }
+
      }
 

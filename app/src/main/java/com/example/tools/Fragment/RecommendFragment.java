@@ -43,7 +43,7 @@ public class RecommendFragment extends Fragment {
     private SmartRefreshLayout smartRefreshLayout;
 
     private String token;
-    private int page=1,size=5,o_page=1;
+    private int page=1,size=5,o_page=1,refresh_num=0;
     private Boolean refresh=true;
 
     @Nullable
@@ -77,6 +77,7 @@ public class RecommendFragment extends Fragment {
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
                 smartRefreshLayout.setEnableLoadMore(true);
                 refresh=true;
+                refresh_num++;
                 page=1;o_page=1;
                 List<Data> list=new ArrayList<>();
                 GetData(list);
@@ -133,11 +134,14 @@ public class RecommendFragment extends Fragment {
                     @Override
                     public void run() {
 
+                        if (refresh_num>=1){
+                            Toast.makeText(getContext(),"网络走丢了",Toast.LENGTH_SHORT).show();
+                        }else {
                         Data dataerror=new Data();
                         dataerror.setError("error");
                         list.add(dataerror);
                         adapter=new NewsAdapter(getContext(),list);
-                        recyclerView.setAdapter(adapter);
+                        recyclerView.setAdapter(adapter);}
                     }
                 });
             }
@@ -179,7 +183,6 @@ public class RecommendFragment extends Fragment {
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-
                                 if (refresh) {
                                     adapter = new NewsAdapter(getContext(), list);
                                     recyclerView.setAdapter(adapter);
@@ -197,18 +200,26 @@ public class RecommendFragment extends Fragment {
                 @Override
                 public void onFail(String error) {
 
+
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+
+                            if (!refresh){page--;}
+                            if (refresh_num>=1){
+                                Toast.makeText(getContext(),"网络走丢了",Toast.LENGTH_SHORT).show();
+                            }else {
                             Data dataerror = new Data();
                             dataerror.setError("error");
                             list.add(dataerror);
                             adapter = new NewsAdapter(getContext(), list);
-                            recyclerView.setAdapter(adapter);
+                            recyclerView.setAdapter(adapter);}
                         }
                     });
                 }
             });
+
+
         }else {
             getActivity().runOnUiThread(new Runnable() {
                 @Override
