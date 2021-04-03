@@ -19,7 +19,6 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.REPLACE_EXISTING_PACKAGE"/>
 
-
     <application
 
         android:requestLegacyExternalStorage="true"
@@ -44,7 +43,7 @@
             android:screenOrientation="portrait"/>
         <activity android:name=".Activity.AgreementActivity"
             android:screenOrientation="portrait"/>
-        <activity android:name=".Activity.MainActivity"
+        <activity android:name=".Activity.WelcomeActivity"
             android:screenOrientation="portrait"
           >
             <intent-filter>
@@ -63,7 +62,7 @@
         </activity>
         <activity android:name=".Activity.WriteActivity"
             android:screenOrientation="portrait"/>
-        <activity android:name=".Activity.WelcomeActivity"
+        <activity android:name=".Activity.MainActivity"
             android:screenOrientation="portrait"/>
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -75,5 +74,4 @@
                 android:resource="@xml/file_paths" />
         </provider>
     </application>
-
 </manifest>

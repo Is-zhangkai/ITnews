@@ -1,12 +1,11 @@
 package com.example.tools.Activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.WindowManager;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.tools.MyData;
 import com.example.tools.R;
@@ -31,12 +30,7 @@ public class WelcomeActivity extends AppCompatActivity {
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-
-
         ;
-
-
-
         try {
             Utils.get_token("http://122.9.2.27/api/self/info", token, new Utils.OkhttpCallBack() {
                 @Override
@@ -45,7 +39,6 @@ public class WelcomeActivity extends AppCompatActivity {
                         JSONObject jsonObject=new JSONObject(response.body().string());
                         String msg=jsonObject.getString("msg");
                         Thread.sleep(1200);//等待时间
-
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
@@ -57,9 +50,6 @@ public class WelcomeActivity extends AppCompatActivity {
                                         finish();
                                     }}
                             });
-
-
-
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

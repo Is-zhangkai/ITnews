@@ -86,7 +86,7 @@ public class MyData {
         return mPreferences.getString("TOKEN", "NO");
     }
     public String load_v() {
-        return mPreferences.getString("V", "0.8.5");
+        return mPreferences.getString("V", "0.9.0");
     }
     public Boolean load_check() {
         return mPreferences.getBoolean("CHECK", false);
