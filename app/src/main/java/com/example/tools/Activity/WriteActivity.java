@@ -469,6 +469,12 @@ public class WriteActivity extends AppCompatActivity {
                                 }
                             } catch (IOException e) {
                                 e.printStackTrace();
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Toast.makeText(WriteActivity.this,"网络连接好像断开了哦",Toast.LENGTH_SHORT).show();
+                                    }
+                                });
                             }
                         }
                     });
