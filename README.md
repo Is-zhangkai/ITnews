@@ -1,5 +1,25 @@
 # ITnews
- 
+ * [ITnews](#itnews)
+  * [一、项目概述](#一项目概述)
+  * [二、功能详情](#二功能详情)
+    * [版本自动检测更新](#版本自动检测更新)
+    * [登陆与注册](#登陆与注册)
+    * [底部导航栏](#底部导航栏)
+      * [新闻](#新闻)
+      * [轮播图](#轮播图)
+      * [消息(本地数据库开发)](#消息本地数据库开发)
+      * [个人](#个人)
+    * [新闻详情页](#新闻详情页)
+    * [新闻发布界面](#新闻发布界面)
+    * [用户信息修改](#用户信息修改)
+      * [头像](#头像)
+      * [昵称](#昵称)
+      * [性别](#性别)
+      * [个人简介](#个人简介)
+      * [修改密码](#修改密码)
+    * [忘记密码](#忘记密码)
+    * [项目附加处理](#项目附加处理)
+  * [三、项目时间安排(仅供参考)](#三项目时间安排仅供参考)
 ## 一、项目概述
    ITnews是由2021年3月由中国海洋大学爱特工作室开发的一款小型新闻类APP。从设计到产品开发与测试累计用时一个月。
 - **项目名称**:ITnews
@@ -117,8 +137,27 @@
 | **3.28-4.4**   | **项目调试与完善**                                          |
 
 # ITnews
-
-[TOC]
+* [ITnews](#itnews)
+  * [1、 Project overview](#1-project-overview)
+  * [2、 Function details](#2-function-details)
+    * [Automatic version detection update](#automatic-version-detection-update)
+    * [Login and registration](#login-and-registration)
+    * [Bottom navigation bar](#bottom-navigation-bar)
+      * [News](#news)
+      * [Carousel map](#carousel-map)
+      * [Message (local database development)](#message-local-database-development)
+      * [Individuals](#individuals)
+    * [News details page](#news-details-page)
+    * [News release interface](#news-release-interface)
+    * [User information modification](#user-information-modification)
+      * [Head portrait](#head-portrait)
+      * [Nickname](#nickname)
+      * [Gender](#gender)
+      * [Personal profile](#personal-profile)
+      * [Change password](#change-password)
+    * [Forget the password](#forget-the-password)
+    * [Project additional processing](#project-additional-processing)
+  * [3、 Project schedule (for reference only)](#3-project-schedule-for-reference-only)
 
 ## 1、 Project overview
 
