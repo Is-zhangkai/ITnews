@@ -44,6 +44,7 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     public static final int TYPE_NORMAL = 1;
     public static final int TYPE_no =3;
     public static final int TYPE_first =4;
+    public static final int TYPE_Error =5;
     private String email;
     private int month;
     private int day;
@@ -90,15 +91,15 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             return TYPE_no;
         }else if (list.get(i).getFirst()!=null){
             return TYPE_first;
-        } else {
-
+        } else if (list.get(i).getError()!=null){
+            return TYPE_Error;
+        }else {
         if (i>0 ){
             return TYPE_NORMAL;
         }
         if (i == 0){
             return TYPE_HEADER;
         }}
-
         return super.getItemViewType(i);
     }
 
@@ -108,6 +109,10 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view=null;
         RecyclerView.ViewHolder holder=null;
+        if (i==TYPE_Error){
+            view= LayoutInflater.from(context).inflate(R.layout.item_papernonet,viewGroup,false);
+            holder= new ViewHolderNo(view);
+        }
         if (i==TYPE_first){
             view= LayoutInflater.from(context).inflate(R.layout.item_com,viewGroup,false);
             holder= new ViewHolderNo(view);
