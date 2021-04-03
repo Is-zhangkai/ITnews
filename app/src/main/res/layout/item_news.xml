@@ -54,11 +54,12 @@
             android:id="@+id/imageView3"
             android:layout_width="wrap_content"
             android:layout_height="20dp"
-            android:layout_marginStart="30dp"
             android:layout_below="@id/item_news_title"
+            android:layout_marginStart="30dp"
             android:layout_marginTop="18dp"
             android:layout_toEndOf="@+id/textView6"
-            android:text="标签：" />
+            android:text="标签："
+            android:textSize="12sp" />
 
         <TextView
             android:id="@+id/textView6"
@@ -78,9 +79,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
-            android:layout_marginStart="5dp"
             android:layout_below="@id/item_news_title"
-            android:layout_marginTop="18dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="19dp"
             android:layout_toEndOf="@+id/imageView3"
             android:text="13"
             android:textColor="#66000000"

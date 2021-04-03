@@ -46,7 +46,7 @@ public class MixAdapter  extends RecyclerView.Adapter<RecyclerView.ViewHolder>  
     public final int VIEW_NEWS = 2;
     public final int VIEW_NET = 3;
     private long lastClickTime = 0L;
-    private static final int FAST_CLICK_DELAY_TIME = 500;
+    private static final int FAST_CLICK_DELAY_TIME = 2000;
     private boolean type;
     private int focus;
     private String email;
@@ -102,10 +102,22 @@ public class MixAdapter  extends RecyclerView.Adapter<RecyclerView.ViewHolder>  
             viewHolder.textView.setText(list.get(position).get("text").toString());
             Log.d("12332", "00");
         } else if(holder instanceof NewsViewHolder){
+            int tptp = Integer.valueOf(list.get(position).get("tag_type").toString());
             NewsViewHolder viewHolder = (NewsViewHolder) holder;
             viewHolder.tv_title.setText((list.get(position).get("title").toString()));
             viewHolder.tv_writer.setText((list.get(position).get("nickname").toString()));
-            viewHolder.news_type.setText((list.get(position).get("tag_type").toString()));
+            if (tptp == 1) {
+                viewHolder.news_type.setText("游戏");
+            } else if (tptp == 2) {
+                viewHolder.news_type.setText("体育");
+            } else if (tptp== 3) {
+                viewHolder.news_type.setText("汽车");
+            } else if (tptp == 4) {
+                viewHolder.news_type.setText("军事");
+            } else {
+                viewHolder.news_type.setText("其他");
+            }
+
             Glide.with(context).load(list.get(position).get("news_pic").toString()).centerCrop().into(viewHolder.iv_pic);
             viewHolder.relativeLayout.setOnClickListener(new View.OnClickListener() {
                 @Override

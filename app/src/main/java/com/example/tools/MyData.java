@@ -68,6 +68,10 @@ public class MyData {
         mEditor.putInt("ATTENTIONS",num);
         mEditor.commit();
     }
+    public void save_v(String v){
+        mEditor.putString("V",v);
+        mEditor.commit();
+    }
     public void save_id(int my){
         mEditor.putInt("MY",my);
         mEditor.commit();
@@ -80,6 +84,9 @@ public class MyData {
     public String load_pic_url(){return  mPreferences.getString("URL","NO");}
     public String load_token() {
         return mPreferences.getString("TOKEN", "NO");
+    }
+    public String load_v() {
+        return mPreferences.getString("V", "0.8.5");
     }
     public Boolean load_check() {
         return mPreferences.getBoolean("CHECK", false);

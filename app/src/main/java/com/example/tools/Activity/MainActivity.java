@@ -3,13 +3,18 @@ package com.example.tools.Activity;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentTransaction;
@@ -26,14 +31,18 @@ import com.example.tools.SQLite.operation;
 import com.example.tools.Utils;
 import com.facebook.stetho.Stetho;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.xutils.DbManager;
 import org.xutils.ex.DbException;
 import org.xutils.x;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import okhttp3.Response;
 
 
@@ -49,6 +58,12 @@ public class MainActivity extends AppCompatActivity {
     private NewsFragment newsFragment = new NewsFragment();
     private MessageFragment messageFragment = new MessageFragment();
     private MyPaperFragment myPaperFragment = new MyPaperFragment();
+    private String new_version ;
+    private String downloadUrl;
+    private Button upgrade;
+    String title = "发现新版本：";
+    String size = "新版本大小：19.4MB";
+    String msg = "1、优化api接口。\r\n2、添加使用demo演示。\r\n3、新增自定义更新服务API接口。\r\n4、优化更新提示界面。";
     private UserFragment userFragment = new UserFragment();
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
     private static String[] PERMISSIONS_STORAGE = {"android.permission.READ_EXTERNAL_STORAGE", "android.permission.WRITE_EXTERNAL_STORAGE"};
@@ -221,9 +236,84 @@ public class MainActivity extends AppCompatActivity {
                 transaction.commit();
             }
         });
-
+        go_update();
     }
+    private void go_update(){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                OkHttpClient client = new OkHttpClient().newBuilder()
+                        .build();
+                Request request = new Request.Builder()
+                        .url("http://122.9.2.27/api/appinfo/latest-version")
+                        .method("GET", null)
+                        .build();
+                try {
+                    Response response = client.newCall(request).execute();
+                    String responseData = response.body().string();
+                    Log.d("wsz",responseData);
+                    JSONObject jsonObject1 = new JSONObject(responseData);
+                    int code = jsonObject1.getInt("code");
+                    JSONObject jsonObject2 = jsonObject1.getJSONObject("data");
+                    new_version = jsonObject2.getString("version");
+                    downloadUrl = jsonObject2.getString("url");
+                    Log.d("wsz",new_version);
+                    MainActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            go_dh();
+                        }
+                    });
+                } catch (IOException | JSONException e) {
+                    MainActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(MainActivity.this, "请检测网络连接！", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
+    public void go_dh(){
+        MyData myData = new MyData(MainActivity.this);
+        String version = myData.load_v();
+        if (!version.equals(new_version)) {
+            title = "发现新版本：" + new_version;
+            LayoutInflater inflater = LayoutInflater.from(MainActivity.this);
+            View view = inflater.inflate(R.layout.new_update_layout, null);
+            AlertDialog.Builder mDialog = new AlertDialog.Builder(MainActivity.this, R.style.Translucent_NoTitle);
+            mDialog.setView(view);
+            mDialog.setCancelable(true);
+            Log.d("123300", "!!!!!!!!");
+            upgrade = view.findViewById(R.id.button);
+            TextView textView1 = view.findViewById(R.id.textView1);
+            TextView textView2 = view.findViewById(R.id.textView2);
+            TextView textView3 = view.findViewById(R.id.textView3);
+            ImageView iv_close = view.findViewById(R.id.iv_close);
+            textView1.setText(title);
+            textView2.setText(size);
+            textView3.setText(msg);
+            upgrade.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Uri uri = Uri.parse(downloadUrl);    //设置跳转的网站
+                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                    startActivity(intent);
+                }
+            });
 
+            final AlertDialog dialog = mDialog.show();
+            iv_close.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                }
+            });
+        }else{
+        }
+    }
     @Override
     protected void onResume() {
         super.onResume();

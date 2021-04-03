@@ -1,8 +1,8 @@
 package com.example.tools.Fragment;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
+import android.Manifest;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,11 +10,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
@@ -23,7 +25,6 @@ import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.tools.Activity.ChangeActivity;
 import com.example.tools.Activity.InterActivity;
-import com.example.tools.Activity.LoginActivity;
 import com.example.tools.Activity.MyCollections;
 import com.example.tools.MyData;
 import com.example.tools.R;
@@ -33,6 +34,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 
+import io.reactivex.disposables.Disposable;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;
@@ -58,6 +60,18 @@ public class UserFragment extends Fragment {
     private int fans_num;
     private int follow_num;
     private String avatar;
+    private Disposable downDisposable;
+    private ProgressBar progressBar;
+    private TextView textView4;
+    private String downloadUrl;
+    private Button upgrade;
+    private long downloadLength = 0;
+    private final long contentLength = 0;
+    private String new_version ;
+    private String[] PERMISSIONS_STORAGE = {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+    String title = "发现新版本：";
+    String size = "新版本大小：19.4MB";
+    String msg = "1、优化api接口。\r\n2、添加使用demo演示。\r\n3、新增自定义更新服务API接口。\r\n4、优化更新提示界面。";
 
     public UserFragment() {
         // Required empty public constructor
@@ -85,7 +99,6 @@ public class UserFragment extends Fragment {
         update = view.findViewById(R.id.constraintLayout4);
         change = view.findViewById(R.id.button);
         tv_name = view.findViewById(R.id.textView2);
-
     }
 
     @Override
@@ -110,10 +123,10 @@ public class UserFragment extends Fragment {
         collection.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(getActivity(), MyCollections.class);
-                Bundle bd=new Bundle();
-                bd.putString("name","收藏");
-                bd.putInt("num",1);
+                Intent intent = new Intent(getActivity(), MyCollections.class);
+                Bundle bd = new Bundle();
+                bd.putString("name", "收藏");
+                bd.putInt("num", 1);
                 intent.putExtras(bd);
                 startActivity(intent);
             }
@@ -121,10 +134,10 @@ public class UserFragment extends Fragment {
         history.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(getActivity(), MyCollections.class);
-                Bundle bd=new Bundle();
-                bd.putString("name","历史点赞");
-                bd.putInt("num",2);
+                Intent intent = new Intent(getActivity(), MyCollections.class);
+                Bundle bd = new Bundle();
+                bd.putString("name", "历史点赞");
+                bd.putInt("num", 2);
                 intent.putExtras(bd);
                 startActivity(intent);
             }
@@ -132,10 +145,10 @@ public class UserFragment extends Fragment {
         fans.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(getActivity(), MyCollections.class);
-                Bundle bd=new Bundle();
-                bd.putString("name","粉丝");
-                bd.putInt("num",3);
+                Intent intent = new Intent(getActivity(), MyCollections.class);
+                Bundle bd = new Bundle();
+                bd.putString("name", "粉丝");
+                bd.putInt("num", 3);
                 intent.putExtras(bd);
                 startActivity(intent);
             }
@@ -143,10 +156,10 @@ public class UserFragment extends Fragment {
         attentions.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(getActivity(), MyCollections.class);
-                Bundle bd=new Bundle();
-                bd.putString("name","关注");
-                bd.putInt("num",4);
+                Intent intent = new Intent(getActivity(), MyCollections.class);
+                Bundle bd = new Bundle();
+                bd.putString("name", "关注");
+                bd.putInt("num", 4);
                 intent.putExtras(bd);
                 startActivity(intent);
             }
@@ -154,18 +167,7 @@ public class UserFragment extends Fragment {
         update.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LayoutInflater factory = LayoutInflater.from(getActivity());
-                final View view = factory.inflate(R.layout.layout_update, null);
-
-                new AlertDialog.Builder(getActivity())
-                        .setView(view)
-                        .setPositiveButton("取消",
-                                new android.content.DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog,
-                                                        int which) {
-                                    }
-                                }).setNegativeButton("更新", null).create().show();
+                go_update();
             }
         });
         change.setOnClickListener(new View.OnClickListener() {
@@ -174,8 +176,6 @@ public class UserFragment extends Fragment {
                 startActivity(new Intent(getActivity(), ChangeActivity.class));
             }
         });
-
-
     }
 
     @Override
@@ -184,21 +184,97 @@ public class UserFragment extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_user, container, false);
     }
+    private void go_update(){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                OkHttpClient client = new OkHttpClient().newBuilder()
+                        .build();
+                Request request = new Request.Builder()
+                        .url("http://122.9.2.27/api/appinfo/latest-version")
+                        .method("GET", null)
+                        .build();
+                try {
+                    Response response = client.newCall(request).execute();
+                    String responseData = response.body().string();
+                    Log.d("wsz",responseData);
+                    JSONObject jsonObject1 = new JSONObject(responseData);
+                    int code = jsonObject1.getInt("code");
+                    JSONObject jsonObject2 = jsonObject1.getJSONObject("data");
+                    new_version = jsonObject2.getString("version");
+                    downloadUrl = jsonObject2.getString("url");
+                    Log.d("wsz",new_version);
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            go_dh();
+                        }
+                    });
+                } catch (IOException | JSONException e) {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(getActivity(), "请检测网络连接！", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
+    public void go_dh(){
+        MyData myData = new MyData(getContext());
+        String version = myData.load_v();
+        if (!version.equals(new_version)) {
+            title = "发现新版本：" + new_version;
+            LayoutInflater inflater = LayoutInflater.from(getContext());
+            View view = inflater.inflate(R.layout.new_update_layout, null);
+            AlertDialog.Builder mDialog = new AlertDialog.Builder(getContext(), R.style.Translucent_NoTitle);
+            mDialog.setView(view);
+            mDialog.setCancelable(true);
+            Log.d("123300", "!!!!!!!!");
+            upgrade = view.findViewById(R.id.button);
+            TextView textView1 = view.findViewById(R.id.textView1);
+            TextView textView2 = view.findViewById(R.id.textView2);
+            TextView textView3 = view.findViewById(R.id.textView3);
+            ImageView iv_close = view.findViewById(R.id.iv_close);
+            textView1.setText(title);
+            textView2.setText(size);
+            textView3.setText(msg);
+            upgrade.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Uri uri = Uri.parse(downloadUrl);    //设置跳转的网站
+                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                    startActivity(intent);
+                }
+            });
 
+            final AlertDialog dialog = mDialog.show();
+            iv_close.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                }
+            });
+        }else{
+            Toast.makeText(getActivity(), "已经是最新版本:"+version, Toast.LENGTH_SHORT).show();
+        }
+    }
     @Override
     public void onStart() {
         super.onStart();
         final MyData myData = new MyData(getContext());
-        final String my_token= myData.load_token();
-        if(myData.load_xx()){
-            tv_fans_num.setText(myData.load_fans()+"");
-            tv_attentions_num.setText(""+myData.load_attentions());
+        final String my_token = myData.load_token();
+        if (myData.load_xx()) {
+            tv_fans_num.setText(myData.load_fans() + "");
+            tv_attentions_num.setText("" + myData.load_attentions());
             tv_name.setText(myData.load_name());
             Glide.with(getContext()).load(myData.load_pic_url())
                     .apply(RequestOptions.bitmapTransform(new CircleCrop()))
                     .into(iv_head);
         }
-        if(my_token!="NO"){
+        if (my_token != "NO") {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -213,7 +289,7 @@ public class UserFragment extends Fragment {
                     call.enqueue(new Callback() {
                         @Override
                         public void onFailure(Call call, IOException e) {
-                            Log.d("1233gg", "onFailure: "+e.getMessage());
+                            Log.d("1233gg", "onFailure: " + e.getMessage());
                         }
 
                         @Override
@@ -228,22 +304,22 @@ public class UserFragment extends Fragment {
                                     getActivity().runOnUiThread(new Runnable() {
                                         @Override
                                         public void run() {
-                                            Toast.makeText(getActivity(),msg, Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
                                         }
                                     });
-                                }else {
+                                } else {
 
-                                    JSONObject jsonObject2 =jsonObject1.getJSONObject("data");
+                                    JSONObject jsonObject2 = jsonObject1.getJSONObject("data");
 
                                     name = jsonObject2.getString("nickname");
-                                    if(name.length()>6){
-                                        name = name.substring(0,6);
+                                    if (name.length() > 6) {
+                                        name = name.substring(0, 6);
                                     }
-                                    info =jsonObject2.getString("info");
-                                    gender =jsonObject2.getString("gender");
-                                    fans_num =jsonObject2.getInt("fans_num");
-                                    follow_num =jsonObject2.getInt("follow_num");
-                                    avatar =jsonObject2.getString("avatar_90x90");
+                                    info = jsonObject2.getString("info");
+                                    gender = jsonObject2.getString("gender");
+                                    fans_num = jsonObject2.getInt("fans_num");
+                                    follow_num = jsonObject2.getInt("follow_num");
+                                    avatar = jsonObject2.getString("avatar_90x90");
                                     myData.save_attentions(follow_num);
                                     myData.save_info(info);
                                     myData.save_name(name);
@@ -253,8 +329,8 @@ public class UserFragment extends Fragment {
                                     getActivity().runOnUiThread(new Runnable() {
                                         @Override
                                         public void run() {
-                                            tv_fans_num.setText(""+fans_num);
-                                            tv_attentions_num.setText(""+follow_num);
+                                            tv_fans_num.setText("" + fans_num);
+                                            tv_attentions_num.setText("" + follow_num);
                                             tv_name.setText(name);
                                             Glide.with(getContext()).load(avatar)
                                                     .apply(RequestOptions.bitmapTransform(new CircleCrop()))
@@ -273,5 +349,6 @@ public class UserFragment extends Fragment {
         }
 
     }
+
 
 }

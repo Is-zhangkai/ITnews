@@ -1,10 +1,10 @@
 package com.example.tools.Activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.tools.R;
 
@@ -21,7 +21,6 @@ public class InterActivity extends AppCompatActivity {
 
             }
         });
-
         findViewById(R.id.inter_register).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
