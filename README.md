@@ -1,5 +1,5 @@
 # ITnews
- [TOC]
+ 
 ## 一、项目概述
    ITnews是由2021年3月由中国海洋大学爱特工作室开发的一款小型新闻类APP。从设计到产品开发与测试累计用时一个月。
 - **项目名称**:ITnews
@@ -122,17 +122,17 @@
 
 ## 1、 Project overview
 
-ITnews is a small news app developed by IT studio of Ocean University of China in March 2021. It takes one month from design to product development and testing.
+- ITnews is a small news app developed by IT studio of Ocean University of China in March 2021. It takes one month from design to product development and testing.
 
 **project name**: ITnews
 
 
 
-**development team member**: UI: Wu Huimin program: Liu Zhao app: Zhang Kai, Wang Ziyi, Huang Bobin
+- **development team member**: UI: Wu Huimin program: Liu Zhao app: Zhang Kai, Wang Ziyi, Huang Bobin
 
-**Project Manager**: Huang Bobin
+- **Project Manager**: Huang Bobin
 
-**design objective**: design a news app, which can instantly view and release news, and users can pay attention to the author, collect articles, etc
+- **design objective**: design a news app, which can instantly view and release news, and users can pay attention to the author, collect articles, etc
 
 ## 2、 Function details
 ### Automatic version detection update
@@ -198,9 +198,9 @@ Jump to forget password interface
 Set a new password after entering the email and verification code
 
 ### Project additional processing
-The corresponding prompt information is given in the state of disconnection
-Item no horizontal screen status
-The input information format of the project is controlled by the front and back end according to the unified standard
+- The corresponding prompt information is given in the state of disconnection
+- Item no horizontal screen status
+- The input information format of the project is controlled by the front and back end according to the unified standard
 
 ## 3、 Project schedule (for reference only)
 
