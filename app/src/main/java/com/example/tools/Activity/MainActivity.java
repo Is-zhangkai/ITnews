@@ -122,16 +122,7 @@ public class MainActivity extends AppCompatActivity {
                         data.save_info(jsonObject1.getString("info"));
                         data.save_id(jsonObject1.getInt("selfid"));
 
-//
-//                        runOnUiThread(new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                if (msg.equals("一切正常")){
-//
-//                                }else {
-//
-//                                }}
-//                        });
+
 
 
 

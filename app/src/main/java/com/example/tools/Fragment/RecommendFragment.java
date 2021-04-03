@@ -161,6 +161,19 @@ public class RecommendFragment extends Fragment {
                         JSONObject jsonObject22 = jsonObject21.getJSONObject("data");
                         o_page = jsonObject22.getInt("count");
                         JSONArray jsonArray21 = jsonObject22.getJSONArray("news");
+                        if (jsonArray21.length()==0){
+                            Data data211 = new Data();
+                            data211.setNoData("暂无新闻");
+                            list.add(data211);
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    adapter = new NewsAdapter(getContext(), list);
+                                    recyclerView.setAdapter(adapter);
+                                }
+                            });
+
+                        }else {
                         Log.i("asd", jsonObject21.getString("msg"));
 
                         for (int i = 0; i < jsonArray21.length(); i++) {
@@ -192,7 +205,7 @@ public class RecommendFragment extends Fragment {
                                     adapter.addData(list);
                                 }
                             }
-                        });
+                        });}
 
                     } catch (Exception e) {
                         e.printStackTrace();
