@@ -232,7 +232,7 @@ public class UserFragment extends Fragment {
                                         }
                                     });
                                 }else {
-                                    MyData data2 = new MyData(getActivity());
+
                                     JSONObject jsonObject2 =jsonObject1.getJSONObject("data");
 
                                     name = jsonObject2.getString("nickname");
@@ -244,12 +244,12 @@ public class UserFragment extends Fragment {
                                     fans_num =jsonObject2.getInt("fans_num");
                                     follow_num =jsonObject2.getInt("follow_num");
                                     avatar =jsonObject2.getString("avatar_90x90");
-                                    data2.save_attentions(follow_num);
-                                    data2.save_info(info);
-                                    data2.save_name(name);
-                                    data2.save_fans(fans_num);
-                                    data2.save_sex(gender);
-                                    data2.save_pic_url(avatar);
+                                    myData.save_attentions(follow_num);
+                                    myData.save_info(info);
+                                    myData.save_name(name);
+                                    myData.save_fans(fans_num);
+                                    myData.save_sex(gender);
+                                    myData.save_pic_url(avatar);
                                     getActivity().runOnUiThread(new Runnable() {
                                         @Override
                                         public void run() {
