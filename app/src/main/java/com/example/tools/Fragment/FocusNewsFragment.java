@@ -113,6 +113,7 @@ public class FocusNewsFragment extends Fragment {
                         JSONArray jsonArray21 = jsonObject22.getJSONArray("news");
                         Log.i("asd", jsonObject21.getString("msg"));
                         if (jsonObject21.getString("msg").equals("数据库暂无相关数据")){
+                            page=1;o_page=1;
                             Data data211 = new Data();
                             data211.setNoData("暂无关注");
                             list.add(data211);

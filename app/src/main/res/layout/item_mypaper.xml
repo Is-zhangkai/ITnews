@@ -45,8 +45,8 @@
 
             <Button
                 android:id="@+id/delete"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
                 android:layout_alignParentEnd="true"
                 android:gravity="center"
                 android:layout_centerVertical="true"
