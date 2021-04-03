@@ -185,7 +185,8 @@ public class ChangePasswordActivity extends AppCompatActivity {
                                                     Toast.makeText(ChangePasswordActivity.this,"修改成功！", Toast.LENGTH_SHORT).show();
                                                 }
                                             });
-                                            startActivity(new Intent(ChangePasswordActivity.this,LoginActivity.class));
+                                            //startActivity(new Intent(ChangePasswordActivity.this,LoginActivity.class));
+                                            finish();
                                         }
                                     } catch (JSONException e) {
                                         e.printStackTrace();
