@@ -31,6 +31,7 @@ import java.util.Objects;
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
 import static com.bumptech.glide.request.RequestOptions.bitmapTransform;
+import static com.bumptech.glide.request.RequestOptions.placeholderOf;
 
 public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private Context context;
@@ -101,6 +102,7 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     intent.putExtra("user_id",list.get(i).getWriter_id());
                     intent.putExtra("writer",list.get(i).getWriter());
                     intent.putExtra("photo",list.get(i).getPhoto());
+                    intent.putExtra("info",list.get(i).getInfo());
                     context.startActivity(intent);
                 }
             });

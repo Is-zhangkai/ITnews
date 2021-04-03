@@ -124,6 +124,7 @@ public class FocusNewsFragment extends Fragment {
                             data21.setTag(jsonObject23.getInt("tag_type"));
                             JSONObject jsonObject24 = jsonObject23.getJSONObject("author");
                             data21.setWriter_id(jsonObject24.getInt("id"));
+                            data21.setInfo(jsonObject24.getString("info"));
                             data21.setWriter(jsonObject24.getString("nickname"));
                             data21.setPhoto(jsonObject24.getString("avatar"));
 

@@ -58,7 +58,7 @@ public class NewsDetailsActivity extends AppCompatActivity {
     private TextView Like_num;
     private String email;
     private Boolean refresh=true;
-    private String title,writer,photo;
+    private String title,writer,photo,info;
     private String token;
     @Override
     protected void onDestroy() {
@@ -157,6 +157,7 @@ public class NewsDetailsActivity extends AppCompatActivity {
         writer=getIntent().getStringExtra("writer");
         user_id=getIntent().getIntExtra("user_id",0);
         photo=getIntent().getStringExtra("photo");
+        info=getIntent().getStringExtra("info");
 
 
 
@@ -405,6 +406,7 @@ try {
                         comments.setStar_num(jsonObject2.getInt( "star_num"));
                         comments.setPhoto(photo);
                         comments.setAuthor_id(user_id);
+                        comments.setInfo(info);
                         comments.setWriter(writer);
                         comments.setFollow(follow);
                         final JSONArray jsonArray=jsonObject2.getJSONArray("pics");

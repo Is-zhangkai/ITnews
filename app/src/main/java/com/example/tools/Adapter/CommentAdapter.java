@@ -147,6 +147,7 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             ( (ViewHolderNews)holder).title.setText(list.get(i).getTitle());
             ( (ViewHolderNews)holder).writer.setText(list.get(i).getWriter());
             ( (ViewHolderNews)holder).content.setText(list.get(i).getContent());
+            ( (ViewHolderNews)holder).info.setText(list.get(i).getInfo());
           //  ( (ViewHolderNews)holder).info.setText(list.get(i).);
             Glide.with(context).load(list.get(i).getPhoto()).error(R.drawable.error).circleCrop().into(  ( (ViewHolderNews)holder).photo);
 
