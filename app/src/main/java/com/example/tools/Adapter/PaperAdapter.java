@@ -183,6 +183,7 @@ public class PaperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                     intent.putExtra("user_id",myData.load_id());
                     intent.putExtra("writer",myData.load_name());
                     intent.putExtra("photo",myData.load_pic_url());
+                    intent.putExtra("info",myData.load_info());
 
                     context.startActivity(intent);
                 }

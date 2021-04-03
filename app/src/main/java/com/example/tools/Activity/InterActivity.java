@@ -18,6 +18,7 @@ public class InterActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(InterActivity.this,LoginActivity.class));
+
             }
         });
 
@@ -25,6 +26,7 @@ public class InterActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(InterActivity.this,RegisterActivity.class));
+
             }
         });
     }

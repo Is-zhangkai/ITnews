@@ -24,8 +24,17 @@ public class Comments {
     private int author_id;
     private String title,writer,photo,first;
     private List<String> pics;
-    private String content,comment_writer,comment_content,error,noComments;
+    private String content,comment_writer,comment_content,error,noComments,info;
     private Boolean follow;
+
+
+    public String getInfo() {
+        return info;
+    }
+
+    public void setInfo(String info) {
+        this.info = info;
+    }
 
     public String getFirst() {
         return first;

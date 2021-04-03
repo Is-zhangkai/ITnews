@@ -34,6 +34,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText get_username;
     private EditText get_password;
     private Button gogo;
+    private String username;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +47,7 @@ public class LoginActivity extends AppCompatActivity {
         gogo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final String username=get_username.getText().toString();
+                username=get_username.getText().toString();
                 final String password=get_password.getText().toString();
                 if(!checkUsername(username)){
                     Toast.makeText(LoginActivity.this, "用户名应为" +
@@ -95,14 +96,16 @@ public class LoginActivity extends AppCompatActivity {
                                             LoginActivity.this.runOnUiThread(new Runnable() {
                                                 @Override
                                                 public void run() {
+                                                    MyData myData = new MyData(LoginActivity.this);
+                                                    myData.save_email(username);
                                                     Toast.makeText(LoginActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
                                                 }
                                             });
 
                                             Log.d("1233t",data.load_token());
                                             data.save_check(true);
-                                            startActivity(new Intent(LoginActivity.this,MainActivity.class));
-                                            finish();
+                                            Intent intent = new Intent(LoginActivity.this,MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                            startActivity(intent);
                                         }
                                     } catch (JSONException e) {
                                         e.printStackTrace();

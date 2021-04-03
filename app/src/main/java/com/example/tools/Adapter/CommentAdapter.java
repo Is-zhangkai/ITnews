@@ -1,6 +1,5 @@
 package com.example.tools.Adapter;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
@@ -17,21 +16,17 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.tools.Activity.NewsDetailsActivity;
 import com.example.tools.MyData;
 import com.example.tools.R;
 import com.example.tools.SQLite.myApplication;
 import com.example.tools.SQLite.operation;
 import com.example.tools.Utils;
 import com.example.tools.tools.Comments;
-import com.example.tools.tools.Data;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.xutils.DbManager;
 import org.xutils.x;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Objects;
@@ -44,6 +39,7 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     public static final int TYPE_NORMAL = 1;
     public static final int TYPE_no =3;
     public static final int TYPE_first =4;
+    public static final int TYPE_Error =5;
     private String email;
     private int month;
     private int day;
@@ -63,13 +59,10 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         myData = new MyData(context);
         token = myData.load_token();
         email=myData.load_email();
-        Calendar c=Calendar.getInstance();
+        Calendar c=Calendar.getInstance(); 
         month=c.get(Calendar.MONTH)+1;
         day=c.get(Calendar.DAY_OF_MONTH);
     }
-
-
-
 
 
 
@@ -90,24 +83,27 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             return TYPE_no;
         }else if (list.get(i).getFirst()!=null){
             return TYPE_first;
-        } else {
-
+        } else if (list.get(i).getError()!=null){
+            return TYPE_Error;
+        }else {
         if (i>0 ){
             return TYPE_NORMAL;
         }
         if (i == 0){
             return TYPE_HEADER;
         }}
-
         return super.getItemViewType(i);
     }
-
 
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view=null;
         RecyclerView.ViewHolder holder=null;
+        if (i==TYPE_Error){
+            view= LayoutInflater.from(context).inflate(R.layout.item_papernonet,viewGroup,false);
+            holder= new ViewHolderError(view);
+        }
         if (i==TYPE_first){
             view= LayoutInflater.from(context).inflate(R.layout.item_com,viewGroup,false);
             holder= new ViewHolderNo(view);
@@ -130,6 +126,7 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     @Override
     public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder holder, final int i) {
 
+
         if (holder instanceof ViewHolderComments){
             ( (ViewHolderComments)holder).comment.setText(list.get(i).getComment_content());
             ( (ViewHolderComments)holder).writer.setText(list.get(i).getComment_writer());
@@ -141,6 +138,8 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             ( (ViewHolderNews)holder).title.setText(list.get(i).getTitle());
             ( (ViewHolderNews)holder).writer.setText(list.get(i).getWriter());
             ( (ViewHolderNews)holder).content.setText(list.get(i).getContent());
+            ( (ViewHolderNews)holder).info.setText(list.get(i).getInfo());
+          //  ( (ViewHolderNews)holder).info.setText(list.get(i).);
             Glide.with(context).load(list.get(i).getPhoto()).error(R.drawable.error).circleCrop().into(  ( (ViewHolderNews)holder).photo);
 
             if (list.get(i).getPics()!=null){
@@ -242,9 +241,7 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     }
 
-
     public int getItemCount() {
-
         return list.size();
     }
 
@@ -276,7 +273,7 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     public static class ViewHolderNews extends RecyclerView.ViewHolder {
         GridView gridView;
-        TextView title,content,writer;
+        TextView title,content,writer,info;
         Button btn_focus;
         ImageView photo;
         public ViewHolderNews(@NonNull View itemView) {
@@ -287,8 +284,18 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             content=itemView.findViewById(R.id.details_news);
             photo=itemView.findViewById(R.id.details_photo);
             writer=itemView.findViewById(R.id.details_writer);
+            info=itemView.findViewById(R.id.details_info);
+        }
+    }
+
+
+    public static class ViewHolderError extends RecyclerView.ViewHolder {
+
+        public ViewHolderError(@NonNull View itemView) {
+            super(itemView);
 
         }
     }
+
      }
 

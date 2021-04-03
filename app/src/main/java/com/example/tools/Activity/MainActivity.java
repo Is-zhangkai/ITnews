@@ -102,6 +102,8 @@ import java.util.List;
             transaction.add(R.id.fragment,newsFragment).show(newsFragment).commit();
         }
 
+
+
 //        int permission = ActivityCompat.checkSelfPermission(MainActivity.this,
 //                Manifest.permission.WRITE_EXTERNAL_STORAGE);
 //

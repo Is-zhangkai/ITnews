@@ -46,9 +46,11 @@ public class MyCollections extends AppCompatActivity {
     private String responseData = "";
     private String tp_url;
     private int type;
+    private boolean once=false;
     private String token;
     private int len;
     private MixAdapter adapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +67,7 @@ public class MyCollections extends AppCompatActivity {
         Bundle bd = intent.getExtras();
         String name = bd.getString("name");
         head.setText(name);
-
+        once = false;
         type = bd.getInt("num");   // 1:collection 2:history good  3:fans  4:attentions;
         switch (type) {
             case 1:
@@ -95,12 +97,12 @@ public class MyCollections extends AppCompatActivity {
         super.onStart();
         recyclerView.setHasFixedSize(true);
         recyclerView.setNestedScrollingEnabled(false);  //避免滑动卡顿
-
         list.clear();
         adapter = new MixAdapter(MyCollections.this, list);
         adapter.myNotifyDataSetChange();
         MyData myData = new MyData(MyCollections.this);
         token = myData.load_token();
+        once = false;
         wzy();
     }
 
@@ -111,6 +113,7 @@ public class MyCollections extends AppCompatActivity {
         adapter = new MixAdapter(MyCollections.this, list);
         adapter.myNotifyDataSetChange();
         i = 0;
+        once = false;
         new Thread(() -> {
             try {
                 OkHttpClient client = new OkHttpClient().newBuilder()
@@ -177,13 +180,12 @@ public class MyCollections extends AppCompatActivity {
                             JSONObject jsonObject1 = jsonObject.getJSONObject("data");
                             JSONArray jsonArray = jsonObject1.getJSONArray("news");
                             Log.d("12332l", "" + jsonArray.length());
-
                             len = jsonArray.length();
                             for (int j = 0; i < jsonArray.length() && j < 8; i++, j++) {
                                 Log.d("1233i", "1:" + i);
                                 Log.d("1233i", "leng:" + jsonArray.length());
                                 JSONObject jsonObject2 = jsonArray.getJSONObject(i);
-                                Log.d("12332", jsonObject2.toString());
+                                Log.d("12332", "新闻消息"+jsonObject2.toString());
                                 int news_id = jsonObject2.getInt("id");
                                 int tag_type = jsonObject2.getInt("tag_type");
                                 String title = jsonObject2.getString("title");
@@ -198,6 +200,7 @@ public class MyCollections extends AppCompatActivity {
                                 String username = jsonObject24.getString("username");
                                 String nickname = jsonObject24.getString("nickname");
                                 String user_pic = jsonObject24.getString("avatar");
+                                String info = jsonObject24.getString("info");
                                 Map map = new HashMap();
 
                                 map.put("news_id", news_id);
@@ -209,6 +212,7 @@ public class MyCollections extends AppCompatActivity {
                                 map.put("nickname", nickname);
                                 map.put("user_pic", user_pic);
                                 map.put("type", 2);
+                                map.put("info",info);
                                 list.add(map);
                             }
 
@@ -216,7 +220,11 @@ public class MyCollections extends AppCompatActivity {
                                 MyCollections.this.runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
-                                        Toast.makeText(MyCollections.this, "到底了~", Toast.LENGTH_SHORT).show();
+                                        if(once){
+                                            Toast.makeText(MyCollections.this, "到底了~", Toast.LENGTH_SHORT).show();
+                                        }else {
+                                            once = true;
+                                        }
                                     }
                                 });
                             }
@@ -263,6 +271,7 @@ public class MyCollections extends AppCompatActivity {
                     }
                     break;
                 case 3:
+                case 4:
                     try {
                         JSONObject jsonObject = new JSONObject(responseData);
                         if (jsonObject.getInt("code") == 1000) {
@@ -273,25 +282,31 @@ public class MyCollections extends AppCompatActivity {
                                 Log.d("1233i", "1:" + i);
                                 Log.d("1233i", "leng:" + jsonArray.length());
                                 JSONObject jsonObject2 = jsonArray.getJSONObject(i);
-                                Log.d("12332", jsonObject2.toString());
+                                Log.d("12332", "人物"+jsonObject2.toString());
                                 int peo_id = jsonObject2.getInt("id");
                                 String info = jsonObject2.getString("info");
                                 String name = jsonObject2.getString("nickname");
                                 String head_url = jsonObject2.getString("avatar");
+                                int isMutual = jsonObject2.getInt("isFollow");
                                 Map map = new HashMap();
 
                                 map.put("peo_id", peo_id);
-                                map.put("info",info);
-                                map.put("name",name);
-                                map.put("head_url",head_url);
-                                map.put("type",1);
+                                map.put("info", info);
+                                map.put("name", name);
+                                map.put("head_url", head_url);
+                                map.put("type", 1);
+                                map.put("isMutual", isMutual);
                                 list.add(map);
                             }
                             if (i == jsonArray.length()) {
                                 MyCollections.this.runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
-                                        Toast.makeText(MyCollections.this, "到底了~", Toast.LENGTH_SHORT).show();
+                                        if(once){
+                                            Toast.makeText(MyCollections.this, "到底了~", Toast.LENGTH_SHORT).show();
+                                        }else {
+                                            once = true;
+                                        }
                                     }
                                 });
                             }
@@ -308,7 +323,7 @@ public class MyCollections extends AppCompatActivity {
                                     map2.put("text", "您还没有收藏任何新闻");
                                     break;
                                 case 2:
-                                    map2.put("text", "您没有任何浏览记录");
+                                    map2.put("text", "您没有点赞任何新闻");
                                     break;
                                 case 3:
                                     map2.put("text", "还没有人关注您，发发新闻吧");
@@ -336,7 +351,7 @@ public class MyCollections extends AppCompatActivity {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-
+                    break;
             }
         }
     }
