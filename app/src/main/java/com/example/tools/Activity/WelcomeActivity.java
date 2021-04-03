@@ -51,9 +51,10 @@ public class WelcomeActivity extends AppCompatActivity {
                                 public void run() {
                                     if (msg.equals("一切正常")){
                                     startActivity(new Intent(WelcomeActivity.this,MainActivity.class));
+                                    finish();
                                     }else {
                                         startActivity(new Intent(WelcomeActivity.this,InterActivity.class));
-
+                                        finish();
                                     }}
                             });
 

@@ -200,7 +200,8 @@ public class RegisterActivity extends AppCompatActivity {
                                                     Toast.makeText(RegisterActivity.this,"注册成功！", Toast.LENGTH_SHORT).show();
                                                 }
                                             });
-                                            startActivity(new Intent(RegisterActivity.this,InterActivity.class));
+                                            startActivity(new Intent(RegisterActivity.this,LoginActivity.class));
+                                            finish();
                                         }
                                     } catch (JSONException e) {
                                         e.printStackTrace();

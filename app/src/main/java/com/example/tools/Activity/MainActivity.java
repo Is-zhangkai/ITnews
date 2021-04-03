@@ -80,6 +80,8 @@ import java.util.List;
         news.setSelected(true);
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment, newsFragment).commit();
 
+
+
 //        int permission = ActivityCompat.checkSelfPermission(MainActivity.this,
 //                Manifest.permission.WRITE_EXTERNAL_STORAGE);
 //

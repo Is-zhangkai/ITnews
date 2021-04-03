@@ -22,6 +22,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.tools.Activity.ChangeActivity;
+import com.example.tools.Activity.InterActivity;
 import com.example.tools.Activity.LoginActivity;
 import com.example.tools.Activity.MyCollections;
 import com.example.tools.MyData;
@@ -98,11 +99,11 @@ public class UserFragment extends Fragment {
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getActivity(), LoginActivity.class));
                 MyData myData = new MyData(getActivity());
                 myData.save_check(false);
                 myData.save_xx(false);
                 myData.save_token("error");
+                startActivity(new Intent(getActivity(), InterActivity.class));
                 getActivity().finish();
             }
         });

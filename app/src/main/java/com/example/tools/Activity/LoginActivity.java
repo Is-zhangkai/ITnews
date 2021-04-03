@@ -101,8 +101,8 @@ public class LoginActivity extends AppCompatActivity {
 
                                             Log.d("1233t",data.load_token());
                                             data.save_check(true);
-                                            startActivity(new Intent(LoginActivity.this,MainActivity.class));
-                                            finish();
+                                            Intent intent = new Intent(LoginActivity.this,MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                            startActivity(intent);
                                         }
                                     } catch (JSONException e) {
                                         e.printStackTrace();
