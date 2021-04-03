@@ -1,5 +1,5 @@
 # ITnews
-@[toc]
+ [TOC]
 ## 一、项目概述
    ITnews是由2021年3月由中国海洋大学爱特工作室开发的一款小型新闻类APP。从设计到产品开发与测试累计用时一个月。
 - **项目名称**:ITnews
@@ -116,7 +116,99 @@
 | **3.21 -3.28** | **后端接口全部部署完毕，前段完成项目主体结构**              |
 | **3.28-4.4**   | **项目调试与完善**                                          |
 
+# ITnews
 
+[TOC]
+
+## 1、 Project overview
+
+ITnews is a small news app developed by IT studio of Ocean University of China in March 2021. It takes one month from design to product development and testing.
+
+**project name**: ITnews
+
+
+
+**development team member**: UI: Wu Huimin program: Liu Zhao app: Zhang Kai, Wang Ziyi, Huang Bobin
+
+**Project Manager**: Huang Bobin
+
+**design objective**: design a news app, which can instantly view and release news, and users can pay attention to the author, collect articles, etc
+
+## 2、 Function details
+### Automatic version detection update
+When you open the app and enter the welcome interface, check the software version. If it is not the latest version, the pop-up window will prompt you to update.
+
+### Login and registration
+
+If the user has not logged in before, jump to the login interface. If there is no account, click Register to register the account.
+When you register an account, fill in the email to get the verification code. When you succeed, fill in the account password to register successfully
+
+### Bottom navigation bar
+
+After login, enter the app main interface, and there is a bottom navigation bar at the bottom of the screen. They are (news, news, my article, personal)
+
+#### News
+
+News is divided into two parts, attention and recommendation (please refer to the homepage of sina Weibo)
+There will be a background algorithm for the news of the recommendation part, which has different push for each user
+The following section shows the news content published by the author you follow
+Each news consists of a title and a cover image. Click news to jump to the news details page
+Pull up to load, pull down to refresh news
+
+#### Carousel map
+In the recommendation section of the news interface, scroll 4 news pictures
+
+#### Message (local database development)
+Prompt information for user operation. (e.g. follow, post, comment)
+Prompt when not reading the message (refer to the red dot of QQ)
+
+#### Individuals
+Display personal profile, nickname, gender, attention, fans, number of collected articles, profile, email and other information
+
+### News details page
+At the top of the news details page, the title of the article, the author, and the portrait of the author are displayed
+The content and pictures of the article are displayed below in the form of nine palace grid (the first picture is the cover picture by default)
+Comments and favorites (one at the bottom)
+After the end of the article, the comments on the article (only short comments) will be displayed below
+
+### News release interface
+Press release (refer to wechat publishing circle of friends)
+
+### User information modification
+
+#### Head portrait
+Click the avatar in the user interface to pop up the dialog box. Select photo and album, then cut the picture and modify it
+
+#### Nickname
+
+Click the nickname to jump to the nickname modification interface (refer to wechat)
+#### Gender
+Click gender to pop up the dialog box and select male and female
+
+#### Personal profile
+Click personal profile to jump to the modification interface (refer to wechat)
+
+#### Change password
+To modify the password, click modify password in personal information to jump to modify password interface
+
+After the mailbox and the original password verification, you can change the password
+### Forget the password
+Select forget password in login interface
+Jump to forget password interface
+Set a new password after entering the email and verification code
+
+### Project additional processing
+The corresponding prompt information is given in the state of disconnection
+Item no horizontal screen status
+The input information format of the project is controlled by the front and back end according to the unified standard
+
+## 3、 Project schedule (for reference only)
+
+| **3.7-3.14**   |  **project design documents, interface documents, database design documents and basic framework construction of APP project** |
+| -------------- | ----------------------------------------------------------- |
+| **3.14-3.21**  | **back end interface deployment is synchronized with App Design**                           |
+| **3.21 -3.28** | **all back-end interfaces have been deployed, and the main structure of the project has been completed in the previous stage**              |
+| **3.28-4.4**   | **project commissioning and improvement**                                          |
 
 
 
