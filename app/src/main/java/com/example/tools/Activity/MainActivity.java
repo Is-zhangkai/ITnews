@@ -116,20 +116,13 @@ public class MainActivity extends AppCompatActivity {
                         JSONObject jsonObject=new JSONObject(response.body().string());
                         String msg=jsonObject.getString("msg");
                         JSONObject jsonObject1=jsonObject.getJSONObject("data");
+                        Log.i("asd",jsonObject1.toString());
                         data.save_name(jsonObject1.getString("nickname"));
                         data.save_pic_url(jsonObject1.getString("avatar"));
                         data.save_info(jsonObject1.getString("info"));
+                        data.save_id(jsonObject1.getInt("selfid"));
 
 
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                if (msg.equals("一切正常")){
-
-                                }else {
-
-                                }}
-                        });
 
 
 

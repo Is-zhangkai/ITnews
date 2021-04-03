@@ -108,9 +108,23 @@ public class FocusNewsFragment extends Fragment {
                     try {
                         JSONObject jsonObject21 = new JSONObject(Objects.requireNonNull(response.body()).string());
                         JSONObject jsonObject22 = jsonObject21.getJSONObject("data");
+                        Log.i("asd", jsonObject22.toString());
                         o_page = jsonObject22.getInt("count");
                         JSONArray jsonArray21 = jsonObject22.getJSONArray("news");
                         Log.i("asd", jsonObject21.getString("msg"));
+                        if (jsonObject21.getString("msg").equals("数据库暂无相关数据")){
+                            page=1;o_page=1;
+                            Data data211 = new Data();
+                            data211.setNoData("暂无关注");
+                            list.add(data211);
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    adapter = new NewsAdapter(getContext(), list);
+                                    recyclerView.setAdapter(adapter);
+                                }
+                            });
+                        }else {
 
                         for (int i = 0; i < jsonArray21.length(); i++) {
                             Data data21 = new Data();
@@ -141,7 +155,7 @@ public class FocusNewsFragment extends Fragment {
                                     adapter.addData(list);
                                 }
                             }
-                        });
+                        });}
 
                     } catch (Exception e) {
                         e.printStackTrace();

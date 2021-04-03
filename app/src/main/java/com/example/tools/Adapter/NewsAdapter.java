@@ -23,6 +23,7 @@ import com.bumptech.glide.Glide;
 import com.example.tools.Activity.NewsDetailsActivity;
 import com.example.tools.R;
 import com.example.tools.tools.Data;
+import com.example.tools.tools.SquareLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +40,7 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int ITEM_PAGER =0 ;
     private static final int ITEM_NEWS =1;
     private static final int ITEM_ERROR =2;
+    private static final int ITEM_NO =3;
     private ViewPagerAdapter viewPagerAdapter;
     public NewsAdapter(Context context,List<Data> list){
         this.context=context;
@@ -58,6 +60,11 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view_news=null;
         RecyclerView.ViewHolder holder = null;
+
+        if (i==ITEM_NO){
+            view_news= LayoutInflater.from(context).inflate(R.layout.item_nofocused,viewGroup,false);
+            holder= new NoHolder(view_news);
+        }
         if (i==ITEM_NEWS){
             view_news= LayoutInflater.from(context).inflate(R.layout.item_news,viewGroup,false);
             holder= new NewsHolder(view_news);
@@ -77,6 +84,13 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder holder, final int i) {
 
+        //空白页
+        if (holder instanceof NoHolder){
+            ((NoHolder)holder).textView.setText(list.get(i).getNoData());
+            if (list.get(i).getNoData().equals("暂无新闻")){
+                ((NoHolder)holder).squareLayout.setBackgroundResource(R.drawable.nonews);
+            }
+        }
         //新闻
         if (holder instanceof NewsHolder){
 
@@ -170,7 +184,9 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     @Override
     public int getItemViewType(int i) {
 
-        if (list.get(i).getPics()!=null){
+        if (list.get(i).getNoData()!=null){
+            return ITEM_NO;
+        } else if (list.get(i).getPics()!=null){
             Log.i("asd","这是轮播图");
             return ITEM_PAGER;
         }else if (list.get(i).getError()!=null){
@@ -220,6 +236,19 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             super(itemView);
 
 
+
+        }}
+
+    public static class NoHolder extends RecyclerView.ViewHolder {
+
+
+        TextView textView;
+        SquareLayout squareLayout;
+        public NoHolder(@NonNull View itemView) {
+            super(itemView);
+
+            textView=itemView.findViewById(R.id.no_focused);
+            squareLayout=itemView.findViewById(R.id.no_focused_ing);
 
         }}
 

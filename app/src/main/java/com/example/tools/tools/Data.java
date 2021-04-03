@@ -28,9 +28,17 @@ public class Data {
     private String content;
     private int status;
     private String writer;
-    private String error;
+    private String error,noData;
     private String photo,info;
 
+
+    public String getNoData() {
+        return noData;
+    }
+
+    public void setNoData(String noData) {
+        this.noData = noData;
+    }
 
     public String getInfo() {
         return info;

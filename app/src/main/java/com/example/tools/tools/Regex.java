@@ -56,7 +56,7 @@ public class Regex {
             }
         }
         Boolean could;
-        if (length*4>=normal&&length>20){
+        if (length*4>=normal&&length>36){
             could=true;
         }else {could=false;}
         return could;
