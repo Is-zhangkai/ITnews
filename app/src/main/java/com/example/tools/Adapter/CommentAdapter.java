@@ -1,6 +1,5 @@
 package com.example.tools.Adapter;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
@@ -17,21 +16,17 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.tools.Activity.NewsDetailsActivity;
 import com.example.tools.MyData;
 import com.example.tools.R;
 import com.example.tools.SQLite.myApplication;
 import com.example.tools.SQLite.operation;
 import com.example.tools.Utils;
 import com.example.tools.tools.Comments;
-import com.example.tools.tools.Data;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.xutils.DbManager;
 import org.xutils.x;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Objects;
@@ -71,9 +66,6 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
 
 
-
-
-
     public void addData(List<Comments> addList){
         if (addList!=null){
             list.addAll(addList);
@@ -102,7 +94,6 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         }}
         return super.getItemViewType(i);
     }
-
 
     @NonNull
     @Override

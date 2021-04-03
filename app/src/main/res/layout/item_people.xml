@@ -47,6 +47,7 @@
         android:text="用户名"
         android:textColor="#7E57C2"
         android:textSize="16sp"
+        android:maxLength="7"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/imageView16"
         app:layout_constraintTop_toTopOf="parent"

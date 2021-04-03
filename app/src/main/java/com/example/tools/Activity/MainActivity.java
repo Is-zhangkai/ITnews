@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.tools.Fragment.MessageFragment;
 import com.example.tools.Fragment.MyPaperFragment;
@@ -68,6 +69,22 @@ public class MainActivity extends AppCompatActivity {
             textView.setText("99+");
         }
     }
+        private void hideFragment(FragmentTransaction transaction){
+            if(newsFragment != null){
+                transaction.hide(newsFragment);
+            }
+            if(myPaperFragment != null){
+                transaction.hide(myPaperFragment);
+            }
+            if(messageFragment != null){
+                transaction.hide(messageFragment);
+            }
+            if(userFragment != null){
+                transaction.hide(userFragment);
+            }
+        }
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,7 +100,12 @@ public class MainActivity extends AppCompatActivity {
         message = findViewById(R.id.message_layout);
         user = findViewById(R.id.user_layout);
         news.setSelected(true);
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment, newsFragment).commit();
+
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        if(!newsFragment.isAdded())
+        {
+            transaction.add(R.id.fragment,newsFragment).show(newsFragment).commit();
+        }
 
 
         try {
@@ -145,7 +167,14 @@ public class MainActivity extends AppCompatActivity {
                 paper.setSelected(false);
                 message.setSelected(false);
                 user.setSelected(false);
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment, newsFragment).commit();
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                if(!newsFragment.isAdded())
+                {
+                    transaction.add(R.id.fragment,newsFragment);
+                }
+                hideFragment(transaction);
+                transaction.show(newsFragment);
+                transaction.commit();
             }
         });
         paper.setOnClickListener(new View.OnClickListener() {
@@ -155,7 +184,14 @@ public class MainActivity extends AppCompatActivity {
                 paper.setSelected(true);
                 message.setSelected(false);
                 user.setSelected(false);
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment, myPaperFragment).commit();
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                if(!myPaperFragment.isAdded())
+                {
+                    transaction.add(R.id.fragment,myPaperFragment);
+                }
+                hideFragment(transaction);
+                transaction.show(myPaperFragment);
+                transaction.commit();
             }
         });
         message.setOnClickListener(new View.OnClickListener() {
@@ -165,7 +201,14 @@ public class MainActivity extends AppCompatActivity {
                 paper.setSelected(false);
                 message.setSelected(true);
                 user.setSelected(false);
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment, messageFragment).commit();
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                if(!messageFragment.isAdded())
+                {
+                    transaction.add(R.id.fragment,messageFragment);
+                }
+                hideFragment(transaction);
+                transaction.show(messageFragment);
+                transaction.commit();
             }
         });
         user.setOnClickListener(new View.OnClickListener() {
@@ -175,7 +218,14 @@ public class MainActivity extends AppCompatActivity {
                 paper.setSelected(false);
                 message.setSelected(false);
                 user.setSelected(true);
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment, userFragment).commit();
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                if(!userFragment.isAdded())
+                {
+                    transaction.add(R.id.fragment,userFragment);
+                }
+                hideFragment(transaction);
+                transaction.show(userFragment);
+                transaction.commit();
             }
         });
 

@@ -365,7 +365,13 @@ public class WriteActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         recyclerView.setAdapter(nineGridAdapter);
-        GridLayoutManager manager=new GridLayoutManager(this,3);
+        GridLayoutManager manager=new GridLayoutManager(this,3){
+            @Override
+            public boolean canScrollVertically() {
+                return false;
+            }
+        };
+
         recyclerView.setLayoutManager(manager);
         nineGridAdapter.setOnAddPicturesListener(new OnAddPicturesListener() {
             @Override
