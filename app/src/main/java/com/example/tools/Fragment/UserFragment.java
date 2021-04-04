@@ -69,7 +69,7 @@ public class UserFragment extends Fragment {
     private final long contentLength = 0;
     private String new_version ;
     private String[] PERMISSIONS_STORAGE = {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
-    String title = "发现新版本：";
+    String title = "发现新版本（其实是旧版本）：";
     String size = "新版本大小：21MB";
     String msg = "1、优化api接口。\r\n2、添加使用demo演示。\r\n3、新增自定义更新服务API接口。\r\n4、优化更新提示界面。";
 

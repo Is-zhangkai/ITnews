@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
     private String new_version ;
     private String downloadUrl;
     private Button upgrade;
-    String title = "发现新版本：";
+    String title = "发现新版本（其实是旧版本）：";
     String size = "新版本大小：21MB";
     String msg = "1、优化api接口。\r\n2、添加使用demo演示。\r\n3、新增自定义更新服务API接口。\r\n4、优化更新提示界面。";
     private UserFragment userFragment = new UserFragment();
