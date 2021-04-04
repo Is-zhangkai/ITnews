@@ -12,9 +12,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.tools.MyData;
 import com.example.tools.R;
+import com.example.tools.SQLite.myApplication;
+import com.example.tools.SQLite.operation;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.xutils.DbManager;
+import org.xutils.ex.DbException;
+import org.xutils.x;
 
 import java.io.IOException;
 import java.util.regex.Matcher;
@@ -35,7 +40,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText get_password;
     private Button gogo;
     private String username;
-    private int tp=2;
+    private int tp = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,25 +53,25 @@ public class LoginActivity extends AppCompatActivity {
         gogo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                username=get_username.getText().toString();
-                final String password=get_password.getText().toString();
-                if(!checkUsername(username)){
+                username = get_username.getText().toString();
+                final String password = get_password.getText().toString();
+                if (!checkUsername(username)) {
                     Toast.makeText(LoginActivity.this, "用户名应为" +
                             "6~12位字母或数字！", Toast.LENGTH_SHORT).show();
-                }else if(!checkPassword(password)){
+                } else if (!checkPassword(password)) {
                     Toast.makeText(LoginActivity.this, "密码应为6~12位字母或数字！", Toast.LENGTH_SHORT).show();
-                }else {
+                } else {
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
                             MediaType mediaType = MediaType.parse("application/json; charset=utf-8");
-                            String requestBody =  "\r\n{\r\n    \"username\": \""+username+"\",\r\n    \"password\": \""+password+"\"\r\n}";
+                            String requestBody = "\r\n{\r\n    \"username\": \"" + username + "\",\r\n    \"password\": \"" + password + "\"\r\n}";
                             Request request = new Request.Builder()
                                     .url("http://122.9.2.27/api/reglog/all-log")
                                     .post(RequestBody.create(mediaType, requestBody))
                                     .build();
                             OkHttpClient okHttpClient = new OkHttpClient();
-                            Log.d("1233d",request.toString()+"   "+requestBody.toString());
+                            Log.d("1233d", request.toString() + "   " + requestBody.toString());
                             okHttpClient.newCall(request).enqueue(new Callback() {
                                 @Override
                                 public void onFailure(Call call, IOException e) {
@@ -86,12 +91,12 @@ public class LoginActivity extends AppCompatActivity {
                                             LoginActivity.this.runOnUiThread(new Runnable() {
                                                 @Override
                                                 public void run() {
-                                                    Toast.makeText(LoginActivity.this,msg, Toast.LENGTH_SHORT).show();
+                                                    Toast.makeText(LoginActivity.this, msg, Toast.LENGTH_SHORT).show();
                                                 }
                                             });
-                                        }else {
+                                        } else {
                                             MyData data = new MyData(LoginActivity.this);
-                                            JSONObject jsonObject2 =jsonObject1.getJSONObject("data");
+                                            JSONObject jsonObject2 = jsonObject1.getJSONObject("data");
                                             String token = jsonObject2.getString("token");
                                             data.save_token(token);
                                             LoginActivity.this.runOnUiThread(new Runnable() {
@@ -103,9 +108,26 @@ public class LoginActivity extends AppCompatActivity {
                                                 }
                                             });
 
-                                            Log.d("1233t",data.load_token());
+                                            Log.d("1233t", data.load_token());
                                             data.save_check(true);
-                                            Intent intent = new Intent(LoginActivity.this,MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                            Intent intent = new Intent(LoginActivity.this, MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                                            DbManager db = null;
+                                            try {
+                                                db = x.getDb(((myApplication)getApplicationContext()).getDaoConfig());
+                                                operation operation=new operation();
+                                                operation. setTitle("aaa");
+                                                operation. setDate("AAA");
+                                                operation. setType(8);
+                                                operation. setChoice(8);
+                                                operation. setEmail("yes");
+                                                operation. setRead(0);
+                                                db.save(operation);
+                                            } catch (DbException e) {
+                                                e.printStackTrace();
+                                                return;
+                                            }
+
                                             startActivity(intent);
                                         }
                                     } catch (JSONException e) {
@@ -128,8 +150,8 @@ public class LoginActivity extends AppCompatActivity {
         findViewById(R.id.signin_change_password).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(LoginActivity.this, RegisterActivity.class);
-                intent.putExtra("type",tp);
+                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+                intent.putExtra("type", tp);
                 LoginActivity.this.startActivity(intent);
             }
         });
@@ -138,8 +160,8 @@ public class LoginActivity extends AppCompatActivity {
         findViewById(R.id.login_register).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(LoginActivity.this, RegisterActivity.class);
-                intent.putExtra("type",tp);
+                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+                intent.putExtra("type", tp);
                 LoginActivity.this.startActivity(intent);
             }
         });
