@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -122,7 +123,6 @@ public class MainActivity extends AppCompatActivity {
             transaction.add(R.id.fragment,newsFragment).show(newsFragment).commit();
         }
 
-
         try {
             Utils.get_token("http://122.9.2.27/api/self/info", token, new Utils.OkhttpCallBack() {
                 @Override
@@ -136,9 +136,6 @@ public class MainActivity extends AppCompatActivity {
                         data.save_pic_url(jsonObject1.getString("avatar"));
                         data.save_info(jsonObject1.getString("info"));
                         data.save_id(jsonObject1.getInt("selfid"));
-
-
-
 
 
                     } catch (Exception e) {
@@ -236,7 +233,16 @@ public class MainActivity extends AppCompatActivity {
                 transaction.commit();
             }
         });
+//        HideKeyboard();
         go_update();
+    }
+    public void HideKeyboard(View v)
+    {
+        InputMethodManager imm = ( InputMethodManager ) v.getContext( ).getSystemService( MainActivity.this.INPUT_METHOD_SERVICE );
+        if ( imm.isActive( ) ) {
+            imm.hideSoftInputFromWindow( v.getApplicationWindowToken( ) , 0 );
+
+        }
     }
     private void go_update(){
         new Thread(new Runnable() {

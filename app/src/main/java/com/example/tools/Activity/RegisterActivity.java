@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -40,6 +41,8 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText get_verify;
     private Button get_get_verify;
     private Button gogo;
+    private ImageView iv_back;
+    private int tp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,12 +50,15 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.layout_register);
         final CheckBox checkBox = findViewById(R.id.checkbox);//复选框
         //用户服务协议
+        tp = getIntent().getIntExtra("type", 1);
+
         findViewById(R.id.agreement).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(RegisterActivity.this, AgreementActivity.class));
             }
         });
+        iv_back = findViewById(R.id.imageView18);
         get_username = findViewById(R.id.username);
         get_password_one = findViewById(R.id.passwordone);
         get_password_two = findViewById(R.id.passowrdtwo);
@@ -60,6 +66,20 @@ public class RegisterActivity extends AppCompatActivity {
         get_verify = findViewById(R.id.verify);
         get_get_verify = findViewById(R.id.getverify);
         gogo = findViewById(R.id.gogo);
+        iv_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (tp == 1) {
+                    Intent intent = new Intent(RegisterActivity.this, InterActivity.class);
+                    RegisterActivity.this.startActivity(intent);
+                    finish();
+                } else {
+                    Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                    RegisterActivity.this.startActivity(intent);
+                    finish();
+                }
+            }
+        });
         get_get_verify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -106,7 +126,7 @@ public class RegisterActivity extends AppCompatActivity {
                                                     Toast.makeText(RegisterActivity.this, "出错啦，请重试", Toast.LENGTH_SHORT).show();
                                                 }
                                             });
-                                        }else{
+                                        } else {
                                             RegisterActivity.this.runOnUiThread(new Runnable() {
                                                 @Override
                                                 public void run() {
@@ -137,27 +157,27 @@ public class RegisterActivity extends AppCompatActivity {
                 final String password;
                 final String password2;
                 final String email;
-                final String string_verify ;
+                final String string_verify;
                 username = get_username.getText().toString();
-                password =get_password_one.getText().toString();
-                password2 =get_password_two.getText().toString();
+                password = get_password_one.getText().toString();
+                password2 = get_password_two.getText().toString();
                 email = get_email.getText().toString();
-                string_verify  = get_verify.getText().toString();
-                if(!checkUsername(username)){
+                string_verify = get_verify.getText().toString();
+                if (!checkUsername(username)) {
                     Toast.makeText(RegisterActivity.this, "用户名应为6~12位字母或数字！", Toast.LENGTH_SHORT).show();
-                }else if(!password.equals(password2)){
+                } else if (!password.equals(password2)) {
                     Log.d("passw", password);
                     Log.d("passw2", password2);
                     Toast.makeText(RegisterActivity.this, "两次密码输入不一致", Toast.LENGTH_SHORT).show();
-                }else if(!checkPassword(password)){
+                } else if (!checkPassword(password)) {
                     Toast.makeText(RegisterActivity.this, "密码应为6~12位字母或数字！", Toast.LENGTH_SHORT).show();
-                }else if(!checkEmail(email)){
+                } else if (!checkEmail(email)) {
                     Toast.makeText(RegisterActivity.this, "邮箱格式有误！", Toast.LENGTH_SHORT).show();
-                }else if(!checkVerify(string_verify)){
+                } else if (!checkVerify(string_verify)) {
                     Toast.makeText(RegisterActivity.this, "验证码有误！", Toast.LENGTH_SHORT).show();
-                }else if(!checkBox.isChecked()){
+                } else if (!checkBox.isChecked()) {
                     Toast.makeText(RegisterActivity.this, "请同意用户服务协议！", Toast.LENGTH_SHORT).show();
-                }else {
+                } else {
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
@@ -165,14 +185,14 @@ public class RegisterActivity extends AppCompatActivity {
                             int intverify;
                             intverify = Integer.parseInt(string_verify);
                             MediaType mediaType = MediaType.parse("application/json; charset=utf-8");
-                            String requestBody =  "\r\n{\r\n    \"username\": \""+username+"\",\r\n    \"password\": \""+password+"\",\r\n    \"email\": \""+email+"\",\r\n    \"verify\": \""+intverify+"\"\r\n}";
-                            
+                            String requestBody = "\r\n{\r\n    \"username\": \"" + username + "\",\r\n    \"password\": \"" + password + "\",\r\n    \"email\": \"" + email + "\",\r\n    \"verify\": \"" + intverify + "\"\r\n}";
+
                             Request request = new Request.Builder()
                                     .url("http://122.9.2.27/api/reglog/all-reg")
                                     .post(RequestBody.create(mediaType, requestBody))
                                     .build();
                             OkHttpClient okHttpClient = new OkHttpClient();
-                            Log.d("1233d",request.toString()+"   "+requestBody.toString());
+                            Log.d("1233d", request.toString() + "   " + requestBody.toString());
                             okHttpClient.newCall(request).enqueue(new Callback() {
                                 @Override
                                 public void onFailure(Call call, IOException e) {
@@ -192,17 +212,17 @@ public class RegisterActivity extends AppCompatActivity {
                                             RegisterActivity.this.runOnUiThread(new Runnable() {
                                                 @Override
                                                 public void run() {
-                                                    Toast.makeText(RegisterActivity.this,msg, Toast.LENGTH_SHORT).show();
+                                                    Toast.makeText(RegisterActivity.this, msg, Toast.LENGTH_SHORT).show();
                                                 }
                                             });
-                                        }else {
+                                        } else {
                                             RegisterActivity.this.runOnUiThread(new Runnable() {
                                                 @Override
                                                 public void run() {
-                                                    Toast.makeText(RegisterActivity.this,"注册成功！", Toast.LENGTH_SHORT).show();
+                                                    Toast.makeText(RegisterActivity.this, "注册成功！", Toast.LENGTH_SHORT).show();
                                                 }
                                             });
-                                            startActivity(new Intent(RegisterActivity.this,LoginActivity.class));
+                                            startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
                                             finish();
                                         }
                                     } catch (JSONException e) {
@@ -244,12 +264,14 @@ public class RegisterActivity extends AppCompatActivity {
         Matcher matcher = pattern.matcher(str);
         return matcher.matches();
     }
+
     public boolean checkVerify(String str) {
         String regexp = "^[0-9]{4}$";
         Pattern pattern = Pattern.compile(regexp);
         Matcher matcher = pattern.matcher(str);
         return matcher.matches();
     }
+
     public boolean checkEmail(String str) {
         String regexp = "^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\\.[a-zA-Z0-9_-]+)+$";
         Pattern pattern = Pattern.compile(regexp);

@@ -226,7 +226,9 @@ public class ChangeActivity extends AppCompatActivity {
         change_password.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(ChangeActivity.this, ChangePasswordActivity.class));
+                Intent intent=new Intent(ChangeActivity.this, ChangePasswordActivity.class);
+                intent.putExtra("type",1);
+                ChangeActivity.this.startActivity(intent);
             }
         });
 

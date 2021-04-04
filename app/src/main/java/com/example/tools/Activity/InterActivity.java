@@ -24,8 +24,9 @@ public class InterActivity extends AppCompatActivity {
         findViewById(R.id.inter_register).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(InterActivity.this,RegisterActivity.class));
-
+                Intent intent=new Intent(InterActivity.this,RegisterActivity.class);
+                intent.putExtra("type",1);
+                InterActivity.this.startActivity(intent);
             }
         });
     }

@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -37,12 +38,16 @@ public class ChangePasswordActivity extends AppCompatActivity {
     private EditText get_verify;
     private Button get_get_verify;
     private Button go_change;
+    private ImageView iv_back;
+    private int tp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_change_password);
+        tp = getIntent().getIntExtra("type", 1);
 
+        iv_back = findViewById(R.id.imageView19);
         get_email = findViewById(R.id.email);
         get_password_one = findViewById(R.id.password1);
         get_password_two = findViewById(R.id.password2);
@@ -50,6 +55,21 @@ public class ChangePasswordActivity extends AppCompatActivity {
         get_get_verify = findViewById(R.id.get_v);
         go_change = findViewById(R.id.go_change);
 
+
+        iv_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(tp==1){
+                    Intent intent=new Intent(ChangePasswordActivity.this,MainActivity.class);
+                    ChangePasswordActivity.this.startActivity(intent);
+                    finish();
+                }else{
+                    Intent intent=new Intent(ChangePasswordActivity.this,LoginActivity.class);
+                    ChangePasswordActivity.this.startActivity(intent);
+                    finish();
+                }
+            }
+        });
         get_get_verify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

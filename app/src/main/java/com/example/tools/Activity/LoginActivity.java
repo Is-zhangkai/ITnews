@@ -35,6 +35,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText get_password;
     private Button gogo;
     private String username;
+    private int tp=2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,7 +128,9 @@ public class LoginActivity extends AppCompatActivity {
         findViewById(R.id.signin_change_password).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(LoginActivity.this, ChangePasswordActivity.class));
+                Intent intent=new Intent(LoginActivity.this, RegisterActivity.class);
+                intent.putExtra("type",tp);
+                LoginActivity.this.startActivity(intent);
             }
         });
 
@@ -135,7 +138,9 @@ public class LoginActivity extends AppCompatActivity {
         findViewById(R.id.login_register).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
+                Intent intent=new Intent(LoginActivity.this, RegisterActivity.class);
+                intent.putExtra("type",tp);
+                LoginActivity.this.startActivity(intent);
             }
         });
     }
